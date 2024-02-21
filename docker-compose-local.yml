@@ -1,0 +1,14 @@
+version: "1.0"
+services:
+  my3d-database:
+    container_name: my3d-backend-db
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: postgres
+    environment:
+      - POSTGRES_DB=my3d
+      - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME}
+      - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    ports:
+      - "5432:5432"
