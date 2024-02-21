@@ -1,1 +1,43 @@
+spring:
+  profiles:
+    active: local
+    group:
+      local:
+        - common
+      test:
+        - common
 
+---
+spring:
+  config.activate.on-profile: common
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+    open-in-view: false
+
+---
+spring:
+  config.activate.on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: create
+      use-new-id-generator-mappings: false
+    defer-datasource-initialization: true
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  sql.init.mode: always
+
+---
+spring:
+  config.activate.on-profile: test
+  jpa:
+    hibernate:
+      ddl-auto: create
+      use-new-id-generator-mappings: true
+    defer-datasource-initialization: true
+  sql.init.mode: always
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
