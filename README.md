@@ -1,6 +1,8 @@
 # My3D-BACKEND
 
-[My3D](https://github.com/JadeKim042386/My3D) Backend
+- [My3D](https://github.com/JadeKim042386/My3D) BACKEND  
+- 3D 모델을 공유하여 다운로드받을 수 있는 게시판 서비스
+- Supported 3D Model Extension: *.stl, *.stp
 
 ## Development Environment
 
@@ -9,17 +11,45 @@
 - Gradle 8.5
 - Spring Boot 2.7.18
 
+## Tech Stack
+
+| BackEnd                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![SpringBoot](https://img.shields.io/badge/SPRINGBOOT-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![SpringSecurity](https://img.shields.io/badge/SPRINGSECURITY-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) |
+| ![SpringDataJpa](https://img.shields.io/badge/SPRING_DATA_JPA-6DB33F?style=for-the-badge) ![QueryDSL](https://img.shields.io/badge/QueryDSL-009DB8?style=for-the-badge) |
+| ![JUnit5](https://img.shields.io/badge/JUnit5-25A162?style=for-the-badge&logo=junit5&logoColor=white) ![Mockito](https://img.shields.io/badge/Mockito-25A162?style=for-the-badge)|
+
+| DevOps                                                                                                       |
+|--------------------------------------------------------------------------------------------------------------|
+| ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4479A1?style=for-the-badge&logo=postgresql&logoColor=white) |
+| ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![EC2](https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white) ![S3](https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white) ![RDS](https://img.shields.io/badge/Amazon%20RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white) |
+| ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+
 ## Features
 
 - [ ] 회원가입
 - [ ] 로그인
-- [ ] 게시글 작성/수정/삭제
-- [ ] 댓글 작성/삭제
-  - [ ] 대댓글 작성/삭제
-- [ ] 게시글에 대한 좋아요 추가/삭제
+- [ ] 게시글
+  - [ ] 게시글 작성
+  - [ ] 게시글 수정
+  - [ ] 게시글 삭제
+- [ ] 댓글
+  - [ ] 댓글 작성
+  - [ ] 댓글 삭제
+  - [ ] 대댓글 작성
+  - [ ] 대댓글 삭제
+- [ ] 좋아요
+  - [ ] 좋아요 추가
+  - [ ] 좋아요 삭제
+- [ ] 좋아요, 작성일자 정렬
+- [ ] 제목 검색
 - [ ] 댓글 추가시 알람 전송
 - [ ] 유저 정보 수정
+  - [ ] 개인 사용자 정보 수정
+  - [ ] 기업/기관 사용자 정보 수정
 - [ ] 구독 기능
+
+📝 [요구사항](./docs/requirements.md)
 
 ## Flow Chart
 
@@ -101,6 +131,40 @@ sequenceDiagram
         deactivate client
     end
 ```
+
+### 4. 알람
+
+### 4.1. 페이지 전환
+```mermaid
+sequenceDiagram
+    autonumber
+    actor client
+    client ->> WAS: GET /api/v1/alarm
+    activate client
+    activate WAS
+    WAS ->>+ DB: 알람 정보 요청
+    DB -->>- WAS: 알람 정보 반환
+    WAS -->>- client: 알람 정보 전달
+    deactivate client
+```
+### 4.2. 이벤트 발생 (댓글 작성)
+```mermaid
+sequenceDiagram
+    autonumber
+    actor client
+    activate client
+    WAS ->>+ DB: 댓글 저장
+    activate WAS
+    WAS ->> DB: 알람 저장
+    deactivate DB
+    alt 알람 수신자가 로그인 상태인 경우
+      WAS -->>- client: 알람 정보 전달 (SseEmitter, Websocket)
+    end
+    deactivate client
+```
+
 ## ERD
 
-- [ERD](./imgs/my3d-erd.png)
+- 이미지를 클릭하면 ERDCloud 페이지로 이동합니다.
+
+[![ERD](./imgs/my3d-erd.png)](https://www.erdcloud.com/p/dTQwEsmpwMbRdEtbx)
