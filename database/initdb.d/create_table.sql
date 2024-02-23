@@ -5,5 +5,6 @@ create table article(
     content varchar(255) NOT NULL ,
     article_type varchar(255) NOT NULL ,
     article_category varchar(255) NOT NULL ,
+    is_free boolean NOT NULL ,
     primary key (id)
 );

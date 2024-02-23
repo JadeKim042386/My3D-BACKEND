@@ -33,14 +33,18 @@ public class Article {
     @Column(nullable = false)
     private ArticleCategory articleCategory;
 
-    public static Article of(String title, String content, ArticleType articleType, ArticleCategory articleCategory) {
-        return new Article(title, content, articleType, articleCategory);
+    @Column(nullable = false)
+    private boolean isFree;
+
+    public static Article of(String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
+        return new Article(title, content, articleType, articleCategory, isFree);
     }
 
-    private Article(String title, String content, ArticleType articleType, ArticleCategory articleCategory) {
+    private Article(String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
         this.title = title;
         this.content = content;
         this.articleType = articleType;
         this.articleCategory = articleCategory;
+        this.isFree = isFree;
     }
 }
