@@ -4,10 +4,12 @@ import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @Table(name = "article")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,14 +35,25 @@ public class Article {
     @Column(nullable = false)
     private ArticleCategory articleCategory;
 
+    // TODO: userAccout와 연관 관계 설정
+    // TODO: articleFile과 연관 관계 설정
+    // TODO: articleComment와 연관 관계 설정
+    // TODO: articleLike와 연관 관계 설정
+    // TODO: alarm과 연관 관계 설정
+
+    /**
+     * true일 경우 무료 게시글, false일 경우 유료 게시글
+     */
     @Column(nullable = false)
     private boolean isFree;
 
-    public static Article of(String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
+    public static Article of(
+            String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
         return new Article(title, content, articleType, articleCategory, isFree);
     }
 
-    private Article(String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
+    private Article(
+            String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
         this.title = title;
         this.content = content;
         this.articleType = articleType;
