@@ -6,15 +6,17 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Table(name = "article")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Article {
+public class Article implements Persistable<Long> {
     @Id
     @SequenceGenerator(name = "SEQ_GENERATOR", sequenceName = "seq_article", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GENERATOR")
@@ -59,5 +61,10 @@ public class Article {
         this.articleType = articleType;
         this.articleCategory = articleCategory;
         this.isFree = isFree;
+    }
+
+    @Override
+    public boolean isNew() {
+        return Objects.isNull(this.id);
     }
 }
