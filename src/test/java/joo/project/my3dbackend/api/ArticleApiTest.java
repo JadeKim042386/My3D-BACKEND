@@ -58,7 +58,8 @@ class ArticleApiTest {
                 "title, content, MUSIC, ",
                 "title, content, , true",
                 "title, , MUSIC, true",
-                ", content, MUSIC, true"
+                ", content, music, true",
+                "title, content, NULL, true",
             })
     void writeArticle_invalid(String title, String content, String articleCategory, Boolean isFree) throws Exception {
         // given
