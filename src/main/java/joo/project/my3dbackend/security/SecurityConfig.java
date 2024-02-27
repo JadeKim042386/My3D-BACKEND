@@ -1,6 +1,7 @@
 package joo.project.my3dbackend.security;
 
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import joo.project.my3dbackend.service.impl.UserAccountService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserAccountService userAccountService) {
+    public UserDetailsService userDetailsService(UserAccountServiceInterface userAccountService) {
         return email -> UserPrincipal.fromEntity(userAccountService.getUserAccountByEmail(email));
     }
 
