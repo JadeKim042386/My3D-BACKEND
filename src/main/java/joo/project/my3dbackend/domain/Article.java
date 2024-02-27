@@ -1,22 +1,21 @@
 package joo.project.my3dbackend.domain;
 
+import joo.project.my3dbackend.domain.audit.AuditingAt;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
+@ToString(callSuper = true)
 @Table(name = "article")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Article implements Persistable<Long> {
+public class Article extends AuditingAt implements Persistable<Long> {
     @Id
     @SequenceGenerator(name = "SEQ_GENERATOR", sequenceName = "seq_article", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GENERATOR")
@@ -37,6 +36,7 @@ public class Article implements Persistable<Long> {
     @Column(nullable = false)
     private ArticleCategory articleCategory;
 
+    @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userAccountId")
     private UserAccount userAccount;
@@ -45,7 +45,6 @@ public class Article implements Persistable<Long> {
     // TODO: articleComment와 연관 관계 설정
     // TODO: articleLike와 연관 관계 설정
     // TODO: alarm과 연관 관계 설정
-    // TODO: Auditing Field 추가
 
     /**
      * true일 경우 무료 게시글, false일 경우 유료 게시글

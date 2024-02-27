@@ -1,11 +1,9 @@
 package joo.project.my3dbackend.domain;
 
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import joo.project.my3dbackend.domain.audit.AuditingAt;
 import joo.project.my3dbackend.domain.constants.UserRole;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.data.domain.Persistable;
@@ -16,12 +14,13 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
+@ToString(callSuper = true)
 @Table(name = "user_account")
 @Entity
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class UserAccount implements Persistable<Long> {
+public class UserAccount extends AuditingAt implements Persistable<Long> {
     @Id
     @SequenceGenerator(name = "SEQ_GENERATOR", sequenceName = "seq_user_account", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GENERATOR")
@@ -48,13 +47,13 @@ public class UserAccount implements Persistable<Long> {
     @Column(nullable = false, length = 10)
     private UserRole userRole;
 
-    // TODO: order by created_at
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private Set<Article> articles = new LinkedHashSet<>();
 
     // TODO: company와 연관 관계 설정
     // TODO: userRefreshToken과 연관 관계 설정
-    // TODO: Auditing Field 추가
 
     public UserAccount(
             String email, String password, String nickname, String phone, Address address, UserRole userRole) {
