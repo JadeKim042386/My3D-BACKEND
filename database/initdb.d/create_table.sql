@@ -8,7 +8,7 @@ create table user_account(
     address jsonb ,
     user_role varchar(11) NOT NULL ,
     created_at timestamp NOT NULL ,
-    modified_at timestamp NOT NULL ,
+    modified_at timestamp ,
     primary key (id)
 );
 
@@ -22,7 +22,7 @@ create table article(
     article_category varchar(255) NOT NULL ,
     is_free boolean NOT NULL ,
     created_at timestamp NOT NULL ,
-    modified_at timestamp NOT NULL ,
+    modified_at timestamp ,
     primary key (id),
     foreign key (user_account_id) references user_account (id)
 );

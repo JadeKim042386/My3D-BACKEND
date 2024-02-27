@@ -3,7 +3,6 @@ package joo.project.my3dbackend.domain.audit;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,7 +22,5 @@ public abstract class AuditingAt {
     protected LocalDateTime createdAt; // 생성일시
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @LastModifiedDate
-    @Column(nullable = false)
     protected LocalDateTime modifiedAt; // 수정일시
 }
