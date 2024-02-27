@@ -10,6 +10,7 @@ services:
       - POSTGRES_DB=my3d
       - POSTGRES_USER=${SPRING_DATASOURCE_USERNAME}
       - POSTGRES_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - TZ=Asia/Seoul
     volumes:
       - ./database/initdb.d:/docker-entrypoint-initdb.d
     ports:
