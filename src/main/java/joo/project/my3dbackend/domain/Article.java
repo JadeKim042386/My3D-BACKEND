@@ -49,7 +49,6 @@ public class Article extends AuditingAt implements Persistable<Long> {
     private Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     // TODO: articleFile과 연관 관계 설정
-    // TODO: articleComment와 연관 관계 설정
     // TODO: articleLike와 연관 관계 설정
     // TODO: alarm과 연관 관계 설정
 
@@ -66,7 +65,6 @@ public class Article extends AuditingAt implements Persistable<Long> {
         this.articleType = articleType;
         this.articleCategory = articleCategory;
         this.isFree = isFree;
-        // TODO: userAccount 추가
     }
 
     public static Article of(
