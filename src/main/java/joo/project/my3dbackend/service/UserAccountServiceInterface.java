@@ -5,7 +5,7 @@ import joo.project.my3dbackend.domain.UserAccount;
 public interface UserAccountServiceInterface {
 
     /**
-     * 유저 정보 조회
+     * 이메일로 유저 정보 조회
      */
     UserAccount getUserAccountByEmail(String email);
 }
