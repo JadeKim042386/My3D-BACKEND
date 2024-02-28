@@ -7,7 +7,9 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @ToString(callSuper = true)
@@ -40,6 +42,11 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userAccountId")
     private UserAccount userAccount;
+
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     // TODO: articleFile과 연관 관계 설정
     // TODO: articleComment와 연관 관계 설정
