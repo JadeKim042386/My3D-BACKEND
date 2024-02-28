@@ -23,4 +23,9 @@ public class ArticleService implements ArticleServiceInterface {
         Article savedArticle = articleRepository.save(articleRequest.toEntity(userPrincipal.id()));
         return ArticleDto.fromEntity(savedArticle, userPrincipal);
     }
+
+    @Override
+    public void deleteArticle(Long articleId) {
+        articleRepository.deleteById(articleId);
+    }
 }

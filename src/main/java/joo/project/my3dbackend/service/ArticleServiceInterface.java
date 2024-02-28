@@ -10,4 +10,9 @@ public interface ArticleServiceInterface {
      * 게시글 작성
      */
     ArticleDto writeArticle(ArticleRequest articleRequest, UserPrincipal userPrincipal);
+
+    /**
+     * 게시글 삭제
+     */
+    void deleteArticle(Long articleId);
 }
