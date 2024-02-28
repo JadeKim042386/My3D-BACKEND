@@ -59,17 +59,28 @@ public class Article extends AuditingAt implements Persistable<Long> {
     private boolean isFree;
 
     private Article(
-            String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
+            String title,
+            String content,
+            ArticleType articleType,
+            ArticleCategory articleCategory,
+            boolean isFree,
+            UserAccount userAccount) {
         this.title = title;
         this.content = content;
         this.articleType = articleType;
         this.articleCategory = articleCategory;
         this.isFree = isFree;
+        this.userAccount = userAccount;
     }
 
     public static Article of(
-            String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
-        return new Article(title, content, articleType, articleCategory, isFree);
+            String title,
+            String content,
+            ArticleType articleType,
+            ArticleCategory articleCategory,
+            boolean isFree,
+            UserAccount userAccount) {
+        return new Article(title, content, articleType, articleCategory, isFree, userAccount);
     }
 
     @Override

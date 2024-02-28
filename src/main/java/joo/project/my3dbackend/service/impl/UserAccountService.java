@@ -8,9 +8,11 @@ import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserAccountService implements UserAccountServiceInterface {
     private final UserAccountRepository userAccountRepository;
@@ -18,5 +20,10 @@ public class UserAccountService implements UserAccountServiceInterface {
     @Override
     public UserAccount getUserAccountByEmail(String email) {
         return userAccountRepository.findByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    @Override
+    public UserAccount getReferenceUserAccountById(Long userAccountId) {
+        return userAccountRepository.getReferenceById(userAccountId);
     }
 }
