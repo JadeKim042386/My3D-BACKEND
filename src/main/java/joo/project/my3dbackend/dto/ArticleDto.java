@@ -3,7 +3,6 @@ package joo.project.my3dbackend.dto;
 import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
-import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 
 import java.time.LocalDateTime;
@@ -15,8 +14,7 @@ public record ArticleDto(
         ArticleType articleType,
         ArticleCategory articleCategory,
         boolean isFree,
-        String nickname,
-        UserRole userRole,
+        UserInfo userInfo,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
     public static ArticleDto fromEntity(Article article, UserPrincipal userPrincipal) {
@@ -27,8 +25,20 @@ public record ArticleDto(
                 article.getArticleType(),
                 article.getArticleCategory(),
                 article.isFree(),
-                userPrincipal.nickname(),
-                userPrincipal.getUserRole(),
+                UserInfo.fromPrincipal(userPrincipal),
+                article.getCreatedAt(),
+                article.getModifiedAt());
+    }
+
+    public static ArticleDto fromEntity(Article article) {
+        return new ArticleDto(
+                article.getId(),
+                article.getTitle(),
+                article.getContent(),
+                article.getArticleType(),
+                article.getArticleCategory(),
+                article.isFree(),
+                UserInfo.fromEntity(article.getUserAccount()),
                 article.getCreatedAt(),
                 article.getModifiedAt());
     }

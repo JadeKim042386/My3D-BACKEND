@@ -25,22 +25,27 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userAccountId")
+    @JoinColumn(name = "userAccountId", insertable = false, updatable = false)
     private UserAccount userAccount;
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "articleId")
+    @JoinColumn(name = "articleId", insertable = false, updatable = false)
     private Article article;
 
-    public ArticleComment(String content, UserAccount userAccount, Article article) {
+    @Column(nullable = false)
+    private Long userAccountId;
+    @Column(nullable = false)
+    private Long articleId;
+
+    public ArticleComment(String content, Long userAccountId, Long articleId) {
         this.content = content;
-        this.userAccount = userAccount;
-        this.article = article;
+        this.userAccountId = userAccountId;
+        this.articleId = articleId;
     }
 
-    public static ArticleComment of(String content, UserAccount userAccount, Article article) {
-        return new ArticleComment(content, userAccount, article);
+    public static ArticleComment of(String content, Long userAccountId, Long articleId) {
+        return new ArticleComment(content, userAccountId, articleId);
     }
 
     @Override
