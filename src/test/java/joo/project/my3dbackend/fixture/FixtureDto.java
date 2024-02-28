@@ -1,6 +1,7 @@
 package joo.project.my3dbackend.fixture;
 
 import joo.project.my3dbackend.domain.constants.UserRole;
+import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,5 +31,9 @@ public class FixtureDto {
 
     public static UserPrincipal createUserPrincipal() {
         return createUserPrincipal(1L, "testUser@gmail.com", "pw", UserRole.USER, "testUser");
+    }
+
+    public static ArticleWithCommentDto createArticleWithCommentDto() {
+        return ArticleWithCommentDto.fromEntity(Fixture.createArticleWithComment());
     }
 }

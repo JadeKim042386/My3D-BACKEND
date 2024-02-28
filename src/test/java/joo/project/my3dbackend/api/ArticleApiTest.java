@@ -24,9 +24,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -98,5 +98,22 @@ class ArticleApiTest {
         // when
         mvc.perform(delete("/api/v1/articles/" + articleId)).andExpect(status().isNoContent());
         // then
+    }
+
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Order(3)
+    @DisplayName("게시글 단일 조회")
+    @Test
+    void getArticle() throws Exception {
+        //given
+        Long articleId = 1L;
+        given(articleService.getArticleWithComment(anyLong()))
+                .willReturn(FixtureDto.createArticleWithCommentDto());
+        //when
+        mvc.perform(get("/api/v1/articles/" + articleId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.article.title").value("title"))
+                .andExpect(jsonPath("$.articleComments[0].content").value("content"));
+        //then
     }
 }
