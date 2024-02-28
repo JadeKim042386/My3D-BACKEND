@@ -39,8 +39,11 @@ public class Article extends AuditingAt implements Persistable<Long> {
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userAccountId")
+    @JoinColumn(name = "userAccountId", insertable = false, updatable = false)
     private UserAccount userAccount;
+
+    @Column(nullable = false)
+    private Long userAccountId;
 
     @PreUpdate
     void modifiedAt() {
@@ -59,17 +62,28 @@ public class Article extends AuditingAt implements Persistable<Long> {
     private boolean isFree;
 
     private Article(
-            String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
+            String title,
+            String content,
+            ArticleType articleType,
+            ArticleCategory articleCategory,
+            boolean isFree,
+            Long userAccountId) {
         this.title = title;
         this.content = content;
         this.articleType = articleType;
         this.articleCategory = articleCategory;
         this.isFree = isFree;
+        this.userAccountId = userAccountId;
     }
 
     public static Article of(
-            String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree) {
-        return new Article(title, content, articleType, articleCategory, isFree);
+            String title,
+            String content,
+            ArticleType articleType,
+            ArticleCategory articleCategory,
+            boolean isFree,
+            Long userAccountId) {
+        return new Article(title, content, articleType, articleCategory, isFree, userAccountId);
     }
 
     @Override

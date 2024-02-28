@@ -26,6 +26,13 @@ public record UserPrincipal(
                 userAccount.getUserRole());
     }
 
+    public UserRole getUserRole() {
+        return authorities.stream()
+                .map(r -> UserRole.valueOf(r.getAuthority().substring(5)))
+                .findFirst()
+                .orElse(UserRole.ANONYMOUS);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
