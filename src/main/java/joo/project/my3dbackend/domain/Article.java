@@ -7,7 +7,6 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -42,11 +41,6 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @JoinColumn(name = "userAccountId")
     private UserAccount userAccount;
 
-    @PreUpdate
-    void modifiedAt() {
-        this.modifiedAt = LocalDateTime.now();
-    }
-
     // TODO: articleFile과 연관 관계 설정
     // TODO: articleComment와 연관 관계 설정
     // TODO: articleLike와 연관 관계 설정
@@ -65,6 +59,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
         this.articleType = articleType;
         this.articleCategory = articleCategory;
         this.isFree = isFree;
+        // TODO: userAccount 추가
     }
 
     public static Article of(

@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,4 +24,9 @@ public abstract class AuditingAt {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     protected LocalDateTime modifiedAt; // 수정일시
+
+    @PreUpdate
+    void modifiedAt() {
+        this.modifiedAt = LocalDateTime.now();
+    }
 }
