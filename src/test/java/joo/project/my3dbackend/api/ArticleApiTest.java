@@ -6,8 +6,7 @@ import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
@@ -22,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(ArticleApi.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ArticleApiTest {
     @Autowired
     private MockMvc mvc;
@@ -39,6 +40,7 @@ class ArticleApiTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Order(0)
     @DisplayName("게시글 작성")
     @Test
     void writeArticle() throws Exception {
@@ -58,6 +60,7 @@ class ArticleApiTest {
         // then
     }
 
+    @Order(1)
     @DisplayName("게시글 작성 Validation Error")
     @ParameterizedTest
     @CsvSource(
@@ -76,6 +79,17 @@ class ArticleApiTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(articleRequest)))
                 .andExpect(status().isBadRequest());
+        // then
+    }
+
+    @Order(2)
+    @DisplayName("게시글 삭제")
+    @Test
+    void deleteArticle() throws Exception {
+        // given
+        Long articleId = 1L;
+        // when
+        mvc.perform(delete("/api/v1/articles/" + articleId)).andExpect(status().isNoContent());
         // then
     }
 }

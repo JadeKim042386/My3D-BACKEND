@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -41,5 +38,15 @@ public class ArticleApi {
         }
         ArticleDto articleDto = articleService.writeArticle(articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto);
+    }
+
+    /**
+     * 게시글 삭제 요청
+     */
+    @DeleteMapping("/{articleId}")
+    public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
+        // TODO: 작성자 또는 관리자만 게시글을 삭제할 수 있다.
+        articleService.deleteArticle(articleId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("you're successfully delete article");
     }
 }

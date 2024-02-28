@@ -6,6 +6,7 @@ import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.repository.ArticleRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,5 +42,16 @@ class ArticleServiceTest {
         assertThat(articleDto.content()).isEqualTo("content");
         assertThat(articleDto.articleCategory()).isEqualTo(ArticleCategory.MUSIC);
         assertThat(articleDto.isFree()).isEqualTo(true);
+    }
+
+    @Order(1)
+    @DisplayName("게시글 삭제")
+    @Test
+    void deleteArticle() {
+        // given
+        Long articleId = 1L;
+        // when
+        Assertions.assertThatNoException().isThrownBy(() -> articleService.deleteArticle(articleId));
+        // then
     }
 }
