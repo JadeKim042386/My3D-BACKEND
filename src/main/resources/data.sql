@@ -3,3 +3,6 @@ insert into user_account(id, email, password, nickname, phone, address, user_rol
 
 insert into article (id, user_account_id, title, content, article_type, article_category, is_free, created_at, modified_at) values
 (nextval('seq_article'), 1, 'title', 'content', 'MODEL', 'MUSIC', TRUE, now(), null);
+
+insert into article_comment (id, user_account_id, article_id, content, created_at, modified_at) values
+(nextval('seq_article_comment'), 1, 1, 'content', now(), null);

@@ -7,8 +7,9 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @ToString(callSuper = true)
@@ -42,16 +43,15 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @JoinColumn(name = "userAccountId", insertable = false, updatable = false)
     private UserAccount userAccount;
 
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private Set<ArticleComment> articleComments = new LinkedHashSet<>();
+
     @Column(nullable = false)
     private Long userAccountId;
 
-    @PreUpdate
-    void modifiedAt() {
-        this.modifiedAt = LocalDateTime.now();
-    }
-
     // TODO: articleFile과 연관 관계 설정
-    // TODO: articleComment와 연관 관계 설정
     // TODO: articleLike와 연관 관계 설정
     // TODO: alarm과 연관 관계 설정
 

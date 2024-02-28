@@ -9,7 +9,6 @@ import org.hibernate.annotations.TypeDef;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -53,10 +52,10 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private Set<Article> articles = new LinkedHashSet<>();
 
-    @PreUpdate
-    void modifiedAt() {
-        this.modifiedAt = LocalDateTime.now();
-    }
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     // TODO: company와 연관 관계 설정
     // TODO: userRefreshToken과 연관 관계 설정

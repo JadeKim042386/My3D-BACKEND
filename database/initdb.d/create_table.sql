@@ -26,3 +26,16 @@ create table article(
     primary key (id),
     foreign key (user_account_id) references user_account (id)
 );
+
+create sequence seq_article_comment start 1;
+create table article_comment(
+    id bigint default nextval('seq_article') NOT NULL ,
+    user_account_id bigint NOT NULL ,
+    article_id bigint NOT NULL ,
+    content varchar(255) NOT NULL ,
+    created_at timestamp NOT NULL ,
+    modified_at timestamp ,
+    primary key (id),
+    foreign key (user_account_id) references user_account (id),
+    foreign key (article_id) references article (id)
+)
