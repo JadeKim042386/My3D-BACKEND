@@ -21,9 +21,4 @@ public class UserAccountService implements UserAccountServiceInterface {
     public UserAccount getUserAccountByEmail(String email) {
         return userAccountRepository.findByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.NOT_FOUND_USER));
     }
-
-    @Override
-    public UserAccount getReferenceUserAccountById(Long userAccountId) {
-        return userAccountRepository.getReferenceById(userAccountId);
-    }
 }

@@ -29,20 +29,17 @@ class ArticleServiceTest {
 
     @Mock
     private ArticleRepository articleRepository;
-    @Mock
-    private UserAccountService userAccountService;
 
     @Order(0)
     @DisplayName("게시글 작성")
     @Test
     void writeArticle() {
         // given
+        Long userAccountId = 1L;
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
-        given(userAccountService.getReferenceUserAccountById(anyLong()))
-                .willReturn(Fixture.createUserAccount());
         given(articleRepository.save(any(Article.class)))
-                .willReturn(articleRequest.toEntity(Fixture.createUserAccount()));
+                .willReturn(articleRequest.toEntity(userAccountId));
         // when
         ArticleDto articleDto = articleService.writeArticle(articleRequest, userPrincipal);
         // then

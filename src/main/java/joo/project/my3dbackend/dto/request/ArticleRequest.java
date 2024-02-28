@@ -32,8 +32,8 @@ public class ArticleRequest {
     // TODO: modelFile(dimension)
     // TODO: userAccount
 
-    public Article toEntity(UserAccount userAccount) {
+    public Article toEntity(Long userAccountId) {
         // TODO: model 파일이 있을 경우 ArticleType.MODEL, 없으면 TEXT
-        return Article.of(title, content, ArticleType.TEXT, ArticleCategory.valueOf(articleCategory), isFree, userAccount);
+        return Article.of(title, content, ArticleType.TEXT, ArticleCategory.valueOf(articleCategory), isFree, userAccountId);
     }
 }

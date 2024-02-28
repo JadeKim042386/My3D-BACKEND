@@ -9,6 +9,7 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
+import org.assertj.core.internal.Longs;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,10 +50,10 @@ class ArticleApiTest {
     void writeArticle() throws Exception {
         // given
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
-        UserAccount userAccount = Fixture.createUserAccount();
+        Long userAccountId = 1L;
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
         given(articleService.writeArticle(any(ArticleRequest.class), any(UserPrincipal.class)))
-                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity(userAccount), userPrincipal));
+                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity(userAccountId), userPrincipal));
         // when
         mvc.perform(post("/api/v1/articles")
                         .contentType(MediaType.APPLICATION_JSON)
