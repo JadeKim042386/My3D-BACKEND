@@ -7,8 +7,6 @@ import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
 import joo.project.my3dbackend.domain.constants.UserRole;
-import org.junit.platform.commons.util.ReflectionUtils;
-import org.springframework.security.util.FieldUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 
 public class Fixture {
@@ -20,10 +18,21 @@ public class Fixture {
 
     public static UserAccount createUserAccount() {
         return createUserAccount(
-                "testUser@gmail.com", "pw", "testUser", "01012341234", Address.of("12345", "street", "detail"), UserRole.USER);
+                "testUser@gmail.com",
+                "pw",
+                "testUser",
+                "01012341234",
+                Address.of("12345", "street", "detail"),
+                UserRole.USER);
     }
 
-    public static Article createArticle(String title, String content, ArticleType articleType, ArticleCategory articleCategory, boolean isFree, Long userAccountId) {
+    public static Article createArticle(
+            String title,
+            String content,
+            ArticleType articleType,
+            ArticleCategory articleCategory,
+            boolean isFree,
+            Long userAccountId) {
         return Article.of(title, content, articleType, articleCategory, isFree, userAccountId);
     }
 

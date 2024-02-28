@@ -63,7 +63,8 @@ class ArticleServiceTest {
     void getArticle() {
         // given
         Long articleId = 1L;
-        given(articleRepository.findFetchAllById(anyLong())).willReturn(Optional.of(Fixture.createArticleWithComment()));
+        given(articleRepository.findFetchAllById(anyLong()))
+                .willReturn(Optional.of(Fixture.createArticleWithComment()));
         // when
         ArticleWithCommentDto articleWithComment = articleService.getArticleWithComment(articleId);
         // then
