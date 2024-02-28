@@ -19,18 +19,20 @@ import static org.mockito.BDDMockito.given;
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class UserAccountServiceTest {
-    @InjectMocks private UserAccountService userAccountService;
-    @Mock private UserAccountRepository userAccountRepository;
+    @InjectMocks
+    private UserAccountService userAccountService;
+
+    @Mock
+    private UserAccountRepository userAccountRepository;
 
     @DisplayName("이메일로 유저 조회")
     @Test
     void getUserAccountByEmail() {
-        //given
+        // given
         UserAccount userAccount = Fixture.createUserAccount();
         given(userAccountRepository.findByEmail(anyString())).willReturn(Optional.of(userAccount));
-        //when
+        // when
         userAccountService.getUserAccountByEmail(userAccount.getEmail());
-        //then
+        // then
     }
-
 }

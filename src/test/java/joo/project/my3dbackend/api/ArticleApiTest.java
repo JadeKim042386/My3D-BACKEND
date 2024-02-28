@@ -2,21 +2,25 @@ package joo.project.my3dbackend.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import joo.project.my3dbackend.config.TestSecurityConfig;
+import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
+import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -39,13 +43,16 @@ class ArticleApiTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("게시글 작성")
     @Test
     void writeArticle() throws Exception {
         // given
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
-        given(articleService.writeArticle(any(ArticleRequest.class)))
-                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity()));
+        UserAccount userAccount = Fixture.createUserAccount();
+        UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
+        given(articleService.writeArticle(any(ArticleRequest.class), any(UserPrincipal.class)))
+                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity(userAccount), userPrincipal));
         // when
         mvc.perform(post("/api/v1/articles")
                         .contentType(MediaType.APPLICATION_JSON)

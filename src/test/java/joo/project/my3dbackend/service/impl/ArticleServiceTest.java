@@ -4,6 +4,8 @@ import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
+import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.repository.ArticleRepository;
 import org.junit.jupiter.api.*;
@@ -15,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @ActiveProfiles("test")
@@ -26,6 +29,8 @@ class ArticleServiceTest {
 
     @Mock
     private ArticleRepository articleRepository;
+    @Mock
+    private UserAccountService userAccountService;
 
     @Order(0)
     @DisplayName("게시글 작성")
@@ -33,9 +38,13 @@ class ArticleServiceTest {
     void writeArticle() {
         // given
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
-        given(articleRepository.save(any(Article.class))).willReturn(articleRequest.toEntity());
+        UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
+        given(userAccountService.getReferenceUserAccountById(anyLong()))
+                .willReturn(Fixture.createUserAccount());
+        given(articleRepository.save(any(Article.class)))
+                .willReturn(articleRequest.toEntity(Fixture.createUserAccount()));
         // when
-        ArticleDto articleDto = articleService.writeArticle(articleRequest);
+        ArticleDto articleDto = articleService.writeArticle(articleRequest, userPrincipal);
         // then
         assertThat(articleDto.title()).isEqualTo("title");
         assertThat(articleDto.content()).isEqualTo("content");
