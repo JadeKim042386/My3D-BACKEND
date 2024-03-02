@@ -1,6 +1,7 @@
 package joo.project.my3dbackend.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import joo.project.my3dbackend.aop.BindingResultHandlerAspect;
 import joo.project.my3dbackend.config.TestSecurityConfig;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, AopAutoConfiguration.class, BindingResultHandlerAspect.class})
 @WebMvcTest(ArticleApi.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ArticleApiTest {
