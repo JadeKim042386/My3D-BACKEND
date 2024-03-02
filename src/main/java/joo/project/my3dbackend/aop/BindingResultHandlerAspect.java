@@ -28,8 +28,10 @@ public class BindingResultHandlerAspect {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         BindingResult bindingResult = getBindingResult(signature, pjp.getArgs());
         Method method = signature.getMethod();
+        //현재 method에 추가한 annotation (annotation에 지정한 message를 가져오기위함)
         BindingResultHandler annotation = method.getAnnotation(BindingResultHandler.class);
 
+        //bindingResult 공통 처리 부분
         if (bindingResult.hasErrors()) {
             log.error("bindingResult: {}", bindingResult);
             throw new ValidatedException(
@@ -40,6 +42,9 @@ public class BindingResultHandlerAspect {
         return pjp.proceed();
     }
 
+    /**
+     * 현재 method의 parameter 중 bindingResult를 찾아 반환
+     */
     private BindingResult getBindingResult(MethodSignature signature, Object[] arguments) {
         String[] parameterNames = signature.getParameterNames();
         for (int i = 0; i < parameterNames.length; i++) {

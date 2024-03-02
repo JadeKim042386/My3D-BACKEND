@@ -35,11 +35,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = ValidatedException.class)
     public ResponseEntity<ExceptionResponse> resolveException(ValidatedException e) {
+        log.error("ValidatedException is occurred.", e);
         return ResponseEntity.status(e.getErrorCode().getStatus()).body(e.getExceptionResponse());
     }
 
     @ExceptionHandler(value = CustomException.class)
     public ResponseEntity<ExceptionResponse> resolveException(CustomException e) {
+        log.error("CustomException is occurred.", e);
         return ResponseEntity.status(e.getErrorCode().getStatus())
                 .body(ExceptionResponse.of(e.getErrorCode().getMessage()));
     }
