@@ -2,11 +2,9 @@ package joo.project.my3dbackend.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import joo.project.my3dbackend.config.TestSecurityConfig;
-import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
-import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import org.junit.jupiter.api.*;
@@ -18,15 +16,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,6 +94,22 @@ class ArticleApiTest {
         Long articleId = 1L;
         // when
         mvc.perform(delete("/api/v1/articles/" + articleId)).andExpect(status().isNoContent());
+        // then
+    }
+
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Order(3)
+    @DisplayName("게시글 단일 조회")
+    @Test
+    void getArticle() throws Exception {
+        // given
+        Long articleId = 1L;
+        given(articleService.getArticleWithComment(anyLong())).willReturn(FixtureDto.createArticleWithCommentDto());
+        // when
+        mvc.perform(get("/api/v1/articles/" + articleId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.article.title").value("title"))
+                .andExpect(jsonPath("$.articleComments[0].content").value("content"));
         // then
     }
 }

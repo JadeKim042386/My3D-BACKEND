@@ -1,6 +1,7 @@
 package joo.project.my3dbackend.api;
 
 import joo.project.my3dbackend.dto.ArticleDto;
+import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.exception.ArticleException;
@@ -24,6 +25,16 @@ public class ArticleApi {
     private final ArticleServiceInterface articleService;
 
     /**
+     * 게시글 단일 조회 요청 (댓글 포함)
+     */
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ArticleWithCommentDto> getArticle(
+            @PathVariable Long articleId) {
+        ArticleWithCommentDto articleWithComment = articleService.getArticleWithComment(articleId);
+        return ResponseEntity.ok(articleWithComment);
+    }
+
+    /**
      * 게시글 작성 요청
      * <pre>
      * - 모델 파일, 모델 파일에 대한 치수는 optional
@@ -31,7 +42,10 @@ public class ArticleApi {
      */
     @PostMapping
     public ResponseEntity<?> writeArticle(
-            @RequestBody @Valid ArticleRequest articleRequest, BindingResult bindingResult, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+            @RequestBody @Valid ArticleRequest articleRequest,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ) {
         if (bindingResult.hasErrors()) {
             log.error("bindingResult: {}", bindingResult);
             // TODO: bindingResult에서 어떤 필드가 문제인지 메시지와 함께 전달

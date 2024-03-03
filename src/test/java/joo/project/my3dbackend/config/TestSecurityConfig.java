@@ -21,12 +21,11 @@ public class TestSecurityConfig {
     @BeforeTestMethod
     void securitySetUp() {
         String userEmail = "testUser@gmail.com";
-        given(userAccountService.getUserAccountByEmail(eq(userEmail)))
-                .willReturn(createUserAccount(userEmail));
+        given(userAccountService.getUserAccountByEmail(eq(userEmail))).willReturn(createUserAccount(userEmail));
     }
 
     private UserAccount createUserAccount(String email) {
-        return Fixture.createUserAccount(email, "pw", "test", "01011112222", Address.of("12345", "street", "detail"), UserRole.USER);
+        return Fixture.createUserAccount(
+                email, "pw", "test", "01011112222", Address.of("12345", "street", "detail"), UserRole.USER);
     }
-
 }

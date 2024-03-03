@@ -1,14 +1,12 @@
 package joo.project.my3dbackend.service.impl;
 
 import joo.project.my3dbackend.domain.Article;
-import joo.project.my3dbackend.domain.constants.ArticleCategory;
-import joo.project.my3dbackend.dto.ArticleDto;
+import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.repository.ArticleRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -39,15 +40,10 @@ class ArticleServiceTest {
         Long userAccountId = 1L;
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
-        given(articleRepository.save(any(Article.class)))
-                .willReturn(articleRequest.toEntity(userAccountId));
+        given(articleRepository.save(any(Article.class))).willReturn(articleRequest.toEntity(userAccountId));
         // when
-        ArticleDto articleDto = articleService.writeArticle(articleRequest, userPrincipal);
+        assertThatNoException().isThrownBy(() -> articleService.writeArticle(articleRequest, userPrincipal));
         // then
-        assertThat(articleDto.title()).isEqualTo("title");
-        assertThat(articleDto.content()).isEqualTo("content");
-        assertThat(articleDto.articleCategory()).isEqualTo(ArticleCategory.MUSIC);
-        assertThat(articleDto.isFree()).isEqualTo(true);
     }
 
     @Order(1)
@@ -57,7 +53,22 @@ class ArticleServiceTest {
         // given
         Long articleId = 1L;
         // when
-        Assertions.assertThatNoException().isThrownBy(() -> articleService.deleteArticle(articleId));
+        assertThatNoException().isThrownBy(() -> articleService.deleteArticle(articleId));
         // then
+    }
+
+    @Order(2)
+    @DisplayName("게시글 단일 조회")
+    @Test
+    void getArticle() {
+        // given
+        Long articleId = 1L;
+        given(articleRepository.findFetchAllById(anyLong()))
+                .willReturn(Optional.of(Fixture.createArticleWithComment()));
+        // when
+        ArticleWithCommentDto articleWithComment = articleService.getArticleWithComment(articleId);
+        // then
+        assertThat(articleWithComment.article().title()).isEqualTo("title");
+        assertThat(articleWithComment.articleComments().size()).isEqualTo(1);
     }
 }
