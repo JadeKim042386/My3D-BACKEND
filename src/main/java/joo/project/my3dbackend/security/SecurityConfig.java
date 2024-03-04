@@ -2,7 +2,6 @@ package joo.project.my3dbackend.security;
 
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.UserAccountServiceInterface;
-import joo.project.my3dbackend.service.impl.UserAccountService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +16,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf().disable()
+        return http.csrf()
+                .disable()
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                                 PathRequest.toStaticResources().atCommonLocations())
                         .permitAll()
