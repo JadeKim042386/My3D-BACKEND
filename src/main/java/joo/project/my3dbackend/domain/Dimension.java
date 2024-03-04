@@ -1,14 +1,13 @@
 package joo.project.my3dbackend.domain;
 
 import joo.project.my3dbackend.domain.constants.DimUnit;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class Dimension {
-    private String name; // 치수명
-    private Double value; // 치수값
-    private DimUnit unit; // 치수 단위
+    private final String name; // 치수명
+    private final Double value; // 치수값
+    private final DimUnit unit; // 치수 단위
 }
