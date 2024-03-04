@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Dimension {
     private String name; // 치수명
-    private String value; // 치수값
+    private Double value; // 치수값
     private DimUnit unit; // 치수 단위
 }
