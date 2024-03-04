@@ -38,6 +38,7 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Override
     public void deleteArticle(Long articleId) {
+        //TODO: 게시글이 존재할 경우에 삭제할 수 있다.
         articleRepository.deleteById(articleId);
     }
 }

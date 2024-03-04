@@ -2,6 +2,7 @@ package joo.project.my3dbackend.api;
 
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
+import joo.project.my3dbackend.dto.response.MessageResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.ArticleCommentServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,10 @@ public class ArticleCommentApi {
      * 댓글 삭제
      */
     @DeleteMapping("/{articleCommentId}")
-    public ResponseEntity<?> writeComment(@PathVariable Long articleId, @PathVariable Long articleCommentId) {
+    public ResponseEntity<?> deleteComment(@PathVariable Long articleId, @PathVariable Long articleCommentId) {
         // TODO: 댓글 작성자 또는 관리자가 맞는지 확인
         articleCommentService.deleteComment(articleCommentId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("you're successfully delete comment");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(MessageResponse.of("you're successfully delete comment"));
     }
 }
