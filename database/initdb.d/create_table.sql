@@ -1,6 +1,6 @@
 create sequence seq_user_account start 1;
 create table user_account(
-    id bigint default nextval('seq_user_account') NOT NULL ,
+    id int8 default nextval('seq_user_account') NOT NULL ,
     email varchar(255) NOT NULL ,
     password varchar(255) NOT NULL ,
     nickname varchar(255) NOT NULL ,
@@ -14,20 +14,21 @@ create table user_account(
 
 create sequence seq_article_file start 1;
 create table article_file(
-    id bigint default nextval('seq_article_file') NOT NULL ,
-    byte_size bigint NOT NULL ,
+    id int8 default nextval('seq_article_file') NOT NULL ,
+    byte_size int8 NOT NULL ,
     original_file_name varchar(255) NOT NULL ,
     file_name varchar(255) NOT NULL ,
     file_extension varchar(255) NOT NULL ,
     dimension_option jsonb,
-    primary key (id)
+    primary key (id),
+    constraint byte_size_range check (byte_size >= 0)
 );
 
 create sequence seq_article start 1;
 create table article(
-    id bigint default nextval('seq_article') NOT NULL ,
-    user_account_id bigint NOT NULL ,
-    article_file_id bigint ,
+    id int8 default nextval('seq_article') NOT NULL ,
+    user_account_id int8 NOT NULL ,
+    article_file_id int8 ,
     title varchar(255) NOT NULL ,
     content varchar(255) NOT NULL ,
     article_type varchar(255) NOT NULL ,
@@ -42,9 +43,9 @@ create table article(
 
 create sequence seq_article_comment start 1;
 create table article_comment(
-    id bigint default nextval('seq_article') NOT NULL ,
-    user_account_id bigint NOT NULL ,
-    article_id bigint NOT NULL ,
+    id int8 default nextval('seq_article') NOT NULL ,
+    user_account_id int8 NOT NULL ,
+    article_id int8 NOT NULL ,
     content varchar(255) NOT NULL ,
     created_at timestamp NOT NULL ,
     modified_at timestamp ,

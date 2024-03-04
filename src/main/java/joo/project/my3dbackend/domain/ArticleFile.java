@@ -23,7 +23,7 @@ public class ArticleFile implements Persistable<Long> {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "int8 constraint byte_size_range check byte_size >= 0")
     private Long byteSize; // 파일 용량
 
     @Column(nullable = false)
