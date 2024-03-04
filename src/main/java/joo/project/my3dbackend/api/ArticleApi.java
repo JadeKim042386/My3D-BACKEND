@@ -1,6 +1,5 @@
 package joo.project.my3dbackend.api;
 
-import joo.project.my3dbackend.aop.BindingResultHandler;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
@@ -37,7 +36,6 @@ public class ArticleApi {
      * - 모델 파일, 모델 파일에 대한 치수는 optional
      * </pre>
      */
-    @BindingResultHandler(message = "validation error during write article")
     @PostMapping
     public ResponseEntity<ArticleDto> writeArticle(
             @RequestBody @Valid ArticleRequest articleRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {

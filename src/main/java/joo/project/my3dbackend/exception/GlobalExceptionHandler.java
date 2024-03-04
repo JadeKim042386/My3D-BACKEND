@@ -18,7 +18,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentNotValidException e) {
         log.error("MethodArgumentNotValidException is occurred.", e);
-        return ResponseEntity.status(BAD_REQUEST).body(ExceptionResponse.of(e.getMessage()));
+        String message = "Validation failed for argument in " + e.getParameter().getExecutable().getName();
+        return ResponseEntity.status(BAD_REQUEST).body(ExceptionResponse.fromBindingResult(message, e.getBindingResult()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -31,12 +32,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> resolveException(Exception e) {
         log.error("Exception is occurred.", e);
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(ExceptionResponse.of(e.getMessage()));
-    }
-
-    @ExceptionHandler(value = ValidatedException.class)
-    public ResponseEntity<ExceptionResponse> resolveException(ValidatedException e) {
-        log.error("ValidatedException is occurred.", e);
-        return ResponseEntity.status(e.getErrorCode().getStatus()).body(e.getExceptionResponse());
     }
 
     @ExceptionHandler(value = CustomException.class)
