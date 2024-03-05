@@ -7,5 +7,6 @@ insert into article_file (id, byte_size, original_file_name, file_name, file_ext
 insert into article (id, user_account_id, article_file_id, title, content, article_type, article_category, is_free, created_at, modified_at) values
 (nextval('seq_article'), 1, 1, 'title', 'content', 'MODEL', 'MUSIC', TRUE, now(), null);
 
-insert into article_comment (id, user_account_id, article_id, content, created_at, modified_at) values
-(nextval('seq_article_comment'), 1, 1, 'content', now(), null);
+insert into article_comment (id, user_account_id, article_id, parent_comment_id, content, created_at, modified_at) values
+(nextval('seq_article_comment'), 1, 1, null, 'content', now(), null),
+(nextval('seq_article_comment'), 1, 1, 1, 'content', now(), null);
