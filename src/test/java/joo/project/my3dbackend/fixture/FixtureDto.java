@@ -9,6 +9,7 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
 public class FixtureDto {
@@ -42,7 +43,7 @@ public class FixtureDto {
     }
 
     public static ArticleCommentRequest createArticleCommentRequest(String content, Long parentCommentId) {
-        return new ArticleCommentRequest(content, parentCommentId);
+        return new ArticleCommentRequest(content, Optional.ofNullable(parentCommentId));
     }
 
     public static ArticleCommentRequest createArticleCommentRequest() {

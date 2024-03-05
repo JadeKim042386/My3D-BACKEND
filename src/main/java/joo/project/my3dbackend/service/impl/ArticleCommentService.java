@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -31,14 +29,16 @@ public class ArticleCommentService implements ArticleCommentServiceInterface {
     @Override
     public ArticleCommentDto writeComment(
             ArticleCommentRequest articleCommentRequest, UserPrincipal userPrincipal, Long articleId) {
-        // parentCommentId가 null 값을 가질 경우 부모 댓글, 값을 가질 경우 자식 댓글에 해당
         ArticleComment writedArticleComment = articleCommentRequest.toEntity(userPrincipal.id(), articleId);
-        if (Objects.isNull(articleCommentRequest.parentCommentId())) {
-            articleCommentRepository.save(writedArticleComment);
-        } else {
-            ArticleComment parentComment = retrieveComment(articleCommentRequest.parentCommentId());
-            parentComment.addChildComment(writedArticleComment);
-        }
+        // parentCommentId가 null이면 부모 댓글, 아니면 자식 댓글
+        articleCommentRequest
+                .parentCommentId()
+                .ifPresentOrElse(
+                        parentCommentId -> {
+                            ArticleComment parentComment = retrieveComment(parentCommentId);
+                            parentComment.addChildComment(writedArticleComment);
+                        },
+                        () -> articleCommentRepository.save(writedArticleComment));
         articleCommentRepository.flush();
 
         return ArticleCommentDto.fromEntity(writedArticleComment, userPrincipal);
