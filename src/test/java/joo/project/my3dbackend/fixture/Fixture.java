@@ -13,7 +13,9 @@ public class Fixture {
 
     public static UserAccount createUserAccount(
             String email, String password, String nickname, String phone, Address address, UserRole userRole) {
-        return UserAccount.of(email, password, nickname, phone, address, userRole);
+        UserAccount userAccount = UserAccount.of(email, password, nickname, phone, address, userRole);
+        ReflectionTestUtils.setField(userAccount, "id", 1L);
+        return userAccount;
     }
 
     public static UserAccount createUserAccount() {

@@ -3,6 +3,7 @@ package joo.project.my3dbackend.api;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
+import joo.project.my3dbackend.dto.response.MessageResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,6 @@ public class ArticleApi {
     public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
         // TODO: 작성자 또는 관리자만 게시글을 삭제할 수 있다.
         articleService.deleteArticle(articleId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("you're successfully delete article");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(MessageResponse.of("you're successfully delete article"));
     }
 }
