@@ -20,7 +20,7 @@ public class ArticleCommentService implements ArticleCommentServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
-    public ArticleComment retrieveComment(Long articleCommentId) {
+    public ArticleComment getComment(Long articleCommentId) {
         return articleCommentRepository
                 .findById(articleCommentId)
                 .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_COMMENT));
@@ -35,7 +35,7 @@ public class ArticleCommentService implements ArticleCommentServiceInterface {
                 .parentCommentId()
                 .ifPresentOrElse(
                         parentCommentId -> {
-                            ArticleComment parentComment = retrieveComment(parentCommentId);
+                            ArticleComment parentComment = getComment(parentCommentId);
                             parentComment.addChildComment(writedArticleComment);
                         },
                         () -> articleCommentRepository.save(writedArticleComment));

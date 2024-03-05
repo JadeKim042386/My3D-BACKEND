@@ -10,7 +10,7 @@ public interface ArticleCommentServiceInterface {
     /**
      * 댓글 조회
      */
-    ArticleComment retrieveComment(Long articleCommentId);
+    ArticleComment getComment(Long articleCommentId);
 
     /**
      * 댓글 추가
