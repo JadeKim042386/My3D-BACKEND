@@ -30,7 +30,7 @@ public class ArticleCommentApi {
             @RequestBody @Valid ArticleCommentRequest articleCommentRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         ArticleCommentDto articleCommentDto =
-                articleCommentService.writeComment(articleCommentRequest, userPrincipal.id(), articleId);
+                articleCommentService.writeComment(articleCommentRequest, userPrincipal, articleId);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleCommentDto);
     }
 
