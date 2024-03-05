@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import joo.project.my3dbackend.config.TestSecurityConfig;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
+import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.impl.ArticleCommentService;
 import org.junit.jupiter.api.DisplayName;
@@ -45,18 +46,39 @@ class ArticleCommentApiTest {
     @Test
     void writeComment() throws Exception {
         // given
-        Long userAccountId = 1L;
         Long articleId = 1L;
         ArticleCommentRequest articleCommentRequest = FixtureDto.createArticleCommentRequest();
         ArticleCommentDto articleCommentDto = FixtureDto.createArticleCommentDto();
-        given(articleCommentService.writeComment(any(ArticleCommentRequest.class), anyLong(), anyLong()))
+        given(articleCommentService.writeComment(any(ArticleCommentRequest.class), any(UserPrincipal.class), anyLong()))
                 .willReturn(articleCommentDto);
         // when
         mvc.perform(post("/api/v1/articles/" + articleId + "/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(articleCommentRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.content").value("content"));
+                .andExpect(jsonPath("$.content").value("content"))
+                .andExpect(jsonPath("$.parentCommentId").doesNotExist());
+        // then
+    }
+
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("대댓글 추가")
+    @Test
+    void writeChildComment() throws Exception {
+        // given
+        Long articleId = 1L;
+        ArticleCommentRequest articleCommentRequest = FixtureDto.createArticleCommentRequest("content", 1L);
+        ArticleCommentDto articleCommentDto =
+                FixtureDto.createArticleChildCommentDto(articleCommentRequest.parentCommentId());
+        given(articleCommentService.writeComment(any(ArticleCommentRequest.class), any(UserPrincipal.class), anyLong()))
+                .willReturn(articleCommentDto);
+        // when
+        mvc.perform(post("/api/v1/articles/" + articleId + "/comments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(articleCommentRequest)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.content").value("content"))
+                .andExpect(jsonPath("$.parentCommentId").value(1L));
         // then
     }
 

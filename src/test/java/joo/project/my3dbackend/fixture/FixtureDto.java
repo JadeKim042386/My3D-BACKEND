@@ -8,6 +8,7 @@ import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public class FixtureDto {
@@ -40,19 +41,23 @@ public class FixtureDto {
         return ArticleWithCommentDto.fromEntity(Fixture.createArticleWithComment());
     }
 
-    public static ArticleCommentRequest createArticleCommentRequest(String content) {
-        return new ArticleCommentRequest(content);
+    public static ArticleCommentRequest createArticleCommentRequest(String content, Long parentCommentId) {
+        return new ArticleCommentRequest(content, parentCommentId);
     }
 
     public static ArticleCommentRequest createArticleCommentRequest() {
-        return createArticleCommentRequest(DEFAULT_CONTENT);
+        return createArticleCommentRequest(DEFAULT_CONTENT, null);
     }
 
-    public static ArticleCommentDto createArticleCommentDto(String content) {
-        return new ArticleCommentDto(content);
+    public static ArticleCommentDto createArticleCommentDto(Long id, String content, LocalDateTime createdAt, String nickname, Long parentCommentId) {
+        return ArticleCommentDto.of(id, content, createdAt, nickname, parentCommentId);
     }
 
     public static ArticleCommentDto createArticleCommentDto() {
-        return createArticleCommentDto(DEFAULT_CONTENT);
+        return createArticleCommentDto(1L, DEFAULT_CONTENT, LocalDateTime.now(), "test", null);
+    }
+
+    public static ArticleCommentDto createArticleChildCommentDto(Long parentCommentId) {
+        return createArticleCommentDto(2L, DEFAULT_CONTENT, LocalDateTime.now(), "test", parentCommentId);
     }
 }
