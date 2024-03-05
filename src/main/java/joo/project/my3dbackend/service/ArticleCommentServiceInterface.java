@@ -15,7 +15,8 @@ public interface ArticleCommentServiceInterface {
     /**
      * 댓글 추가
      */
-    ArticleCommentDto writeComment(ArticleCommentRequest articleCommentRequest, UserPrincipal userPrincipal, Long articleId);
+    ArticleCommentDto writeComment(
+            ArticleCommentRequest articleCommentRequest, UserPrincipal userPrincipal, Long articleId);
 
     /**
      * 댓글 삭제

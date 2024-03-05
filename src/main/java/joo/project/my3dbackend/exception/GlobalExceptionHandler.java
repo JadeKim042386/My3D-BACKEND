@@ -18,8 +18,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> resolveException(MethodArgumentNotValidException e) {
         log.error("MethodArgumentNotValidException is occurred.", e);
-        String message = "Validation failed for argument in " + e.getParameter().getExecutable().getName();
-        return ResponseEntity.status(BAD_REQUEST).body(ExceptionResponse.fromBindingResult(message, e.getBindingResult()));
+        String message = "Validation failed for argument in "
+                + e.getParameter().getExecutable().getName();
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(ExceptionResponse.fromBindingResult(message, e.getBindingResult()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

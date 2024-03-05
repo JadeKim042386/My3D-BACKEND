@@ -16,7 +16,7 @@ public enum ErrorCode {
     // Auth
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     EXPIRED_TOKEN(HttpStatus.FORBIDDEN, "Token이 만료되었습니다."),
-    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.")
     ;
 
     private final HttpStatus status;
