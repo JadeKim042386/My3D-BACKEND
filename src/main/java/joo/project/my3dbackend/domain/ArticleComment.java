@@ -60,16 +60,12 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
         return new ArticleComment(content, userAccountId, articleId, parentCommentId);
     }
 
-    public void addChildComment(ArticleComment childComment) {
+    public void addChildComment(@NonNull ArticleComment childComment) {
         this.childComments.add(childComment);
     }
 
     public boolean isParentComment() {
         return Objects.isNull(this.parentCommentId);
-    }
-
-    public boolean isChildComment() {
-        return !Objects.isNull(this.parentCommentId);
     }
 
     @Override
