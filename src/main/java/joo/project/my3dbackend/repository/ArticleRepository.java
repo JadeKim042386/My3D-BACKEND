@@ -15,10 +15,13 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @EntityGraph(attributePaths = "userAccount", type = LOAD)
     Page<Article> findAll(Pageable pageable);
 
-    @Query("select distinct a " + "from Article a "
-            + "left outer join fetch a.userAccount ua "
-            + "left outer join fetch a.articleComments ac "
-            + "left outer join fetch ac.childComments "
-            + "where a.id = ?1")
+    @Query("""
+            select distinct a
+            from Article a
+            left outer join fetch a.userAccount ua
+            left outer join fetch a.articleComments ac
+            left outer join fetch ac.childComments
+            where a.id = ?1
+            """)
     Optional<Article> findFetchAllById(Long articleId);
 }
