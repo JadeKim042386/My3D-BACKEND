@@ -4,11 +4,11 @@ import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
-import joo.project.my3dbackend.exception.ArticleException;
-import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.repository.ArticleCommentRepository;
 import joo.project.my3dbackend.service.ArticleCommentServiceInterface;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,28 +20,17 @@ public class ArticleCommentService implements ArticleCommentServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
-    public ArticleComment getComment(Long articleCommentId) {
-        return articleCommentRepository
-                .findById(articleCommentId)
-                .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_COMMENT));
+    public Page<ArticleCommentDto> getChildComments(Pageable pageable, Long parentCommentId) {
+        return articleCommentRepository.findAllChildComments(pageable, parentCommentId).map(ArticleCommentDto::fromEntity);
     }
 
     @Override
     public ArticleCommentDto writeComment(
             ArticleCommentRequest articleCommentRequest, UserPrincipal userPrincipal, Long articleId) {
-        ArticleComment writedArticleComment = articleCommentRequest.toEntity(userPrincipal.id(), articleId);
-        // parentCommentId가 null이면 부모 댓글, 아니면 자식 댓글
-        articleCommentRequest
-                .parentCommentId()
-                .ifPresentOrElse(
-                        parentCommentId -> {
-                            ArticleComment parentComment = getComment(parentCommentId);
-                            parentComment.addChildComment(writedArticleComment);
-                        },
-                        () -> articleCommentRepository.save(writedArticleComment));
-        articleCommentRepository.flush();
 
-        return ArticleCommentDto.fromEntity(writedArticleComment, userPrincipal);
+        ArticleComment savedArticleComment =
+                articleCommentRepository.save(articleCommentRequest.toEntity(userPrincipal.id(), articleId));
+        return ArticleCommentDto.fromEntity(savedArticleComment, userPrincipal);
     }
 
     @Override

@@ -42,13 +42,13 @@ public class Fixture {
 
     public static Article createArticleWithComment() {
         Article article = createArticle("title", "content", ArticleType.MODEL, ArticleCategory.MUSIC, true, 1L);
-        article.getArticleComments().add(createArticleComment());
+        article.getArticleComments().add(createArticleComment(null));
         ReflectionTestUtils.setField(article, "userAccount", Fixture.createUserAccount());
         return article;
     }
 
-    public static ArticleComment createArticleComment() {
-        ArticleComment articleComment = ArticleComment.of("content", 1L, 1L, null);
+    public static ArticleComment createArticleComment(Long parentCommentId) {
+        ArticleComment articleComment = ArticleComment.of("content", 1L, 1L, parentCommentId);
         ReflectionTestUtils.setField(articleComment, "userAccount", Fixture.createUserAccount());
         ReflectionTestUtils.setField(articleComment, "id", 1L);
         ReflectionTestUtils.setField(articleComment, "createdAt", LocalDateTime.now());

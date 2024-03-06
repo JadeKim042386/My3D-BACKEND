@@ -4,31 +4,12 @@ import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
 
 public record ArticleCommentDto(
-        Long id,
-        String content,
-        LocalDateTime createdAt,
-        String nickname,
-        Long parentCommentId,
-        Set<ArticleCommentDto> childComments) {
-
-    public static ArticleCommentDto of(
-            Long id, String content, LocalDateTime createdAt, String nickname, Long parentCommentId) {
-        return new ArticleCommentDto(
-                id,
-                content,
-                createdAt,
-                nickname,
-                parentCommentId,
-                new TreeSet<>(Comparator.comparing(ArticleCommentDto::createdAt).thenComparing(ArticleCommentDto::id)));
-    }
+        Long id, String content, LocalDateTime createdAt, String nickname, Long parentCommentId) {
 
     public static ArticleCommentDto fromEntity(ArticleComment articleComment, UserPrincipal userPrincipal) {
-        return ArticleCommentDto.of(
+        return new ArticleCommentDto(
                 articleComment.getId(),
                 articleComment.getContent(),
                 articleComment.getCreatedAt(),
@@ -37,7 +18,7 @@ public record ArticleCommentDto(
     }
 
     public static ArticleCommentDto fromEntity(ArticleComment articleComment) {
-        return ArticleCommentDto.of(
+        return new ArticleCommentDto(
                 articleComment.getId(),
                 articleComment.getContent(),
                 articleComment.getCreatedAt(),

@@ -5,9 +5,7 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @ToString(callSuper = true)
@@ -27,11 +25,6 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
 
     @Column(updatable = false)
     private Long parentCommentId;
-
-    @ToString.Exclude
-    @OrderBy("createdAt ASC")
-    @OneToMany(mappedBy = "parentCommentId", cascade = CascadeType.ALL)
-    private final Set<ArticleComment> childComments = new LinkedHashSet<>();
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -58,14 +51,6 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
 
     public static ArticleComment of(String content, Long userAccountId, Long articleId, Long parentCommentId) {
         return new ArticleComment(content, userAccountId, articleId, parentCommentId);
-    }
-
-    public void addChildComment(@NonNull ArticleComment childComment) {
-        this.childComments.add(childComment);
-    }
-
-    public boolean isParentComment() {
-        return Objects.isNull(this.parentCommentId);
     }
 
     @Override

@@ -7,6 +7,9 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.ArticleCommentServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +23,18 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ArticleCommentApi {
     private final ArticleCommentServiceInterface articleCommentService;
+    // TODO: 대상 게시글이 존재하는지 확인
+
+    /**
+     * 대댓글 목록 조회
+     */
+    @GetMapping("/{parentCommentId}")
+    public ResponseEntity<Page<ArticleCommentDto>> getChildComments(
+            @PathVariable Long articleId, @PathVariable Long parentCommentId, @PageableDefault Pageable pageable) {
+        //TODO: 부모 댓글이 존재하는지 확인
+        Page<ArticleCommentDto> childComments = articleCommentService.getChildComments(pageable, parentCommentId);
+        return ResponseEntity.ok(childComments);
+    }
 
     /**
      * 댓글 추가

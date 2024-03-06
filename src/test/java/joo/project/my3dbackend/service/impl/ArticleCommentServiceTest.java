@@ -57,7 +57,7 @@ class ArticleCommentServiceTest {
         Long articleId = 1L;
         ArticleCommentRequest articleCommentRequest = FixtureDto.createArticleCommentRequest("content", 1L);
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
-        given(articleCommentRepository.findById(anyLong())).willReturn(Optional.of(Fixture.createArticleComment()));
+        given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(Fixture.createArticleComment(1L));
         // when
         ArticleCommentDto articleCommentDto =
                 articleCommentService.writeComment(articleCommentRequest, userPrincipal, articleId);

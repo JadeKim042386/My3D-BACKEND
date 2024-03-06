@@ -1,5 +1,6 @@
 package joo.project.my3dbackend.fixture;
 
+import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.ArticleWithCommentDto;
@@ -50,15 +51,15 @@ public class FixtureDto {
         return createArticleCommentRequest(DEFAULT_CONTENT, null);
     }
 
-    public static ArticleCommentDto createArticleCommentDto(Long id, String content, LocalDateTime createdAt, String nickname, Long parentCommentId) {
-        return ArticleCommentDto.of(id, content, createdAt, nickname, parentCommentId);
+    public static ArticleCommentDto createArticleCommentDto(ArticleComment articleComment) {
+        return ArticleCommentDto.fromEntity(articleComment);
     }
 
     public static ArticleCommentDto createArticleCommentDto() {
-        return createArticleCommentDto(1L, DEFAULT_CONTENT, LocalDateTime.now(), "test", null);
+        return createArticleCommentDto(Fixture.createArticleComment(null));
     }
 
     public static ArticleCommentDto createArticleChildCommentDto(Long parentCommentId) {
-        return createArticleCommentDto(2L, DEFAULT_CONTENT, LocalDateTime.now(), "test", parentCommentId);
+        return createArticleCommentDto(Fixture.createArticleComment(parentCommentId));
     }
 }

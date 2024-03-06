@@ -4,13 +4,15 @@ import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ArticleCommentServiceInterface {
 
     /**
-     * 댓글 조회
+     * 대댓글 목록 조회
      */
-    ArticleComment getComment(Long articleCommentId);
+    Page<ArticleCommentDto> getChildComments(Pageable pageable, Long parentCommentId);
 
     /**
      * 댓글 추가

@@ -14,7 +14,7 @@ public interface ArticleServiceInterface {
     Page<ArticleDto> getArticles(Pageable pageable);
 
     /**
-     * 게시글 단일 조회 (댓글 포함)
+     * 게시글 단일 조회 (부모 댓글만 포함)
      */
     ArticleWithCommentDto getArticleWithComment(Long articleId);
 
