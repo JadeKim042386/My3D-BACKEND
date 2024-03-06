@@ -4,8 +4,14 @@ import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ArticleServiceInterface {
+    /**
+     * 게시글 목록 조회
+     */
+    Page<ArticleDto> getArticles(Pageable pageable);
 
     /**
      * 게시글 단일 조회 (댓글 포함)

@@ -11,6 +11,8 @@ import joo.project.my3dbackend.repository.ArticleRepository;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ArticleService implements ArticleServiceInterface {
     private final ArticleRepository articleRepository;
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<ArticleDto> getArticles(Pageable pageable) {
+        return articleRepository.findAll(pageable).map(ArticleDto::fromEntity);
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -38,7 +46,7 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Override
     public void deleteArticle(Long articleId) {
-        //TODO: 게시글이 존재할 경우에 삭제할 수 있다.
+        // TODO: 게시글이 존재할 경우에 삭제할 수 있다.
         articleRepository.deleteById(articleId);
     }
 }

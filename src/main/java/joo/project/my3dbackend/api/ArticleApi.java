@@ -8,6 +8,10 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +25,15 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ArticleApi {
     private final ArticleServiceInterface articleService;
+
+    /**
+     * 게시글 목록 조회 (페이지당 9개)
+     */
+    @GetMapping
+    public ResponseEntity<Page<ArticleDto>> getArticles(
+            @PageableDefault(size = 9, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(articleService.getArticles(pageable));
+    }
 
     /**
      * 게시글 단일 조회 요청 (댓글 포함)
@@ -52,6 +65,7 @@ public class ArticleApi {
     public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
         // TODO: 작성자 또는 관리자만 게시글을 삭제할 수 있다.
         articleService.deleteArticle(articleId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(MessageResponse.of("you're successfully delete article"));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(MessageResponse.of("you're successfully delete article"));
     }
 }
