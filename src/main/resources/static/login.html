@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Joo">
+    <title>로그인</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<!--헤더-->
+<header id="header"></header>
+<!--로그인-->
+<section>
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <h3 class="mb-5">로그인</h3>
+
+                        <!--login form-->
+                        <form id="login">
+                            <p id="login-error" class="field-error"></p>
+                            <div class="form-outline mb-4">
+                                <input type="email" id="email" name="email" class="form-control form-control-lg"
+                                       placeholder="이메일을 입력해주세요."/>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <input type="password" id="password" name="password"
+                                       class="form-control form-control-lg" placeholder="비밀번호를 입력해주세요."/>
+                            </div>
+                            <div class="d-grid gap-2 mx-auto">
+                                <button class="btn btn-dark btn-lg btn-block" type="submit">이메일로 시작하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--푸터-->
+<footer id="footer"></footer>
+<!--스크립트-->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            const formData = {
+                'email': $('#email').val(),
+                'password': $('#password').val()
+            };
+            $.ajax({
+                url: '/api/v1/signin',
+                type: 'POST',
+                data: JSON.stringify(formData),
+                processData: false,
+                contentType: 'application/json',
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
