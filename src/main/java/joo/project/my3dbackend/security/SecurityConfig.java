@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin(form -> form.loginPage("/login.html")
-                        .loginProcessingUrl("api/v1/signin")
+                        .loginProcessingUrl("/api/v1/signin")
                         .permitAll())
                 .addFilterAfter(jwtTokenFilter, SessionManagementFilter.class)
                 .build();
