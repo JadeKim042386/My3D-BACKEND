@@ -3,13 +3,12 @@ package joo.project.my3dbackend.fixture;
 import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
-import joo.project.my3dbackend.dto.ArticleWithCommentDto;
+import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,8 +38,8 @@ public class FixtureDto {
         return createUserPrincipal(1L, "testUser@gmail.com", "pw", UserRole.USER, "testUser");
     }
 
-    public static ArticleWithCommentDto createArticleWithCommentDto() {
-        return ArticleWithCommentDto.fromEntity(Fixture.createArticleWithComment());
+    public static ArticleDto createArticleDto() {
+        return ArticleDto.fromEntity(Fixture.createArticle());
     }
 
     public static ArticleCommentRequest createArticleCommentRequest(String content, Long parentCommentId) {

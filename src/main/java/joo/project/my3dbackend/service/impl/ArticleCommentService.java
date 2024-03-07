@@ -20,8 +20,8 @@ public class ArticleCommentService implements ArticleCommentServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<ArticleCommentDto> getChildComments(Pageable pageable, Long parentCommentId) {
-        return articleCommentRepository.findAllChildComments(pageable, parentCommentId).map(ArticleCommentDto::fromEntity);
+    public Page<ArticleCommentDto> getComments(Pageable pageable, Long parentCommentId) {
+        return articleCommentRepository.findAll(pageable, parentCommentId).map(ArticleCommentDto::fromEntity);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package joo.project.my3dbackend.service;
 
 import joo.project.my3dbackend.dto.ArticleDto;
-import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.data.domain.Page;
@@ -14,9 +13,9 @@ public interface ArticleServiceInterface {
     Page<ArticleDto> getArticles(Pageable pageable);
 
     /**
-     * 게시글 단일 조회 (부모 댓글만 포함)
+     * 게시글 단일 조회
      */
-    ArticleWithCommentDto getArticleWithComment(Long articleId);
+    ArticleDto getArticle(Long articleId);
 
     /**
      * 게시글 작성

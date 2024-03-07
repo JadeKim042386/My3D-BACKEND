@@ -15,14 +15,14 @@ public interface ArticleCommentRepository extends JpaRepository<ArticleComment, 
     Optional<ArticleComment> findById(Long articleCommentId);
 
     /**
-     * parentCommentId를 가지는 대댓글 목록 조회
+     * 댓글 목록 조회
      */
     @Query(
             """
             select ac
             from ArticleComment ac
-            where ac.parentCommentId = ?1
+            where (?1 is not null and ac.parentCommentId = ?1) or (?1 is null and ac.parentCommentId is null)
             """)
     @EntityGraph(attributePaths = "userAccount", type = LOAD)
-    Page<ArticleComment> findAllChildComments(Pageable pageable, Long parentCommentId);
+    Page<ArticleComment> findAll(Pageable pageable, Long parentCommentId);
 }

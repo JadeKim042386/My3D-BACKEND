@@ -40,9 +40,8 @@ public class Fixture {
         return Article.of(title, content, articleType, articleCategory, isFree, userAccountId);
     }
 
-    public static Article createArticleWithComment() {
+    public static Article createArticle() {
         Article article = createArticle("title", "content", ArticleType.MODEL, ArticleCategory.MUSIC, true, 1L);
-        article.getArticleComments().add(createArticleComment(null));
         ReflectionTestUtils.setField(article, "userAccount", Fixture.createUserAccount());
         return article;
     }

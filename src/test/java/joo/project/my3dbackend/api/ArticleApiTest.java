@@ -104,12 +104,11 @@ class ArticleApiTest {
     void getArticle() throws Exception {
         // given
         Long articleId = 1L;
-        given(articleService.getArticleWithComment(anyLong())).willReturn(FixtureDto.createArticleWithCommentDto());
+        given(articleService.getArticle(anyLong())).willReturn(FixtureDto.createArticleDto());
         // when
         mvc.perform(get("/api/v1/articles/" + articleId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.article.title").value("title"))
-                .andExpect(jsonPath("$.articleComments[0].content").value("content"));
+                .andExpect(jsonPath("$.title").value("title"));
         // then
     }
 }

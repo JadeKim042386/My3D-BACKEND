@@ -2,7 +2,6 @@ package joo.project.my3dbackend.service.impl;
 
 import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.dto.ArticleDto;
-import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.exception.ArticleException;
@@ -31,10 +30,10 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
-    public ArticleWithCommentDto getArticleWithComment(Long articleId) {
+    public ArticleDto getArticle(Long articleId) {
         return articleRepository
                 .findFetchAllById(articleId)
-                .map(ArticleWithCommentDto::fromEntity)
+                .map(ArticleDto::fromEntity)
                 .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_ARTICLE));
     }
 

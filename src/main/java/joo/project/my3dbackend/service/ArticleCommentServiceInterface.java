@@ -1,6 +1,5 @@
 package joo.project.my3dbackend.service;
 
-import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
@@ -12,7 +11,7 @@ public interface ArticleCommentServiceInterface {
     /**
      * 대댓글 목록 조회
      */
-    Page<ArticleCommentDto> getChildComments(Pageable pageable, Long parentCommentId);
+    Page<ArticleCommentDto> getComments(Pageable pageable, Long parentCommentId);
 
     /**
      * 댓글 추가

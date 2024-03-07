@@ -1,7 +1,7 @@
 package joo.project.my3dbackend.service.impl;
 
 import joo.project.my3dbackend.domain.Article;
-import joo.project.my3dbackend.dto.ArticleWithCommentDto;
+import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.fixture.Fixture;
@@ -63,12 +63,10 @@ class ArticleServiceTest {
     void getArticle() {
         // given
         Long articleId = 1L;
-        given(articleRepository.findFetchAllById(anyLong()))
-                .willReturn(Optional.of(Fixture.createArticleWithComment()));
+        given(articleRepository.findFetchAllById(anyLong())).willReturn(Optional.of(Fixture.createArticle()));
         // when
-        ArticleWithCommentDto articleWithComment = articleService.getArticleWithComment(articleId);
+        ArticleDto article = articleService.getArticle(articleId);
         // then
-        assertThat(articleWithComment.article().title()).isEqualTo("title");
-        assertThat(articleWithComment.articleComments().size()).isEqualTo(1);
+        assertThat(article.title()).isEqualTo("title");
     }
 }

@@ -26,14 +26,16 @@ public class ArticleCommentApi {
     // TODO: 대상 게시글이 존재하는지 확인
 
     /**
-     * 대댓글 목록 조회
+     * 댓글 목록 조회
      */
-    @GetMapping("/{parentCommentId}")
-    public ResponseEntity<Page<ArticleCommentDto>> getChildComments(
-            @PathVariable Long articleId, @PathVariable Long parentCommentId, @PageableDefault Pageable pageable) {
-        //TODO: 부모 댓글이 존재하는지 확인
-        Page<ArticleCommentDto> childComments = articleCommentService.getChildComments(pageable, parentCommentId);
-        return ResponseEntity.ok(childComments);
+    @GetMapping
+    public ResponseEntity<Page<ArticleCommentDto>> getComments(
+            @PathVariable Long articleId,
+            @RequestParam(required = false) Long parentCommentId,
+            @PageableDefault Pageable pageable) {
+        // TODO: parentCommentId이 지정될 경우 부모 댓글이 존재하는지 확인
+        Page<ArticleCommentDto> comments = articleCommentService.getComments(pageable, parentCommentId);
+        return ResponseEntity.ok(comments);
     }
 
     /**
