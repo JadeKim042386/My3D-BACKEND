@@ -17,6 +17,10 @@ public record UserPrincipal(
         return new UserPrincipal(id, email, password, Set.of(new SimpleGrantedAuthority(userRole.getName())), nickname);
     }
 
+    public static UserPrincipal of(Long id, String email, String nickname, UserRole userRole) {
+        return UserPrincipal.of(id, email, null, nickname, userRole);
+    }
+
     public static UserPrincipal fromEntity(UserAccount userAccount) {
         return UserPrincipal.of(
                 userAccount.getId(),

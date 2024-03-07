@@ -15,6 +15,10 @@ spring:
     properties:
       hibernate.format_sql: true
     open-in-view: false
+jwt:
+  token:
+    secret-key: ${TOKEN_SECRET_KEY}
+    access-expired-ms: ${TOKEN_ACCESS_EXPIRED_MS}
 
 ---
 spring:
@@ -28,7 +32,6 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  sql.init.mode: always
   devtools.livereload:
     enabled: true
     port: 35730
