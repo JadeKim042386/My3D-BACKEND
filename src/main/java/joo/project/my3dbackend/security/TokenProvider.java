@@ -3,9 +3,7 @@ package joo.project.my3dbackend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.RequiredTypeException;
 import io.jsonwebtoken.security.Keys;
-import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.properties.JwtProperties;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.exception.AuthException;
@@ -28,7 +26,6 @@ public class TokenProvider {
     private static final String KEY_EMAIL = "email";
     private static final String KEY_NICKNAME = "nickname";
     private static final String KEY_SPEC = "spec";
-    private static final String ANONYMOUS = "ANONYMOUS";
     private final JwtProperties jwtProperties;
 
     /**
@@ -63,18 +60,12 @@ public class TokenProvider {
         }
     }
 
-    /**
-     * @return {id, email, nickname, authority}
-     */
-    public String[] parseSpecification(Claims claims) {
+    public TokenInfo parseSpecification(Claims claims) {
         try {
-            String[] spec = claims.get(TokenProvider.KEY_SPEC, String.class).split(":");
-            return new String[] {
-                spec[0], // id
-                claims.get(TokenProvider.KEY_EMAIL, String.class),
-                claims.get(TokenProvider.KEY_NICKNAME, String.class),
-                spec[1] // authority
-            };
+            return TokenInfo.of(
+                    claims.get(TokenProvider.KEY_EMAIL, String.class),
+                    claims.get(TokenProvider.KEY_NICKNAME, String.class),
+                    claims.get(TokenProvider.KEY_SPEC, String.class));
         } catch (RuntimeException e) {
             return null;
         }
@@ -84,12 +75,10 @@ public class TokenProvider {
      * 토큰에 있는 정보로 UserDetails 생성
      */
     public UserPrincipal getUserDetails(Claims claims) {
-        String[] parsed = Optional.ofNullable(claims)
-                .map(this::parseSpecification)
-                .orElse(new String[] {null, ANONYMOUS, ANONYMOUS, ANONYMOUS});
+        TokenInfo tokenInfo =
+                Optional.ofNullable(claims).map(this::parseSpecification).orElse(TokenInfo.ofAnonymous());
 
-        return UserPrincipal.of(
-                Long.parseLong(parsed[0]), parsed[1], parsed[2], UserRole.valueOf(parsed[3])); // id, email, nickname, authority
+        return UserPrincipal.of(tokenInfo.id(), tokenInfo.email(), tokenInfo.nickname(), tokenInfo.userRole());
     }
 
     private SecretKey getKey(String key) {
