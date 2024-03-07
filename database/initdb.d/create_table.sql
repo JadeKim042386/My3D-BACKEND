@@ -11,6 +11,7 @@ create table user_account(
     modified_at timestamp ,
     primary key (id)
 );
+create unique index email_idx on user_account (email);
 
 create sequence seq_article_file start 1;
 create table article_file(
