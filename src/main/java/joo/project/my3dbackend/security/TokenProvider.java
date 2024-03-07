@@ -75,7 +75,7 @@ public class TokenProvider {
                 claims.get(TokenProvider.KEY_NICKNAME, String.class),
                 spec[1] // authority
             };
-        } catch (RequiredTypeException e) {
+        } catch (RuntimeException e) {
             return null;
         }
     }
