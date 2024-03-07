@@ -3,7 +3,6 @@ package joo.project.my3dbackend.service.impl;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.exception.AuthException;
 import joo.project.my3dbackend.exception.constants.ErrorCode;
-import joo.project.my3dbackend.repository.UserAccountRepository;
 import joo.project.my3dbackend.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +22,10 @@ public class SignInService {
             throw new AuthException(ErrorCode.INVALID_PASSWORD);
         }
         // AccessToken 발급
-        return tokenProvider.generateAccessToken(email, "admin", String.format("%s:%s", 1, "ADMIN"));
+        return tokenProvider.generateAccessToken(
+                email,
+                userAccount.getNickname(),
+                String.format(
+                        "%s:%s", userAccount.getId(), userAccount.getUserRole().getName()));
     }
 }
