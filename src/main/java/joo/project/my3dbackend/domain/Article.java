@@ -51,7 +51,11 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private Long userAccountId;
 
-    // TODO: articleFile과 연관 관계 설정
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "articleFileId")
+    private ArticleFile articleFile;
+
     // TODO: articleLike와 연관 관계 설정
     // TODO: alarm과 연관 관계 설정
 
@@ -74,6 +78,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
         this.articleCategory = articleCategory;
         this.isFree = isFree;
         this.userAccountId = userAccountId;
+        // TODO: articleFile 추가
     }
 
     public static Article of(

@@ -35,6 +35,7 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
 
     @Column(nullable = false)
     private Long userAccountId;
+
     @Column(nullable = false)
     private Long articleId;
 

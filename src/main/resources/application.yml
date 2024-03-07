@@ -21,7 +21,7 @@ spring:
   config.activate.on-profile: local
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
       use-new-id-generator-mappings: false
     defer-datasource-initialization: true
   datasource:
