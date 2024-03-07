@@ -18,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 public class TestSecurityConfig {
     @MockBean
     private UserAccountService userAccountService;
+
     @MockBean
     private TokenProvider tokenProvider;
 
