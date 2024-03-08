@@ -67,6 +67,7 @@ public class TokenProvider {
                     claims.get(TokenProvider.KEY_NICKNAME, String.class),
                     claims.get(TokenProvider.KEY_SPEC, String.class));
         } catch (RuntimeException e) {
+            log.error("failed token parsing");
             return null;
         }
     }
