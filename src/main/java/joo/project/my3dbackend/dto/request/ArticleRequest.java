@@ -56,7 +56,7 @@ public class ArticleRequest {
                 originalFileName,
                 FileUtils.generateUniqueFileName(extension),
                 extension,
-                getDimensionOption());
+                getDimensionOptionEntity());
     }
 
     private ArticleCategory getArticleCategory() {
@@ -64,7 +64,7 @@ public class ArticleRequest {
                 .orElseThrow(() -> new NullPointerException("articleCategory is Null"));
     }
 
-    private DimensionOption getDimensionOption() {
+    private DimensionOption getDimensionOptionEntity() {
         return Optional.ofNullable(dimensionOption)
                 .map(DimensionOptionRequest::toEntity)
                 .orElseThrow(() -> new NullPointerException("dimensionOption is Null"));

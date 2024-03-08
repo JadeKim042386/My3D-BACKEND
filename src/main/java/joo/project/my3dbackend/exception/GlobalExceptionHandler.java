@@ -4,9 +4,6 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import joo.project.my3dbackend.dto.response.ExceptionResponse;
 import joo.project.my3dbackend.dto.response.FieldErrorInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Not;
-import org.springframework.beans.InvalidPropertyException;
-import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -48,7 +45,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> resolveException(InvalidFormatException e) {
         log.error("InvalidFormatException is occurred.", e);
         FieldErrorInfo fieldErrorInfo = FieldErrorInfo.of(
-                e.getTargetType().getName(), String.format("%s가 입력되었습니다.", e.getValue().toString()));
+                e.getTargetType().getName(),
+                String.format("%s가 입력되었습니다.", e.getValue().toString()));
         return ResponseEntity.status(BAD_REQUEST)
                 .body(ExceptionResponse.of(e.getOriginalMessage(), List.of(fieldErrorInfo)));
     }

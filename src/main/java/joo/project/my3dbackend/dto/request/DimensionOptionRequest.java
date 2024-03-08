@@ -19,7 +19,7 @@ public class DimensionOptionRequest {
     private String optionName;
 
     @NotNull
-    @Size(min = 1)
+    @Size(min = 1, max = 20)
     private final List<DimensionRequest> dimensions = new ArrayList<>();
 
     public DimensionOption toEntity() {
