@@ -1,15 +1,20 @@
 package joo.project.my3dbackend.dto.request;
 
 import joo.project.my3dbackend.domain.Article;
+import joo.project.my3dbackend.domain.ArticleFile;
+import joo.project.my3dbackend.domain.DimensionOption;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
-import joo.project.my3dbackend.dto.request.validation.ValidEnum;
+import joo.project.my3dbackend.utils.FileUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -21,19 +26,47 @@ public class ArticleRequest {
     @NotBlank
     private String content;
 
-    @NotBlank
-    @ValidEnum(enumClass = ArticleCategory.class)
-    private String articleCategory;
+    private ArticleCategory articleCategory;
 
     @NotNull
     private Boolean isFree;
 
-    // TODO: modelFile(dimension)
-    // TODO: userAccount
+    @Valid
+    private DimensionOptionRequest dimensionOption;
 
-    public Article toEntity(Long userAccountId) {
-        // TODO: model 파일이 있을 경우 ArticleType.MODEL, 없으면 TEXT
-        return Article.of(
-                title, content, ArticleType.TEXT, ArticleCategory.valueOf(articleCategory), isFree, userAccountId);
+    public Article toEntity(Long userAccountId, Optional<MultipartFile> modelFile) {
+        // ArticleType.MODEL은 파일, 치수 정보, 카테고리를 가져야하지만, ArticleType.TEXT는 가지지 못합니다.
+        return modelFile
+                .map(multipartFile -> Article.ofModel(
+                        title,
+                        content,
+                        ArticleType.MODEL,
+                        getArticleCategory(),
+                        isFree,
+                        userAccountId,
+                        toArticleFileEntity(multipartFile)))
+                .orElseGet(() -> Article.ofText(title, content, ArticleType.TEXT, isFree, userAccountId));
+    }
+
+    public ArticleFile toArticleFileEntity(MultipartFile modelFile) {
+        String originalFileName = modelFile.getOriginalFilename();
+        String extension = FileUtils.getExtension(originalFileName);
+        return ArticleFile.of(
+                modelFile.getSize(),
+                originalFileName,
+                FileUtils.generateUniqueFileName(extension),
+                extension,
+                getDimensionOption());
+    }
+
+    private ArticleCategory getArticleCategory() {
+        return Optional.ofNullable(articleCategory)
+                .orElseThrow(() -> new NullPointerException("articleCategory is Null"));
+    }
+
+    private DimensionOption getDimensionOption() {
+        return Optional.ofNullable(dimensionOption)
+                .map(DimensionOptionRequest::toEntity)
+                .orElseThrow(() -> new NullPointerException("dimensionOption is Null"));
     }
 }

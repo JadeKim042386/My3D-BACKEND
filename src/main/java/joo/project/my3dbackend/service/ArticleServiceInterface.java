@@ -5,6 +5,9 @@ import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 public interface ArticleServiceInterface {
     /**
@@ -20,7 +23,7 @@ public interface ArticleServiceInterface {
     /**
      * 게시글 작성
      */
-    ArticleDto writeArticle(ArticleRequest articleRequest, UserPrincipal userPrincipal);
+    ArticleDto writeArticle(Optional<MultipartFile> modelFile, ArticleRequest articleRequest, UserPrincipal userPrincipal);
 
     /**
      * 게시글 삭제

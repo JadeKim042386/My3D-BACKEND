@@ -11,5 +11,14 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DimensionOption {
     private String name;
+
     private Set<Dimension> dimensions = new LinkedHashSet<>();
+
+    private DimensionOption(String name) {
+        this.name = name;
+    }
+
+    public static DimensionOption of(String name) {
+        return new DimensionOption(name);
+    }
 }

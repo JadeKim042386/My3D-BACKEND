@@ -15,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -51,9 +53,11 @@ public class ArticleApi {
      */
     @PostMapping
     public ResponseEntity<ArticleDto> writeArticle(
-            @RequestBody @Valid ArticleRequest articleRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+            @RequestPart Optional<MultipartFile> modelFile,
+            @RequestPart @Valid ArticleRequest articleRequest,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        ArticleDto articleDto = articleService.writeArticle(articleRequest, userPrincipal);
+        ArticleDto articleDto = articleService.writeArticle(modelFile, articleRequest, userPrincipal);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto);
     }
 
