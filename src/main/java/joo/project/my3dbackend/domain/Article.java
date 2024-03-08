@@ -35,7 +35,6 @@ public class Article extends AuditingAt implements Persistable<Long> {
     private ArticleType articleType;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ArticleCategory articleCategory;
 
     @ToString.Exclude
@@ -77,24 +76,31 @@ public class Article extends AuditingAt implements Persistable<Long> {
             ArticleType articleType,
             ArticleCategory articleCategory,
             boolean isFree,
-            Long userAccountId) {
+            Long userAccountId,
+            ArticleFile articleFile) {
         this.title = title;
         this.content = content;
         this.articleType = articleType;
         this.articleCategory = articleCategory;
         this.isFree = isFree;
         this.userAccountId = userAccountId;
-        // TODO: articleFile 추가
+        this.articleFile = articleFile;
     }
 
-    public static Article of(
+    public static Article ofModel(
             String title,
             String content,
             ArticleType articleType,
             ArticleCategory articleCategory,
             boolean isFree,
-            Long userAccountId) {
-        return new Article(title, content, articleType, articleCategory, isFree, userAccountId);
+            Long userAccountId,
+            ArticleFile articleFile) {
+        return new Article(title, content, articleType, articleCategory, isFree, userAccountId, articleFile);
+    }
+
+    public static Article ofText(
+            String title, String content, ArticleType articleType, boolean isFree, Long userAccountId) {
+        return new Article(title, content, articleType, null, isFree, userAccountId, null);
     }
 
     @Override

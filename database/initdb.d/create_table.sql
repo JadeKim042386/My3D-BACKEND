@@ -33,7 +33,7 @@ create table article(
     title varchar(255) NOT NULL ,
     content varchar(255) NOT NULL ,
     article_type varchar(255) NOT NULL ,
-    article_category varchar(255) NOT NULL ,
+    article_category varchar(255) ,
     is_free boolean NOT NULL ,
     like_count int4 NOT NULL default 0 ,
     created_at timestamp NOT NULL ,
