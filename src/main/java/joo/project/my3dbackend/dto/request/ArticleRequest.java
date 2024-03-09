@@ -1,5 +1,6 @@
 package joo.project.my3dbackend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.domain.ArticleFile;
 import joo.project.my3dbackend.domain.DimensionOption;
@@ -16,6 +17,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,6 +29,7 @@ public class ArticleRequest {
     @NotBlank
     private String content;
 
+    @JsonFormat(shape = STRING) // for objectMapper
     private ArticleCategory articleCategory;
 
     @NotNull
@@ -34,9 +38,9 @@ public class ArticleRequest {
     @Valid
     private DimensionOptionRequest dimensionOption;
 
-    public Article toEntity(Long userAccountId, Optional<MultipartFile> modelFile) {
+    public Article toEntity(Long userAccountId, MultipartFile modelFile) {
         // ArticleType.MODEL은 파일, 치수 정보, 카테고리를 가져야하지만, ArticleType.TEXT는 가지지 못합니다.
-        return modelFile
+        return Optional.ofNullable(modelFile)
                 .map(multipartFile -> Article.ofModel(
                         title,
                         content,

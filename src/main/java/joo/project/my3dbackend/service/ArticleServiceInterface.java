@@ -23,7 +23,7 @@ public interface ArticleServiceInterface {
     /**
      * 게시글 작성
      */
-    ArticleDto writeArticle(Optional<MultipartFile> modelFile, ArticleRequest articleRequest, UserPrincipal userPrincipal);
+    ArticleDto writeArticle(MultipartFile modelFile, ArticleRequest articleRequest, UserPrincipal userPrincipal);
 
     /**
      * 게시글 삭제

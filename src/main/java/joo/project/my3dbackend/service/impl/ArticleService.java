@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @Transactional
@@ -44,10 +42,10 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Override
     public ArticleDto writeArticle(
-            Optional<MultipartFile> modelFile, ArticleRequest articleRequest, UserPrincipal userPrincipal) {
+            MultipartFile modelFile, ArticleRequest articleRequest, UserPrincipal userPrincipal) {
+
         Article savedArticle = articleRepository.save(articleRequest.toEntity(userPrincipal.id(), modelFile));
-        modelFile.ifPresent(file ->
-                fileService.uploadFile(file, savedArticle.getArticleFile().getFileName()));
+        fileService.uploadFile(modelFile, savedArticle.getArticleFile().getFileName());
         return ArticleDto.fromEntity(savedArticle, userPrincipal);
     }
 

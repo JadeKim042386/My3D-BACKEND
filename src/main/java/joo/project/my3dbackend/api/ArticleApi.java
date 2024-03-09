@@ -5,6 +5,7 @@ import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
+import joo.project.my3dbackend.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -53,10 +53,12 @@ public class ArticleApi {
      */
     @PostMapping
     public ResponseEntity<ArticleDto> writeArticle(
-            @RequestPart Optional<MultipartFile> modelFile,
+            @RequestPart(required = false) MultipartFile modelFile,
             @RequestPart @Valid ArticleRequest articleRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
+        // 파일이 비어있을 경우 null 값으로 변경
+        if (FileUtils.isEmpty(modelFile)) modelFile = null;
         ArticleDto articleDto = articleService.writeArticle(modelFile, articleRequest, userPrincipal);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto);
     }
