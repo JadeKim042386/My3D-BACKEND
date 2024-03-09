@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
 public interface ArticleServiceInterface {
     /**
      * 게시글 목록 조회
