@@ -44,9 +44,10 @@ create table article(
 
 create sequence seq_article_comment start 1;
 create table article_comment(
-    id int8 default nextval('seq_article') NOT NULL ,
-    user_account_id int8 NOT NULL ,
-    article_id int8 NOT NULL ,
+    id bigint default nextval('seq_article') NOT NULL ,
+    user_account_id bigint NOT NULL ,
+    article_id bigint NOT NULL ,
+    parent_comment_id int8 ,
     content varchar(255) NOT NULL ,
     created_at timestamp NOT NULL ,
     modified_at timestamp ,

@@ -23,6 +23,9 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private String content;
 
+    @Column(updatable = false)
+    private Long parentCommentId;
+
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userAccountId", insertable = false, updatable = false)
@@ -39,14 +42,15 @@ public class ArticleComment extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private Long articleId;
 
-    public ArticleComment(String content, Long userAccountId, Long articleId) {
+    public ArticleComment(String content, Long userAccountId, Long articleId, Long parentCommentId) {
         this.content = content;
         this.userAccountId = userAccountId;
         this.articleId = articleId;
+        this.parentCommentId = parentCommentId;
     }
 
-    public static ArticleComment of(String content, Long userAccountId, Long articleId) {
-        return new ArticleComment(content, userAccountId, articleId);
+    public static ArticleComment of(String content, Long userAccountId, Long articleId, Long parentCommentId) {
+        return new ArticleComment(content, userAccountId, articleId, parentCommentId);
     }
 
     @Override

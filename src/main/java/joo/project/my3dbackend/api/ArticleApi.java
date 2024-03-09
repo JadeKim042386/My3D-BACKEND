@@ -1,7 +1,6 @@
 package joo.project.my3dbackend.api;
 
 import joo.project.my3dbackend.dto.ArticleDto;
-import joo.project.my3dbackend.dto.ArticleWithCommentDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
@@ -36,12 +35,12 @@ public class ArticleApi {
     }
 
     /**
-     * 게시글 단일 조회 요청 (댓글 포함)
+     * 게시글 단일 조회 요청
      */
     @GetMapping("/{articleId}")
-    public ResponseEntity<ArticleWithCommentDto> getArticle(@PathVariable Long articleId) {
-        ArticleWithCommentDto articleWithComment = articleService.getArticleWithComment(articleId);
-        return ResponseEntity.ok(articleWithComment);
+    public ResponseEntity<ArticleDto> getArticle(@PathVariable Long articleId) {
+        ArticleDto article = articleService.getArticle(articleId);
+        return ResponseEntity.ok(article);
     }
 
     /**

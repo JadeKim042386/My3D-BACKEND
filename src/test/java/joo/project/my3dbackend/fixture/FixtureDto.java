@@ -1,13 +1,15 @@
 package joo.project.my3dbackend.fixture;
 
+import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
-import joo.project.my3dbackend.dto.ArticleWithCommentDto;
+import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Optional;
 import java.util.Set;
 
 public class FixtureDto {
@@ -36,23 +38,27 @@ public class FixtureDto {
         return createUserPrincipal(1L, "testUser@gmail.com", "pw", UserRole.USER, "testUser");
     }
 
-    public static ArticleWithCommentDto createArticleWithCommentDto() {
-        return ArticleWithCommentDto.fromEntity(Fixture.createArticleWithComment());
+    public static ArticleDto createArticleDto() {
+        return ArticleDto.fromEntity(Fixture.createArticle());
     }
 
-    public static ArticleCommentRequest createArticleCommentRequest(String content) {
-        return new ArticleCommentRequest(content);
+    public static ArticleCommentRequest createArticleCommentRequest(String content, Long parentCommentId) {
+        return new ArticleCommentRequest(content, Optional.ofNullable(parentCommentId));
     }
 
     public static ArticleCommentRequest createArticleCommentRequest() {
-        return createArticleCommentRequest(DEFAULT_CONTENT);
+        return createArticleCommentRequest(DEFAULT_CONTENT, null);
     }
 
-    public static ArticleCommentDto createArticleCommentDto(String content) {
-        return new ArticleCommentDto(content);
+    public static ArticleCommentDto createArticleCommentDto(ArticleComment articleComment) {
+        return ArticleCommentDto.fromEntity(articleComment);
     }
 
     public static ArticleCommentDto createArticleCommentDto() {
-        return createArticleCommentDto(DEFAULT_CONTENT);
+        return createArticleCommentDto(Fixture.createArticleComment(null));
+    }
+
+    public static ArticleCommentDto createArticleChildCommentDto(Long parentCommentId) {
+        return createArticleCommentDto(Fixture.createArticleComment(parentCommentId));
     }
 }

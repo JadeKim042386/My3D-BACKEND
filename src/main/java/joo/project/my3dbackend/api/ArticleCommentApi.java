@@ -7,6 +7,9 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.service.ArticleCommentServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +23,20 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ArticleCommentApi {
     private final ArticleCommentServiceInterface articleCommentService;
+    // TODO: 대상 게시글이 존재하는지 확인
+
+    /**
+     * 댓글 목록 조회
+     */
+    @GetMapping
+    public ResponseEntity<Page<ArticleCommentDto>> getComments(
+            @PathVariable Long articleId,
+            @RequestParam(required = false) Long parentCommentId,
+            @PageableDefault Pageable pageable) {
+        // TODO: parentCommentId이 지정될 경우 부모 댓글이 존재하는지 확인
+        Page<ArticleCommentDto> comments = articleCommentService.getComments(pageable, parentCommentId);
+        return ResponseEntity.ok(comments);
+    }
 
     /**
      * 댓글 추가
@@ -30,7 +47,7 @@ public class ArticleCommentApi {
             @RequestBody @Valid ArticleCommentRequest articleCommentRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         ArticleCommentDto articleCommentDto =
-                articleCommentService.writeComment(articleCommentRequest, userPrincipal.id(), articleId);
+                articleCommentService.writeComment(articleCommentRequest, userPrincipal, articleId);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleCommentDto);
     }
 

@@ -9,6 +9,8 @@ import joo.project.my3dbackend.domain.constants.ArticleType;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
+
 public class Fixture {
 
     public static UserAccount createUserAccount(
@@ -38,14 +40,17 @@ public class Fixture {
         return Article.of(title, content, articleType, articleCategory, isFree, userAccountId);
     }
 
-    public static Article createArticleWithComment() {
+    public static Article createArticle() {
         Article article = createArticle("title", "content", ArticleType.MODEL, ArticleCategory.MUSIC, true, 1L);
-        article.getArticleComments().add(createArticleComment());
         ReflectionTestUtils.setField(article, "userAccount", Fixture.createUserAccount());
         return article;
     }
 
-    public static ArticleComment createArticleComment() {
-        return ArticleComment.of("content", 1L, 1L);
+    public static ArticleComment createArticleComment(Long parentCommentId) {
+        ArticleComment articleComment = ArticleComment.of("content", 1L, 1L, parentCommentId);
+        ReflectionTestUtils.setField(articleComment, "userAccount", Fixture.createUserAccount());
+        ReflectionTestUtils.setField(articleComment, "id", 1L);
+        ReflectionTestUtils.setField(articleComment, "createdAt", LocalDateTime.now());
+        return articleComment;
     }
 }
