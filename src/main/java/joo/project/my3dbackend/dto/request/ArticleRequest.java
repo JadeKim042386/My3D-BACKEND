@@ -31,6 +31,10 @@ public class ArticleRequest {
     @NotBlank
     private String content;
 
+    @NotNull
+    @JsonFormat(shape = STRING)
+    private ArticleType articleType;
+
     @JsonFormat(shape = STRING) // for objectMapper
     private ArticleCategory articleCategory;
 
@@ -42,19 +46,37 @@ public class ArticleRequest {
 
     public Article toEntity(Long userAccountId, MultipartFile modelFile) {
         // ArticleType.MODEL은 파일, 치수 정보, 카테고리를 가져야하지만, ArticleType.TEXT는 가지지 못합니다.
-        return Optional.ofNullable(modelFile)
-                .map(multipartFile -> Article.ofModel(
-                        title,
-                        content,
-                        ArticleType.MODEL,
-                        getArticleCategory(),
-                        isFree,
-                        userAccountId,
-                        toArticleFileEntity(multipartFile)))
-                .orElseGet(() -> Article.ofText(title, content, ArticleType.TEXT, isFree, userAccountId));
+        switch (articleType) {
+            case MODEL:
+                return toModelEntity(userAccountId, modelFile);
+            default:
+                return toTextEntity(userAccountId);
+        }
     }
 
-    public ArticleFile toArticleFileEntity(MultipartFile modelFile) {
+    private Article toModelEntity(Long userAccountId, MultipartFile modelFile) {
+        return Article.ofModel(
+                title,
+                content,
+                articleType,
+                getArticleCategory(),
+                isFree,
+                userAccountId,
+                toArticleFileEntity(modelFile));
+    }
+
+    private Article toTextEntity(Long userAccountId) {
+        return Article.ofText(title, content, ArticleType.TEXT, isFree, userAccountId);
+    }
+
+    /**
+     * MultipartFile -> ArticleFile
+     */
+    private ArticleFile toArticleFileEntity(MultipartFile modelFile) {
+        // 파일이 비어있거나 호환되지 않는 경우
+        if (!FileUtils.isValid(modelFile)) {
+            throw new ArticleException(ErrorCode.INVALID_FIlE);
+        }
         String originalFileName = modelFile.getOriginalFilename();
         String extension = FileUtils.getExtension(originalFileName);
         return ArticleFile.of(

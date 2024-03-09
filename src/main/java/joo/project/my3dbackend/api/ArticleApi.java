@@ -4,6 +4,8 @@ import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.exception.ArticleException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import joo.project.my3dbackend.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
@@ -57,8 +59,6 @@ public class ArticleApi {
             @RequestPart @Valid ArticleRequest articleRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        // 파일이 비어있거나 호환되지 않는 경우 null 값으로 변경
-        if (!FileUtils.isValid(modelFile)) modelFile = null;
         ArticleDto articleDto = articleService.writeArticle(modelFile, articleRequest, userPrincipal);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto);
     }
