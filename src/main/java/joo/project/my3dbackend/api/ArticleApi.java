@@ -48,7 +48,7 @@ public class ArticleApi {
     /**
      * 게시글 작성 요청
      * <pre>
-     * - 모델 파일, 모델 파일에 대한 치수는 optional
+     * - optional: ArticleCategory, DimensionOptionRequest, modelFile
      * </pre>
      */
     @PostMapping
@@ -57,8 +57,8 @@ public class ArticleApi {
             @RequestPart @Valid ArticleRequest articleRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        // 파일이 비어있을 경우 null 값으로 변경
-        if (FileUtils.isEmpty(modelFile)) modelFile = null;
+        // 파일이 비어있거나 호환되지 않는 경우 null 값으로 변경
+        if (!FileUtils.isValid(modelFile)) modelFile = null;
         ArticleDto articleDto = articleService.writeArticle(modelFile, articleRequest, userPrincipal);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto);
     }
