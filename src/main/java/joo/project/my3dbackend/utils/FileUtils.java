@@ -1,5 +1,7 @@
 package joo.project.my3dbackend.utils;
 
+import joo.project.my3dbackend.exception.FileException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -20,8 +22,8 @@ public class FileUtils {
      * 확장자 index 반환
      */
     public static int indexOfExtension(String filename) {
-        if (filename == null) {
-            return NOT_FOUND;
+        if (!StringUtils.hasText(filename)) {
+            throw new FileException(ErrorCode.INVALID_FIlE_NAME);
         }
         return filename.lastIndexOf(EXTENSION_SEPARATOR);
     }
@@ -30,22 +32,18 @@ public class FileUtils {
      * 확장자만 추출 (e.g. stl)
      */
     public static String getExtension(String filename) {
-        if (filename == null) {
-            return null;
-        }
         int index = indexOfExtension(filename);
-        if (index == NOT_FOUND) {
-            return "";
-        } else {
-            return filename.substring(index + 1);
-        }
+        return filename.substring(index + 1);
     }
 
     /**
      * 임의의 고유한 파일명 생성
      */
     public static String generateUniqueFileName(String extension) {
-        return UUID.randomUUID() + "." + extension;
+        if (!isCompatibleExtension(extension)) {
+            throw new FileException(ErrorCode.INVALID_FIlE_NAME);
+        }
+        return UUID.randomUUID() + EXTENSION_SEPARATOR + extension;
     }
 
     /**
@@ -57,6 +55,10 @@ public class FileUtils {
 
     private static boolean isCompatibleExtension(MultipartFile file) {
         String extension = getExtension(file.getOriginalFilename());
+        return MODEL_EXTENSIONS.contains(extension);
+    }
+
+    private static boolean isCompatibleExtension(String extension) {
         return MODEL_EXTENSIONS.contains(extension);
     }
 

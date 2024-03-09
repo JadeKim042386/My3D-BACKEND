@@ -22,7 +22,7 @@ public class LocalFileService implements FileServiceInterface {
         try (FileOutputStream fos = new FileOutputStream(createFile(fileName))) {
             fos.write(file.getBytes());
         } catch (IOException e) {
-            throw new FileException(ErrorCode.FILE_CANT_SAVE);
+            throw new FileException(ErrorCode.FILE_CANT_SAVE, e);
         }
     }
 
@@ -31,7 +31,7 @@ public class LocalFileService implements FileServiceInterface {
         File file = createFile(fileName);
         if (file.exists()) {
             if (!file.delete()) {
-                throw new FileException(ErrorCode.FILE_CANT_DELETE);
+                throw new FileException(file.exists() ? ErrorCode.FILE_CANT_DELETE : ErrorCode.FILE_NOT_FOUND);
             }
         } else {
             throw new FileException(ErrorCode.FILE_NOT_FOUND);
@@ -39,6 +39,6 @@ public class LocalFileService implements FileServiceInterface {
     }
 
     private File createFile(String fileName) {
-        return new File(localFileProperties.absolutePath() + fileName);
+        return new File(localFileProperties.absolutePath(), fileName);
     }
 }

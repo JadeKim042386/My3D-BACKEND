@@ -13,6 +13,7 @@ public enum ErrorCode {
     // Article
     NOT_FOUND_ARTICLE(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."),
     INVALID_FIlE(HttpStatus.BAD_REQUEST, "파일이 비어있거나 지원되지 않는 확장자입니다. 지원되는 확장자는 *.stp, *.stl입니다."),
+    INVALID_FIlE_NAME(HttpStatus.BAD_REQUEST, "파일 형식이 잘못되었습니다."),
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "articleCateogy가 null이거나 값이 잘못되었습니다."),
     INVALID_DIMENSION(HttpStatus.BAD_REQUEST, "dimensionOption이 null이거나 값이 잘못되었습니다."),
     // Auth
