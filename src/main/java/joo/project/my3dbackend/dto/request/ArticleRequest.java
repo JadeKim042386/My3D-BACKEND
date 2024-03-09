@@ -6,6 +6,8 @@ import joo.project.my3dbackend.domain.ArticleFile;
 import joo.project.my3dbackend.domain.DimensionOption;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
+import joo.project.my3dbackend.exception.ArticleException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.utils.FileUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,13 +66,12 @@ public class ArticleRequest {
     }
 
     private ArticleCategory getArticleCategory() {
-        return Optional.ofNullable(articleCategory)
-                .orElseThrow(() -> new NullPointerException("articleCategory is Null"));
+        return Optional.ofNullable(articleCategory).orElseThrow(() -> new ArticleException(ErrorCode.INVALID_CATEGORY));
     }
 
     private DimensionOption getDimensionOptionEntity() {
         return Optional.ofNullable(dimensionOption)
                 .map(DimensionOptionRequest::toEntity)
-                .orElseThrow(() -> new NullPointerException("dimensionOption is Null"));
+                .orElseThrow(() -> new ArticleException(ErrorCode.INVALID_DIMENSION));
     }
 }

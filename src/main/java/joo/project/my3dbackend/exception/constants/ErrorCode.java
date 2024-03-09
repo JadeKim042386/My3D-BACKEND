@@ -12,7 +12,8 @@ public enum ErrorCode {
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     // Article
     NOT_FOUND_ARTICLE(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."),
-    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+    INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "articleCateogy가 null이거나 값이 잘못되었습니다."),
+    INVALID_DIMENSION(HttpStatus.BAD_REQUEST, "dimensionOption이 null이거나 값이 잘못되었습니다."),
     // Auth
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     EXPIRED_TOKEN(HttpStatus.FORBIDDEN, "Token이 만료되었습니다."),
