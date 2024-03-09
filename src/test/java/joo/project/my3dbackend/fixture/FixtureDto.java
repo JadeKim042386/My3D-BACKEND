@@ -1,12 +1,12 @@
 package joo.project.my3dbackend.fixture;
 
 import joo.project.my3dbackend.domain.ArticleComment;
+import joo.project.my3dbackend.domain.constants.ArticleCategory;
+import joo.project.my3dbackend.domain.constants.DimUnit;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.ArticleDto;
-import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
-import joo.project.my3dbackend.dto.request.ArticleRequest;
-import joo.project.my3dbackend.dto.request.SignUpRequest;
+import joo.project.my3dbackend.dto.request.*;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -17,17 +17,33 @@ public class FixtureDto {
     private static final String DEFAULT_CONTENT = "content";
 
     public static ArticleRequest createArticleRequest(
-            String title, String content, String articleCategory, Boolean isFree) {
+            String title, String content, ArticleCategory articleCategory, Boolean isFree) {
         ArticleRequest articleRequest = new ArticleRequest();
         articleRequest.setTitle(title);
         articleRequest.setContent(content);
         articleRequest.setArticleCategory(articleCategory);
         articleRequest.setIsFree(isFree);
+        articleRequest.setDimensionOption(createDimensionOptionRequest());
         return articleRequest;
     }
 
     public static ArticleRequest createArticleRequest() {
-        return createArticleRequest("title", DEFAULT_CONTENT, "MUSIC", true);
+        return createArticleRequest("title", DEFAULT_CONTENT, ArticleCategory.MUSIC, true);
+    }
+
+    public static DimensionOptionRequest createDimensionOptionRequest() {
+        DimensionOptionRequest dimensionOptionRequest = new DimensionOptionRequest();
+        dimensionOptionRequest.setOptionName("testOption");
+        dimensionOptionRequest.getDimensions().add(createDimensionRequest());
+        return dimensionOptionRequest;
+    }
+
+    public static DimensionRequest createDimensionRequest() {
+        DimensionRequest dimensionRequest = new DimensionRequest();
+        dimensionRequest.setName("testName");
+        dimensionRequest.setValue(11.1);
+        dimensionRequest.setUnit(DimUnit.MM);
+        return dimensionRequest;
     }
 
     public static UserPrincipal createUserPrincipal(
@@ -63,11 +79,20 @@ public class FixtureDto {
         return createArticleCommentDto(Fixture.createArticleComment(parentCommentId));
     }
 
-    public static SignUpRequest createSignUpRequest(String email, UserRole userRole, String nickname, String password, String phone, String zipcode, String street, String detail) {
+    public static SignUpRequest createSignUpRequest(
+            String email,
+            UserRole userRole,
+            String nickname,
+            String password,
+            String phone,
+            String zipcode,
+            String street,
+            String detail) {
         return new SignUpRequest(email, userRole, nickname, password, phone, zipcode, street, detail);
     }
 
     public static SignUpRequest createSignUpRequest() {
-        return createSignUpRequest("test@gmail.com", UserRole.USER, "test", "test1234@@", "01011112222", "12345", "street", "detail");
+        return createSignUpRequest(
+                "test@gmail.com", UserRole.USER, "test", "test1234@@", "01011112222", "12345", "street", "detail");
     }
 }

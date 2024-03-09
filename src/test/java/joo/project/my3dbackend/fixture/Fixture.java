@@ -1,14 +1,14 @@
 package joo.project.my3dbackend.fixture;
 
-import joo.project.my3dbackend.domain.Address;
-import joo.project.my3dbackend.domain.Article;
-import joo.project.my3dbackend.domain.ArticleComment;
-import joo.project.my3dbackend.domain.UserAccount;
+import joo.project.my3dbackend.domain.*;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
 import joo.project.my3dbackend.domain.constants.ArticleType;
+import joo.project.my3dbackend.domain.constants.DimUnit;
 import joo.project.my3dbackend.domain.constants.UserRole;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 public class Fixture {
@@ -37,7 +37,8 @@ public class Fixture {
             ArticleCategory articleCategory,
             boolean isFree,
             Long userAccountId) {
-        return Article.of(title, content, articleType, articleCategory, isFree, userAccountId);
+        return Article.ofModel(
+                title, content, articleType, articleCategory, isFree, userAccountId, createArticleFile());
     }
 
     public static Article createArticle() {
@@ -52,5 +53,28 @@ public class Fixture {
         ReflectionTestUtils.setField(articleComment, "id", 1L);
         ReflectionTestUtils.setField(articleComment, "createdAt", LocalDateTime.now());
         return articleComment;
+    }
+
+    public static ArticleFile createArticleFile() {
+        return ArticleFile.of(100L, "test.stl", "test", "stl", createDimensionOption());
+    }
+
+    public static Dimension createDimension() {
+        return new Dimension("dimName", 11.11, DimUnit.MM);
+    }
+
+    public static DimensionOption createDimensionOption() {
+        DimensionOption dimensionOption = DimensionOption.of("optionName");
+        dimensionOption.getDimensions().add(createDimension());
+        return dimensionOption;
+    }
+
+    public static MockMultipartFile createMultipartFile(String content) {
+        String fileName = "test.txt";
+        return new MockMultipartFile("modelFile", fileName, "text/plain", content.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static MockMultipartFile createMultipartFile() {
+        return createMultipartFile("It's test content.");
     }
 }

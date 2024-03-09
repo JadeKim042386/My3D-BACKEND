@@ -82,6 +82,7 @@ class ArticleCommentApiTest {
         // then
     }
 
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("댓글 삭제")
     @Test
     void deleteComment() throws Exception {
