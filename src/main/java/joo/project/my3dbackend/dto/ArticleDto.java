@@ -16,9 +16,12 @@ public record ArticleDto(
         boolean isFree,
         int likeCount,
         UserInfo userInfo,
+        ArticleFileDto articleFile,
+        DimensionOptionDto dimensionOption,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
-    public static ArticleDto fromEntity(Article article, UserPrincipal userPrincipal) {
+
+    public static ArticleDto of(Article article, UserInfo userInfo) {
         return new ArticleDto(
                 article.getId(),
                 article.getTitle(),
@@ -27,22 +30,18 @@ public record ArticleDto(
                 article.getArticleCategory(),
                 article.isFree(),
                 article.getLikeCount(),
-                UserInfo.fromPrincipal(userPrincipal),
+                userInfo,
+                ArticleFileDto.fromEntity(article.getArticleFile()),
+                DimensionOptionDto.fromEntity(article.getArticleFile().getDimensionOption()),
                 article.getCreatedAt(),
                 article.getModifiedAt());
     }
 
+    public static ArticleDto fromEntity(Article article, UserPrincipal userPrincipal) {
+        return ArticleDto.of(article, UserInfo.fromPrincipal(userPrincipal));
+    }
+
     public static ArticleDto fromEntity(Article article) {
-        return new ArticleDto(
-                article.getId(),
-                article.getTitle(),
-                article.getContent(),
-                article.getArticleType(),
-                article.getArticleCategory(),
-                article.isFree(),
-                article.getLikeCount(),
-                UserInfo.fromEntity(article.getUserAccount()),
-                article.getCreatedAt(),
-                article.getModifiedAt());
+        return ArticleDto.of(article, UserInfo.fromEntity(article.getUserAccount()));
     }
 }
