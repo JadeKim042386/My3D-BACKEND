@@ -3,6 +3,7 @@ package joo.project.my3dbackend.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import joo.project.my3dbackend.config.TestSecurityConfig;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
+import joo.project.my3dbackend.domain.constants.ArticleType;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
@@ -77,18 +78,18 @@ class ArticleApiTest {
 
     @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Order(1)
-    @DisplayName("게시글 작성 Validation Error")
+    @DisplayName("게시글 작성 Validation Error (title, content, isFree)")
     @ParameterizedTest
     @CsvSource(
             value = {
-                "title, content, MUSIC, ",
-                "title, , MUSIC, true",
-                ", content, MUSIC, true"
+                "title, content, MODEL, MUSIC, ",
+                "title, , MODEL, MUSIC, true",
+                ", content, MODEL, MUSIC, true"
             })
-    void writeArticle_invalid(String title, String content, ArticleCategory articleCategory, Boolean isFree)
+    void writeArticle_invalid(String title, String content, ArticleType articleType, ArticleCategory articleCategory, Boolean isFree)
             throws Exception {
         // given
-        ArticleRequest articleRequest = FixtureDto.createArticleRequest(title, content, articleCategory, isFree);
+        ArticleRequest articleRequest = FixtureDto.createArticleRequest(title, content, articleType, articleCategory, isFree);
         MockMultipartFile modelFile = Fixture.createMultipartFile();
         // when
         mvc.perform(multipart("/api/v1/articles")

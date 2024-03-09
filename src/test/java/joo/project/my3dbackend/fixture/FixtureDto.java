@@ -2,6 +2,7 @@ package joo.project.my3dbackend.fixture;
 
 import joo.project.my3dbackend.domain.ArticleComment;
 import joo.project.my3dbackend.domain.constants.ArticleCategory;
+import joo.project.my3dbackend.domain.constants.ArticleType;
 import joo.project.my3dbackend.domain.constants.DimUnit;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
@@ -17,10 +18,11 @@ public class FixtureDto {
     private static final String DEFAULT_CONTENT = "content";
 
     public static ArticleRequest createArticleRequest(
-            String title, String content, ArticleCategory articleCategory, Boolean isFree) {
+            String title, String content, ArticleType articleType, ArticleCategory articleCategory, Boolean isFree) {
         ArticleRequest articleRequest = new ArticleRequest();
         articleRequest.setTitle(title);
         articleRequest.setContent(content);
+        articleRequest.setArticleType(articleType);
         articleRequest.setArticleCategory(articleCategory);
         articleRequest.setIsFree(isFree);
         articleRequest.setDimensionOption(createDimensionOptionRequest());
@@ -28,7 +30,7 @@ public class FixtureDto {
     }
 
     public static ArticleRequest createArticleRequest() {
-        return createArticleRequest("title", DEFAULT_CONTENT, ArticleCategory.MUSIC, true);
+        return createArticleRequest("title", DEFAULT_CONTENT, ArticleType.MODEL, ArticleCategory.MUSIC, true);
     }
 
     public static DimensionOptionRequest createDimensionOptionRequest() {

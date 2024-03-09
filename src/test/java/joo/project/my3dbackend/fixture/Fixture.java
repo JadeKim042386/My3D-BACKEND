@@ -70,7 +70,7 @@ public class Fixture {
     }
 
     public static MockMultipartFile createMultipartFile(String content) {
-        String fileName = "test.txt";
+        String fileName = "test.stl";
         return new MockMultipartFile("modelFile", fileName, "text/plain", content.getBytes(StandardCharsets.UTF_8));
     }
 

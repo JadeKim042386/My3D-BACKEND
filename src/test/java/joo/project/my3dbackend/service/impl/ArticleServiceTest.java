@@ -44,7 +44,7 @@ class ArticleServiceTest {
         Long userAccountId = 1L;
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
-        MultipartFile modelFile = Fixture.createMultipartFile("test");
+        MultipartFile modelFile = Fixture.createMultipartFile();
         given(articleRepository.save(any(Article.class))).willReturn(articleRequest.toEntity(userAccountId, modelFile));
         willDoNothing().given(fileService).uploadFile(any(MultipartFile.class), anyString());
         // when
