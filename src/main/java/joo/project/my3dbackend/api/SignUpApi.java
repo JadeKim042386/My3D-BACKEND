@@ -22,7 +22,6 @@ import javax.validation.Valid;
 public class SignUpApi {
 
     private final UserAccountServiceInterface userAccountService;
-    private final PasswordEncoder encoder;
 
     /**
      * 회원가입 요청
@@ -31,7 +30,7 @@ public class SignUpApi {
     public ResponseEntity<ApiResponse> signup(@RequestBody @Valid SignUpRequest signUpRequest) {
         // TODO: 이메일, 닉네임 중복체크
         // TODO: 기업 회원가입
-        userAccountService.saveUser(signUpRequest.toEntity(signUpRequest.email(), encoder));
+        userAccountService.saveUser(signUpRequest.toEntity());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.of("you're successfully sign up. you can be login."));

@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.data.domain.Persistable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -32,6 +33,7 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private String email;
 
+    @Setter
     @Column(nullable = false)
     private String password;
 

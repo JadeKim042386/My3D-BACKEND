@@ -24,8 +24,8 @@ public record SignUpRequest(
         @NotBlank(message = "주소를 입력해주세요") String street,
         @NotBlank(message = "상세 주소를 입력해주세요") String detail) {
 
-    public UserAccount toEntity(String email, PasswordEncoder encoder) {
+    public UserAccount toEntity() {
         return UserAccount.of(
-                email, encoder.encode(password), nickname, phone, Address.of(zipcode, street, detail), userRole);
+                email, password, nickname, phone, Address.of(zipcode, street, detail), userRole);
     }
 }
