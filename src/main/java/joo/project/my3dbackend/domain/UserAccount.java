@@ -59,6 +59,10 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private Set<ArticleLike> articleLikes = new LinkedHashSet<>();
+
     // TODO: company와 연관 관계 설정
     // TODO: userRefreshToken과 연관 관계 설정
 

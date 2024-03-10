@@ -56,7 +56,13 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @JoinColumn(name = "articleFileId")
     private ArticleFile articleFile;
 
-    // TODO: articleLike와 연관 관계 설정
+    @ToString.Exclude
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private Set<ArticleLike> articleLikes = new LinkedHashSet<>();
+
+    @Column(nullable = false, columnDefinition = "int4 default 0")
+    private Integer likeCount;
+
     // TODO: alarm과 연관 관계 설정
 
     /**

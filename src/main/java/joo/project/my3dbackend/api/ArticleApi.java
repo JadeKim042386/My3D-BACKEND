@@ -63,6 +63,7 @@ public class ArticleApi {
     @DeleteMapping("/{articleId}")
     public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
         // TODO: 작성자 또는 관리자만 게시글을 삭제할 수 있다.
+        // TODO: 삭제시 comment, like, file select 발생
         articleService.deleteArticle(articleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.of("you're successfully delete article"));
     }
