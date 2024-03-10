@@ -45,7 +45,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
 
     @ToString.Exclude
     @OrderBy("createdAt DESC")
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     @Column(nullable = false)
@@ -57,7 +57,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
     private ArticleFile articleFile;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ArticleLike> articleLikes = new LinkedHashSet<>();
 
     @Column(nullable = false, columnDefinition = "int4 default 0")
