@@ -26,7 +26,7 @@ public class UserAccountService implements UserAccountServiceInterface {
 
     @Transactional
     @Override
-    public void saveUser(UserAccount userAccount) {
+    public void registerUser(UserAccount userAccount) {
         userAccount.setPassword(encodePassword(userAccount.getPassword()));
         userAccountRepository.save(userAccount);
     }

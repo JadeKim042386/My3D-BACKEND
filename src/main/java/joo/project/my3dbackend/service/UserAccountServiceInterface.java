@@ -12,5 +12,5 @@ public interface UserAccountServiceInterface {
     /**
      * 회원가입
      */
-    void saveUser(UserAccount userAccount);
+    void registerUser(UserAccount userAccount);
 }
