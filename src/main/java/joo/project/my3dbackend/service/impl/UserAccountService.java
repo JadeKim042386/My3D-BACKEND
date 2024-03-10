@@ -21,4 +21,10 @@ public class UserAccountService implements UserAccountServiceInterface {
     public UserAccount getUserAccountByEmail(String email) {
         return userAccountRepository.findByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.NOT_FOUND_USER));
     }
+
+    @Transactional
+    @Override
+    public void saveUser(UserAccount userAccount) {
+        userAccountRepository.save(userAccount);
+    }
 }
