@@ -55,3 +55,5 @@ create table article_comment(
     foreign key (user_account_id) references user_account (id),
     foreign key (article_id) references article (id)
 );
+
+create index parent_comment_id_idx on article_comment (parent_comment_id);
