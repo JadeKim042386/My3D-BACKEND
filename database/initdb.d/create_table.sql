@@ -68,3 +68,5 @@ create table article_like(
     foreign key (user_account_id) references user_account (id) on delete cascade ,
     foreign key (article_id) references article (id) on delete cascade
 );
+
+create index parent_comment_id_idx on article_comment (parent_comment_id);
