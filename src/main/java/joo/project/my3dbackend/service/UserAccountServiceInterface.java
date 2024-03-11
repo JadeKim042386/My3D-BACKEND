@@ -8,4 +8,9 @@ public interface UserAccountServiceInterface {
      * 이메일로 유저 정보 조회
      */
     UserAccount getUserAccountByEmail(String email);
+
+    /**
+     * 회원가입
+     */
+    void registerUser(UserAccount userAccount);
 }

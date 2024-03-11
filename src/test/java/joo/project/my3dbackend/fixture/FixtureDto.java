@@ -6,6 +6,7 @@ import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleCommentRequest;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
+import joo.project.my3dbackend.dto.request.SignUpRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -60,5 +61,13 @@ public class FixtureDto {
 
     public static ArticleCommentDto createArticleChildCommentDto(Long parentCommentId) {
         return createArticleCommentDto(Fixture.createArticleComment(parentCommentId));
+    }
+
+    public static SignUpRequest createSignUpRequest(String email, UserRole userRole, String nickname, String password, String phone, String zipcode, String street, String detail) {
+        return new SignUpRequest(email, userRole, nickname, password, phone, zipcode, street, detail);
+    }
+
+    public static SignUpRequest createSignUpRequest() {
+        return createSignUpRequest("test@gmail.com", UserRole.USER, "test", "test1234@@", "01011112222", "12345", "street", "detail");
     }
 }
