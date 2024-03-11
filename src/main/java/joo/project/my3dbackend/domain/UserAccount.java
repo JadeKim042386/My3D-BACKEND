@@ -53,13 +53,17 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
 
     @ToString.Exclude
     @OrderBy("createdAt DESC")
-    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Article> articles = new LinkedHashSet<>();
 
     @ToString.Exclude
     @OrderBy("createdAt DESC")
-    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ArticleComment> articleComments = new LinkedHashSet<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ArticleLike> articleLikes = new LinkedHashSet<>();
 
     // TODO: company와 연관 관계 설정
     // TODO: userRefreshToken과 연관 관계 설정

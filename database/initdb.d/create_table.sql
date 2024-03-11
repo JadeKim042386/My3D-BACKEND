@@ -35,11 +35,12 @@ create table article(
     article_type varchar(255) NOT NULL ,
     article_category varchar(255) NOT NULL ,
     is_free boolean NOT NULL ,
+    like_count int4 NOT NULL default 0 ,
     created_at timestamp NOT NULL ,
     modified_at timestamp ,
     primary key (id),
-    foreign key (user_account_id) references user_account (id),
-    foreign key (article_file_id) references article_file (id)
+    foreign key (user_account_id) references user_account (id) on delete cascade ,
+    foreign key (article_file_id) references article_file (id) on delete cascade
 );
 
 create sequence seq_article_comment start 1;
@@ -52,6 +53,18 @@ create table article_comment(
     created_at timestamp NOT NULL ,
     modified_at timestamp ,
     primary key (id),
-    foreign key (user_account_id) references user_account (id),
-    foreign key (article_id) references article (id)
+    foreign key (user_account_id) references user_account (id) on delete cascade ,
+    foreign key (article_id) references article (id) on delete cascade
+);
+
+create sequence seq_article_like start 1;
+create table article_like(
+    id bigint default nextval('seq_article') NOT NULL ,
+    user_account_id bigint NOT NULL ,
+    article_id bigint NOT NULL ,
+    created_at timestamp NOT NULL ,
+    modified_at timestamp ,
+    primary key (id),
+    foreign key (user_account_id) references user_account (id) on delete cascade ,
+    foreign key (article_id) references article (id) on delete cascade
 );

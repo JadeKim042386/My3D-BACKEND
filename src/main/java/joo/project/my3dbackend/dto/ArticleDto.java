@@ -14,6 +14,7 @@ public record ArticleDto(
         ArticleType articleType,
         ArticleCategory articleCategory,
         boolean isFree,
+        int likeCount,
         UserInfo userInfo,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
@@ -25,6 +26,7 @@ public record ArticleDto(
                 article.getArticleType(),
                 article.getArticleCategory(),
                 article.isFree(),
+                article.getLikeCount(),
                 UserInfo.fromPrincipal(userPrincipal),
                 article.getCreatedAt(),
                 article.getModifiedAt());
@@ -38,6 +40,7 @@ public record ArticleDto(
                 article.getArticleType(),
                 article.getArticleCategory(),
                 article.isFree(),
+                article.getLikeCount(),
                 UserInfo.fromEntity(article.getUserAccount()),
                 article.getCreatedAt(),
                 article.getModifiedAt());
