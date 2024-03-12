@@ -97,4 +97,17 @@ public class FixtureDto {
         return createSignUpRequest(
                 "test@gmail.com", UserRole.USER, "test", "test1234@@", "01011112222", "12345", "street", "detail");
     }
+
+    public static AdminRequest createAdminRequest(
+            String nickname, String phone, String zipcode, String street, String detail) {
+        return new AdminRequest(nickname, phone, zipcode, street, detail);
+    }
+
+    public static AdminRequest createAdminRequest() {
+        return createAdminRequest("test", "01011112222", "12345", "street", "detail");
+    }
+
+    public static PasswordRequest createPasswordRequest() {
+        return new PasswordRequest("test2345@@");
+    }
 }
