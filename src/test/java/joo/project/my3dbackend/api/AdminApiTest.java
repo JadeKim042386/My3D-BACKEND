@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -43,7 +44,9 @@ class AdminApiTest {
         AdminRequest adminRequest = FixtureDto.createAdminRequest();
         willDoNothing().given(userAccountService).updateUser(anyString(), any(AdminRequest.class));
         // when
-        mvc.perform(put("/api/v1/admin").content(objectMapper.writeValueAsString(adminRequest)))
+        mvc.perform(put("/api/v1/admin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(adminRequest)))
                 .andExpect(status().isOk());
         // then
     }

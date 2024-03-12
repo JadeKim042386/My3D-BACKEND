@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -24,7 +27,7 @@ public class AdminApi {
      * 사용자 정보 수정 요청 (닉네임, 전화번호, 주소)
      */
     @PutMapping
-    public ResponseEntity<ApiResponse> updateUserData(AdminRequest adminRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse> updateUserData(@RequestBody @Valid AdminRequest adminRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         userAccountService.updateUser(userPrincipal.email(), adminRequest);
 
         return ResponseEntity.ok(ApiResponse.of("You successfully updated user account"));
@@ -34,7 +37,7 @@ public class AdminApi {
      * 비밀번호 변경
      */
     @PutMapping("/password")
-    public ResponseEntity<ApiResponse> updatePassword(PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse> updatePassword(@Valid PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         userAccountService.updatePassword(userPrincipal.email(), passwordRequest);
 
         return ResponseEntity.ok(ApiResponse.of("You successfully updated password"));
