@@ -4,8 +4,10 @@ spring:
     group:
       local:
         - common
+        - mail
       test:
         - common
+        - mail
 
 ---
 spring:
