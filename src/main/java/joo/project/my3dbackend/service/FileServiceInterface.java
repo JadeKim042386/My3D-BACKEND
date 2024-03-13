@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileServiceInterface {
     void uploadFile(MultipartFile file, String fileName);
 
-    void deleteFile(String fileName);
+    void deleteFileIfExists(String fileName);
 
     // TODO: 파일 다운로드
 }
