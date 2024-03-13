@@ -208,7 +208,7 @@ gradle-app.setting
 
 ###
 .env
-**/static/models/
+**/models/
 infer-out/
 .idea/
 

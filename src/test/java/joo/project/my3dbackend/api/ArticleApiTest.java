@@ -2,9 +2,12 @@ package joo.project.my3dbackend.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import joo.project.my3dbackend.config.TestSecurityConfig;
+import joo.project.my3dbackend.domain.constants.ArticleCategory;
+import joo.project.my3dbackend.domain.constants.ArticleType;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import org.junit.jupiter.api.*;
@@ -15,10 +18,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -43,19 +48,26 @@ class ArticleApiTest {
 
     @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Order(0)
-    @DisplayName("게시글 작성")
+    @DisplayName("모델 게시글 작성")
     @Test
     void writeArticle() throws Exception {
         // given
         ArticleRequest articleRequest = FixtureDto.createArticleRequest();
         Long userAccountId = 1L;
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
-        given(articleService.writeArticle(any(ArticleRequest.class), any(UserPrincipal.class)))
-                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity(userAccountId), userPrincipal));
+        MockMultipartFile modelFile = Fixture.createMultipartFile();
+        given(articleService.writeArticle(
+                        any(MultipartFile.class), any(ArticleRequest.class), any(UserPrincipal.class)))
+                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity(userAccountId, modelFile), userPrincipal));
         // when
-        mvc.perform(post("/api/v1/articles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(articleRequest)))
+        mvc.perform(multipart("/api/v1/articles")
+                        .file(modelFile)
+                        .file(new MockMultipartFile(
+                                "articleRequest",
+                                "",
+                                "application/json",
+                                objectMapper.writeValueAsBytes(articleRequest)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("title"))
                 .andExpect(jsonPath("$.content").value("content"))
@@ -64,28 +76,35 @@ class ArticleApiTest {
         // then
     }
 
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Order(1)
-    @DisplayName("게시글 작성 Validation Error")
+    @DisplayName("게시글 작성 Validation Error (title, content, isFree)")
     @ParameterizedTest
     @CsvSource(
             value = {
-                "title, content, MUSIC, ",
-                "title, content, , true",
-                "title, , MUSIC, true",
-                ", content, music, true",
-                "title, content, NULL, true",
+                "title, content, MODEL, MUSIC, ",
+                "title, , MODEL, MUSIC, true",
+                ", content, MODEL, MUSIC, true"
             })
-    void writeArticle_invalid(String title, String content, String articleCategory, Boolean isFree) throws Exception {
+    void writeArticle_invalid(String title, String content, ArticleType articleType, ArticleCategory articleCategory, Boolean isFree)
+            throws Exception {
         // given
-        ArticleRequest articleRequest = FixtureDto.createArticleRequest(title, content, articleCategory, isFree);
+        ArticleRequest articleRequest = FixtureDto.createArticleRequest(title, content, articleType, articleCategory, isFree);
+        MockMultipartFile modelFile = Fixture.createMultipartFile();
         // when
-        mvc.perform(post("/api/v1/articles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(articleRequest)))
+        mvc.perform(multipart("/api/v1/articles")
+                        .file(modelFile)
+                        .file(new MockMultipartFile(
+                                "articleRequest",
+                                "",
+                                "application/json",
+                                objectMapper.writeValueAsBytes(articleRequest)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         // then
     }
 
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Order(2)
     @DisplayName("게시글 삭제")
     @Test

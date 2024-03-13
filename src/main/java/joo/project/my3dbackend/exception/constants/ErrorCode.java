@@ -12,11 +12,19 @@ public enum ErrorCode {
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     // Article
     NOT_FOUND_ARTICLE(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."),
-    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+    INVALID_FIlE(HttpStatus.BAD_REQUEST, "파일이 비어있거나 지원되지 않는 확장자입니다. 지원되는 확장자는 *.stp, *.stl입니다."),
+    INVALID_FIlE_NAME(HttpStatus.BAD_REQUEST, "파일 형식이 잘못되었습니다."),
+    INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "articleCateogy가 null이거나 값이 잘못되었습니다."),
+    INVALID_DIMENSION(HttpStatus.BAD_REQUEST, "dimensionOption이 null이거나 값이 잘못되었습니다."),
     // Auth
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     EXPIRED_TOKEN(HttpStatus.FORBIDDEN, "Token이 만료되었습니다."),
-    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.")
+
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+    // File
+    FILE_CANT_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "파일 삭제에 실패했습니다."),
+    FILE_CANT_SAVE(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 저장 할 수 없습니다. 파일 경로를 다시 확인해주세요."),
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
     ;
 
     private final HttpStatus status;

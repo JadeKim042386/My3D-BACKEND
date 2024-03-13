@@ -22,14 +22,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                                 PathRequest.toStaticResources().atCommonLocations())
                         .permitAll()
+                        .mvcMatchers("/api/v1/signin")
+                        .permitAll()
                         .anyRequest()
-                        .permitAll())
+                        .authenticated())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin(form -> form.loginPage("/login.html")
-                        .loginProcessingUrl("/api/v1/signin")
-                        .permitAll())
+                .formLogin(form -> form.loginPage("/login.html").permitAll())
                 .addFilterAfter(jwtTokenFilter, SessionManagementFilter.class)
                 .build();
     }
