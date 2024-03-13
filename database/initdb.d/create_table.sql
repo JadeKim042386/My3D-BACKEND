@@ -98,3 +98,4 @@ create table alarm(
 
 create index parent_comment_id_idx on article_comment (parent_comment_id);
 create index receiver_idx on alarm (receiver_id);
+create unique index article_id_and_user_id_idx on article_like (user_account_id, article_id);
