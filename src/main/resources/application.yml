@@ -4,8 +4,10 @@ spring:
     group:
       local:
         - common
+        - mail
       test:
         - common
+        - mail
 
 ---
 spring:
@@ -22,6 +24,11 @@ jwt:
 local-file:
   relative-path: ${LOCAL_FILE_REL_PATH}
   absolute-path: ${LOCAL_FILE_ABS_PATH}
+async.executor:
+  core-pool-size: ${CORE_POOL_SIZE}
+  max-pool-size: ${MAX_POOL_SIZE}
+  queue-capacity: ${QUEUE_CAPACITY}
+  thread-name-prefix: ${THREAD_NAME_PREFIX}
 
 ---
 spring:
