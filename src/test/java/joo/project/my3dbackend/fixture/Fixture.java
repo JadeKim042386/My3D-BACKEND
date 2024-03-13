@@ -18,8 +18,15 @@ public class Fixture {
     }
 
     public static UserAccount createCompanyUserAccount(
-            String email, String password, String nickname, String phone, Address address, UserRole userRole, Company company) {
-        UserAccount userAccount = UserAccount.ofCompanyUser(email, password, nickname, phone, address, userRole, company);
+            String email,
+            String password,
+            String nickname,
+            String phone,
+            Address address,
+            UserRole userRole,
+            Company company) {
+        UserAccount userAccount =
+                UserAccount.ofCompanyUser(email, password, nickname, phone, address, userRole, company);
         ReflectionTestUtils.setField(userAccount, "id", 1L);
         return userAccount;
     }
@@ -104,5 +111,13 @@ public class Fixture {
         ReflectionTestUtils.setField(alarm, "sender", createUserAccount());
         ReflectionTestUtils.setField(alarm, "article", createArticle());
         return alarm;
+    }
+
+    public static ArticleLike createArticleLike(Long articleId, Long userAccountId) {
+        return ArticleLike.of(articleId, userAccountId);
+    }
+
+    public static ArticleLike createArticleLike() {
+        return createArticleLike(1L, 1L);
     }
 }
