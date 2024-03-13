@@ -37,12 +37,15 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private String password;
 
+    @Setter
     @Column(nullable = false)
     private String nickname;
 
+    @Setter
     @Column(length = 11)
     private String phone;
 
+    @Setter
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private Address address;

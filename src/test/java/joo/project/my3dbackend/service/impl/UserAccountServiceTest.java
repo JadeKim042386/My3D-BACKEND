@@ -1,7 +1,10 @@
 package joo.project.my3dbackend.service.impl;
 
 import joo.project.my3dbackend.domain.UserAccount;
+import joo.project.my3dbackend.dto.request.AdminRequest;
+import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.fixture.Fixture;
+import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.repository.UserAccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +36,30 @@ class UserAccountServiceTest {
         given(userAccountRepository.findByEmail(anyString())).willReturn(Optional.of(userAccount));
         // when
         userAccountService.getUserAccountByEmail(userAccount.getEmail());
+        // then
+    }
+
+    @DisplayName("유저 정보 수정")
+    @Test
+    void updateUser() {
+        // given
+        String email = "test@gmail.com";
+        AdminRequest adminRequest = FixtureDto.createAdminRequest();
+        given(userAccountRepository.findByEmail(anyString())).willReturn(Optional.of(Fixture.createUserAccount()));
+        // when
+        userAccountService.updateUser(email, adminRequest);
+        // then
+    }
+
+    @DisplayName("비밀번호 수정")
+    @Test
+    void updatePassword() {
+        // given
+        String email = "test@gmail.com";
+        PasswordRequest passwordRequest = FixtureDto.createPasswordRequest();
+        given(userAccountRepository.findByEmail(anyString())).willReturn(Optional.of(Fixture.createUserAccount()));
+        // when
+        userAccountService.updatePassword(email, passwordRequest);
         // then
     }
 }

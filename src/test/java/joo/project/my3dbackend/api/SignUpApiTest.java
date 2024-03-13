@@ -46,7 +46,7 @@ class SignUpApiTest {
     void signup() throws Exception {
         // given
         SignUpRequest signUpRequest = FixtureDto.createSignUpRequest();
-        willDoNothing().given(userAccountService).saveUser(any(UserAccount.class));
+        willDoNothing().given(userAccountService).registerUser(any(UserAccount.class));
         // when
         mvc.perform(post("/api/v1/signup")
                         .contentType(MediaType.APPLICATION_JSON)
