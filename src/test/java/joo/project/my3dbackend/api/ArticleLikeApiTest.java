@@ -41,11 +41,11 @@ class ArticleLikeApiTest {
         // given
         Long articleId = 1L;
         int updatedLikeCount = 2;
-        given(articleService.isExistsByArticleIdAndUserAccountId(anyLong(), anyLong()))
+        given(articleService.doesArticleExistByUserAccountId(anyLong(), anyLong()))
                 .willReturn(false);
         given(articleLikeService.addArticleLike(anyLong(), anyLong())).willReturn(updatedLikeCount);
         // when
-        mvc.perform(post("/api/v1/articles/" + articleId + "/like"))
+        mvc.perform(post("/api/v1/articles/" + articleId + "/like").param("likeStatus", "LIKE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.likeCount").value(updatedLikeCount));
         // then
@@ -58,11 +58,11 @@ class ArticleLikeApiTest {
         // given
         Long articleId = 1L;
         int updatedLikeCount = 1;
-        given(articleService.isExistsByArticleIdAndUserAccountId(anyLong(), anyLong()))
+        given(articleService.doesArticleExistByUserAccountId(anyLong(), anyLong()))
                 .willReturn(false);
         given(articleLikeService.deleteArticleLike(anyLong(), anyLong())).willReturn(updatedLikeCount);
         // when
-        mvc.perform(delete("/api/v1/articles/" + articleId + "/like"))
+        mvc.perform(post("/api/v1/articles/" + articleId + "/like").param("likeStatus", "UNLIKE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.likeCount").value(updatedLikeCount));
         // then

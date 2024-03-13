@@ -8,7 +8,9 @@ import javax.persistence.*;
 
 @Getter
 @ToString(callSuper = true)
-@Table(name = "article_like")
+@Table(
+        name = "article_like",
+        indexes = @Index(name = "article_id_and_user_id_idx", columnList = "userAccountId, articleId", unique = true))
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

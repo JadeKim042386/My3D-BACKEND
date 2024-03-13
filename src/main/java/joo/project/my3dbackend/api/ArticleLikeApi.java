@@ -1,5 +1,6 @@
 package joo.project.my3dbackend.api;
 
+import joo.project.my3dbackend.api.constants.LikeStatus;
 import joo.project.my3dbackend.dto.response.ArticleLikeResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.exception.ArticleException;
@@ -21,27 +22,22 @@ public class ArticleLikeApi {
     private final ArticleServiceInterface articleService;
 
     /**
-     * 특정 게시글에 좋아요 추가
+     * 특정 게시글에 좋아요 추가/삭제
      */
     @PostMapping
-    public ResponseEntity<ArticleLikeResponse> addArticleLike(
-            @PathVariable Long articleId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ArticleLikeResponse> addOrDeleteArticleLike(
+            @RequestParam LikeStatus likeStatus,
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
         isWriter(articleId, userPrincipal.id());
-        // TODO: 좋아요를 추가하지 않았을 경우에만 추가할 수 있음
-        return ResponseEntity.ok(
-                ArticleLikeResponse.of(articleLikeService.addArticleLike(articleId, userPrincipal.id())));
-    }
-
-    /**
-     * 특정 게시글의 좋아요 해제
-     */
-    @DeleteMapping
-    public ResponseEntity<ArticleLikeResponse> deleteArticleLike(
-            @PathVariable Long articleId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        isWriter(articleId, userPrincipal.id());
-        // TODO: 좋아요를 추가했을 경우만 삭제할 수 있음
-        return ResponseEntity.ok(
-                ArticleLikeResponse.of(articleLikeService.deleteArticleLike(articleId, userPrincipal.id())));
+        // TODO: 좋아요를 추가하지 않았을 경우에만 추가할 수 있고 좋아요를 추가했을 경우만 삭제할 수 있음
+        int updatedLikeCount;
+        if (likeStatus.equals(LikeStatus.LIKE)) {
+            updatedLikeCount = articleLikeService.addArticleLike(articleId, userPrincipal.id());
+        } else {
+            updatedLikeCount = articleLikeService.deleteArticleLike(articleId, userPrincipal.id());
+        }
+        return ResponseEntity.ok(new ArticleLikeResponse(updatedLikeCount));
     }
 
     /**
