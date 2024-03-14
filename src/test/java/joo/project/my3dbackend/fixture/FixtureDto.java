@@ -89,13 +89,35 @@ public class FixtureDto {
             String phone,
             String zipcode,
             String street,
-            String detail) {
-        return new SignUpRequest(email, userRole, nickname, password, phone, zipcode, street, detail);
+            String detail,
+            String companyName) {
+        return new SignUpRequest(email, userRole, nickname, password, phone, zipcode, street, detail, companyName);
     }
 
     public static SignUpRequest createSignUpRequest() {
         return createSignUpRequest(
-                "test@gmail.com", UserRole.USER, "test", "test1234@@", "01011112222", "12345", "street", "detail");
+                "test@gmail.com",
+                UserRole.USER,
+                "test",
+                "test1234@@",
+                "01011112222",
+                "12345",
+                "street",
+                "detail",
+                null);
+    }
+
+    public static SignUpRequest createCompanySignUpRequest() {
+        return createSignUpRequest(
+                "testCompany@gmail.com",
+                UserRole.COMPANY,
+                "testCompany",
+                "test1234@@",
+                "01011112222",
+                "12345",
+                "street",
+                "detail",
+                "Fake");
     }
 
     public static AdminRequest createAdminRequest(
