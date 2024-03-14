@@ -25,7 +25,9 @@ public enum ErrorCode {
     FILE_CANT_SAVE(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 저장 할 수 없습니다. 파일 경로를 다시 확인해주세요."),
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
     // Mail
-    MAIL_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송 실패");
+    MAIL_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송 실패"),
+    //Sign Up
+    INVALID_COMPANY_NAME(HttpStatus.BAD_REQUEST, "기업명이 입력되지않았습니다.");
 
     private final HttpStatus status;
     private final String message;
