@@ -85,6 +85,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
         this.isFree = isFree;
         this.userAccountId = userAccountId;
         this.articleFile = articleFile;
+        this.likeCount = 0;
     }
 
     public static Article ofModel(
