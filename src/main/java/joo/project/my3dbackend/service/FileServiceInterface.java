@@ -10,5 +10,5 @@ public interface FileServiceInterface {
 
     void deleteFileIfExists(String fileName);
 
-    // TODO: 파일 다운로드
+    byte[] downloadFile(String fileName);
 }

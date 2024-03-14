@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -37,6 +38,15 @@ public class LocalFileService implements FileServiceInterface {
             }
         } else {
             throw new FileException(ErrorCode.FILE_NOT_FOUND);
+        }
+    }
+
+    @Override
+    public byte[] downloadFile(String fileName) {
+        try (FileInputStream fis = new FileInputStream(createFileInstance(fileName))) {
+            return fis.readAllBytes();
+        } catch (IOException e) {
+            throw new FileException(ErrorCode.FAILED_DOWNLOAD_FILE);
         }
     }
 
