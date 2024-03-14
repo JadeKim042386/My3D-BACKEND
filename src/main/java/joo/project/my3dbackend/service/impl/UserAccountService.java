@@ -1,5 +1,6 @@
 package joo.project.my3dbackend.service.impl;
 
+import joo.project.my3dbackend.domain.Address;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.PasswordRequest;
@@ -12,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -38,9 +37,16 @@ public class UserAccountService implements UserAccountServiceInterface {
     @Override
     public void updateUser(String email, AdminRequest adminRequest) {
         UserAccount userAccount = getUserAccountByEmail(email);
-        Optional.ofNullable(adminRequest.nickname()).ifPresent(userAccount::setNickname);
-        Optional.ofNullable(adminRequest.phone()).ifPresent(userAccount::setPhone);
-        Optional.of(adminRequest.getAddress()).ifPresent(userAccount::setAddress);
+        if (isUpdatedUserData(userAccount.getNickname(), adminRequest.nickname())) {
+            userAccount.setNickname(adminRequest.nickname());
+        }
+        if (isUpdatedUserData(userAccount.getPhone(), adminRequest.phone())) {
+            userAccount.setPhone(adminRequest.phone());
+        }
+        Address updatedAddress = adminRequest.getAddress();
+        if (isUpdatedUserData(userAccount.getAddress(), updatedAddress)) {
+            userAccount.setAddress(updatedAddress);
+        }
     }
 
     @Override
@@ -51,5 +57,9 @@ public class UserAccountService implements UserAccountServiceInterface {
 
     private String encodePassword(String password) {
         return encoder.encode(password);
+    }
+
+    private <T> boolean isUpdatedUserData(T savedData, T updatedData) {
+        return !savedData.equals(updatedData);
     }
 }

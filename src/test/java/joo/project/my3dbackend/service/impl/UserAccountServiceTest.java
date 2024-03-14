@@ -9,6 +9,8 @@ import joo.project.my3dbackend.repository.UserAccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -40,11 +42,17 @@ class UserAccountServiceTest {
     }
 
     @DisplayName("유저 정보 수정")
-    @Test
-    void updateUser() {
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                "admin, 01011112222, 54321, street2, detail2",
+                "admin, 01011112222, 12345, street, detail",
+                "admin, 01012341234, 12345, street, detail"
+            })
+    void updateUser(String nickname, String phone, String zipcode, String street, String detail) {
         // given
         String email = "test@gmail.com";
-        AdminRequest adminRequest = FixtureDto.createAdminRequest();
+        AdminRequest adminRequest = FixtureDto.createAdminRequest(nickname, phone, zipcode, street, detail);
         given(userAccountRepository.findByEmail(anyString())).willReturn(Optional.of(Fixture.createUserAccount()));
         // when
         userAccountService.updateUser(email, adminRequest);

@@ -1,11 +1,13 @@
 package joo.project.my3dbackend.domain;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
 public class Address {
     private String zipcode; // 우편번호
     private String street; // 주소

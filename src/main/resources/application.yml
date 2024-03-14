@@ -47,6 +47,9 @@ spring:
     port: 35730
 
 ---
+logging:
+  level:
+    org.springframework: debug
 spring:
   config.activate.on-profile: test
   jpa:
