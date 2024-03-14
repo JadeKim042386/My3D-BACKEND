@@ -4,7 +4,6 @@ import joo.project.my3dbackend.domain.Address;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -25,7 +24,7 @@ public record SignUpRequest(
         @NotBlank(message = "상세 주소를 입력해주세요") String detail) {
 
     public UserAccount toEntity() {
-        return UserAccount.of(
+        return UserAccount.ofGeneralUser(
                 email, password, nickname, phone, Address.of(zipcode, street, detail), userRole);
     }
 }

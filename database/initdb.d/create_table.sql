@@ -1,6 +1,15 @@
+create sequence seq_company start 1;
+create table company(
+    id int8 default nextval('seq_company') NOT NULL ,
+    company_name varchar(255) NOT NULL ,
+    homepage varchar(255),
+    primary key (id)
+);
+
 create sequence seq_user_account start 1;
 create table user_account(
     id int8 default nextval('seq_user_account') NOT NULL ,
+    company_id int8 ,
     email varchar(255) NOT NULL ,
     password varchar(255) NOT NULL ,
     nickname varchar(255) NOT NULL ,
@@ -9,7 +18,8 @@ create table user_account(
     user_role varchar(11) NOT NULL ,
     created_at timestamp NOT NULL ,
     modified_at timestamp ,
-    primary key (id)
+    primary key (id),
+    foreign key (company_id) references company (id) on delete cascade
 );
 create unique index email_idx on user_account (email);
 
@@ -40,7 +50,7 @@ create table article(
     modified_at timestamp ,
     primary key (id),
     foreign key (user_account_id) references user_account (id) on delete cascade ,
-    foreign key (article_file_id) references article_file (id) on delete cascade
+    foreign key (article_file_id) references article_file (id)
 );
 
 create sequence seq_article_comment start 1;
