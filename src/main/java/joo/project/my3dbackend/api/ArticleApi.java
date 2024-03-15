@@ -4,14 +4,19 @@ import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.service.ArticleFileServiceInterface;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
+import joo.project.my3dbackend.service.FileServiceInterface;
+import joo.project.my3dbackend.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +30,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ArticleApi {
     private final ArticleServiceInterface articleService;
+    private final ArticleFileServiceInterface articleFileService;
+    private final FileServiceInterface fileService;
 
     /**
      * 게시글 목록 조회 (페이지당 9개)
@@ -69,5 +76,19 @@ public class ArticleApi {
         // TODO: 삭제시 comment, like, file select 발생
         articleService.deleteArticle(articleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.of("you're successfully delete article"));
+    }
+
+    /**
+     * 특정 게시글의 모델 파일 다운로드 요청
+     */
+    @GetMapping("/{articleId}/download")
+    public ResponseEntity<byte[]> downloadArticleFile(@PathVariable Long articleId) {
+        String fileName = articleFileService.findUploadedFileName(articleId);
+        byte[] file = fileService.downloadFile(fileName);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        httpHeaders.setContentLength(file.length);
+        httpHeaders.setContentDispositionFormData("attachment", "model." + FileUtils.getExtension(fileName));
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(file);
     }
 }
