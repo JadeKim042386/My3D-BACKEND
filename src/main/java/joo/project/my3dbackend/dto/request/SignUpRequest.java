@@ -4,10 +4,7 @@ import joo.project.my3dbackend.domain.Address;
 import joo.project.my3dbackend.domain.Company;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.domain.constants.UserRole;
-import joo.project.my3dbackend.exception.SignUpException;
-import joo.project.my3dbackend.exception.constants.ErrorCode;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -30,9 +27,6 @@ public record SignUpRequest(
 
     public UserAccount toEntity() {
         if (userRole.equals(UserRole.COMPANY)) {
-            if (!StringUtils.hasText(companyName)) {
-                throw new SignUpException(ErrorCode.INVALID_COMPANY_NAME);
-            }
             return UserAccount.ofCompanyUser(
                     email,
                     password,
