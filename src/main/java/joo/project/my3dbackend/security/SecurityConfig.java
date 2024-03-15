@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                                 PathRequest.toStaticResources().atCommonLocations())
                         .permitAll()
-                        .mvcMatchers("/api/v1/signin")
+                        .mvcMatchers("/api/v1/signin", "/api/v1/signup")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

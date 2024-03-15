@@ -26,7 +26,9 @@ public enum ErrorCode {
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
     FAILED_DOWNLOAD_FILE(HttpStatus.INTERNAL_SERVER_ERROR, "파일 다운로드에 실패했습니다."),
     // Mail
-    MAIL_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송 실패");
+    MAIL_SEND_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송 실패"),
+    //Sign Up
+    INVALID_COMPANY_NAME(HttpStatus.BAD_REQUEST, "기업명이 입력되지않았습니다.");
 
     private final HttpStatus status;
     private final String message;

@@ -1,6 +1,7 @@
 package joo.project.my3dbackend.dto.request;
 
 import joo.project.my3dbackend.domain.Address;
+import joo.project.my3dbackend.domain.Company;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import org.hibernate.validator.constraints.Length;
@@ -21,10 +22,22 @@ public record SignUpRequest(
         @NotBlank(message = "전화번호를 입력해주세요") @Length(min = 9, max = 11, message = "전화번호는 9 ~ 11자리를 가져야합니다") String phone,
         @NotBlank(message = "우편번호를 입력해주세요") String zipcode,
         @NotBlank(message = "주소를 입력해주세요") String street,
-        @NotBlank(message = "상세 주소를 입력해주세요") String detail) {
+        @NotBlank(message = "상세 주소를 입력해주세요") String detail,
+        String companyName) {
 
     public UserAccount toEntity() {
-        return UserAccount.ofGeneralUser(
-                email, password, nickname, phone, Address.of(zipcode, street, detail), userRole);
+        if (userRole.equals(UserRole.COMPANY)) {
+            return UserAccount.ofCompanyUser(
+                    email,
+                    password,
+                    nickname,
+                    phone,
+                    Address.of(zipcode, street, detail),
+                    userRole,
+                    Company.of(companyName, null));
+        } else {
+            return UserAccount.ofGeneralUser(
+                    email, password, nickname, phone, Address.of(zipcode, street, detail), userRole);
+        }
     }
 }

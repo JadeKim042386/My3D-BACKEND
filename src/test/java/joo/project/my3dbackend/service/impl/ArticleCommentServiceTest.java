@@ -70,7 +70,7 @@ class ArticleCommentServiceTest {
     void deleteComment() {
         // given
         Long articleCommentId = 1L;
-        willDoNothing().given(articleCommentRepository).deleteById(anyLong());
+        willDoNothing().given(articleCommentRepository).deleteByIdOrParentCommentId(anyLong());
         // when
         assertThatNoException().isThrownBy(() -> articleCommentService.deleteComment(articleCommentId));
         // then
