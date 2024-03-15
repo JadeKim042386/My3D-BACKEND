@@ -29,21 +29,18 @@ public class ArticleLikeApi {
             @RequestParam LikeStatus likeStatus,
             @PathVariable Long articleId,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        isWriter(articleId, userPrincipal.id());
+
+        checkIfWriter(articleId, userPrincipal.id());
         // TODO: 좋아요를 추가하지 않았을 경우에만 추가할 수 있고 좋아요를 추가했을 경우만 삭제할 수 있음
-        int updatedLikeCount;
-        if (likeStatus.equals(LikeStatus.LIKE)) {
-            updatedLikeCount = articleLikeService.addArticleLike(articleId, userPrincipal.id());
-        } else {
-            updatedLikeCount = articleLikeService.deleteArticleLike(articleId, userPrincipal.id());
-        }
-        return ResponseEntity.ok(new ArticleLikeResponse(updatedLikeCount));
+        return ResponseEntity.ok(
+                new ArticleLikeResponse(articleLikeService.updateLikeCount(likeStatus, articleId, userPrincipal.id())));
     }
 
     /**
      * 작성자는 좋아요를 추가하거나 취소할 수 없음
      */
-    private void isWriter(Long articleId, Long userAccountId) {
+
+    private void checkIfWriter(Long articleId, Long userAccountId) {
         if (articleService.isWriterOfArticle(articleId, userAccountId)) {
             throw new ArticleException(ErrorCode.INVALID_REQUEST);
         }

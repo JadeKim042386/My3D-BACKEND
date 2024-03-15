@@ -36,7 +36,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-      use-new-id-generator-mappings: false
     defer-datasource-initialization: true
   datasource:
     url: ${DB_URL}
