@@ -135,7 +135,7 @@ sequenceDiagram
 
 ### 4. 알람
 
-### 4.1. 페이지 전환
+#### 4.1. 페이지 전환
 ```mermaid
 sequenceDiagram
     autonumber
@@ -148,7 +148,7 @@ sequenceDiagram
     WAS -->>- client: 알람 정보 전달
     deactivate client
 ```
-### 4.2. 이벤트 발생 (댓글 작성)
+#### 4.2. 이벤트 발생 (댓글 작성)
 ```mermaid
 sequenceDiagram
     autonumber
