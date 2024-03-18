@@ -21,7 +21,7 @@ public class PasswordGenerator {
         int length = RANDOM.nextInt((MAX_LENGTH - MIN_LENGTH) + 1) + MIN_LENGTH;
         ArrayList<Character> passwordCharacters = new ArrayList<>();
         // 영문자, 숫자, 특수문자를 각각 2개씩 추가 (최소 길이를 가지는 비밀번호를 기본으로 생성)
-        for (int i = 0; i < MIN_LENGTH/4; i++) {
+        for (int i = 0; i < MIN_LENGTH / 4; i++) {
             passwordCharacters.add(CHAR_LOWER.charAt(RANDOM.nextInt(CHAR_LOWER.length())));
             passwordCharacters.add(CHAR_UPPER.charAt(RANDOM.nextInt(CHAR_UPPER.length())));
             passwordCharacters.add(NUMBER.charAt(RANDOM.nextInt(NUMBER.length())));

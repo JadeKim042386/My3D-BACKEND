@@ -6,7 +6,6 @@ import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.CompanyRequest;
-import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.exception.AuthException;
 import joo.project.my3dbackend.exception.SignUpException;
 import joo.project.my3dbackend.exception.constants.ErrorCode;

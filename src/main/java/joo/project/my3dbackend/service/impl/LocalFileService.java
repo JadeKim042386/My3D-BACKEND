@@ -30,9 +30,9 @@ public class LocalFileService implements FileServiceInterface {
     @Override
     public void deleteFileIfExists(String fileName) {
         File file = createFileInstance(fileName);
-        //파일이 존재하지 않을 경우 예외 처리
+        // 파일이 존재하지 않을 경우 예외 처리
         if (file.exists()) {
-            //파일을 정상적으로 삭제할 경우 true를 반환하며 false를 반환할 경우 예외 처리
+            // 파일을 정상적으로 삭제할 경우 true를 반환하며 false를 반환할 경우 예외 처리
             if (!file.delete()) {
                 throw new FileException(ErrorCode.FILE_CANT_DELETE);
             }

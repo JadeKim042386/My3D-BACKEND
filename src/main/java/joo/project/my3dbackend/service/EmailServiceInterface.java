@@ -3,11 +3,11 @@ package joo.project.my3dbackend.service;
 public interface EmailServiceInterface {
     /**
      * 비동기 이메일 전송
-     * @param to 수신자
+     * @param toEmail 수신자
      * @param subject 제목
      * @param text 본문
      */
-    void sendAsyncEmail(String to, String subject, String text);
+    void sendAsyncEmail(String toEmail, String subject, String text);
 
     /**
      * 임시 비밀번호 전송

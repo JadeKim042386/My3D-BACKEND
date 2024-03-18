@@ -32,8 +32,8 @@ public class EmailService implements EmailServiceInterface {
 
     @Async
     @Override
-    public void sendAsyncEmail(String to, String subject, String text) {
-        sendEmail(to, subject, text);
+    public void sendAsyncEmail(String toEmail, String subject, String text) {
+        sendEmail(toEmail, subject, text);
     }
 
     @Transactional
@@ -55,17 +55,17 @@ public class EmailService implements EmailServiceInterface {
                     log.debug("Subject: {}", message.getSubject());
                     // 받는 사람 이메일 확인
                     Optional.ofNullable(message.getHeader(FAILED_RECIPIENTS_HEADER))
-                        .ifPresent(recipients -> {
-                            if (recipients[0].equals(email)) {
-                                try {
-                                    // 반송된 이메일 삭제
-                                    message.setFlag(Flags.Flag.DELETED, true);
-                                    emailFolder.close(true);
-                                } catch (MessagingException e) {
-                                    throw new MailException(ErrorCode.CANT_GET_MAIL, e);
+                            .ifPresent(recipients -> {
+                                if (recipients[0].equals(email)) {
+                                    try {
+                                        // 반송된 이메일 삭제
+                                        message.setFlag(Flags.Flag.DELETED, true);
+                                        emailFolder.close(true);
+                                    } catch (MessagingException e) {
+                                        throw new MailException(ErrorCode.CANT_GET_MAIL, e);
+                                    }
                                 }
-                            }
-                        });
+                            });
                     if (!emailFolder.isOpen()) {
                         return false;
                     }
@@ -77,11 +77,11 @@ public class EmailService implements EmailServiceInterface {
         return true;
     }
 
-    private void sendEmail(String to, String subject, String text) {
+    private void sendEmail(String toEmail, String subject, String text) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            mimeMessageHelper.setTo(to);
+            mimeMessageHelper.setTo(toEmail);
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(text);
             javaMailSender.send(mimeMessage);

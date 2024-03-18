@@ -9,8 +9,7 @@ import java.util.Objects;
 
 @Getter
 @ToString(callSuper = true)
-@Table(name = "article_comment",
-indexes = @Index(name = "parent_comment_id_idx", columnList = "parentCommentId"))
+@Table(name = "article_comment", indexes = @Index(name = "parent_comment_id_idx", columnList = "parentCommentId"))
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

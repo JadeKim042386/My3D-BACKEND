@@ -24,6 +24,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AdminApi {
     private final UserAccountServiceInterface userAccountService;
+    // TODO: 유저 존재 여부 확인
 
     /**
      * 사용자 정보 수정 요청 (닉네임, 전화번호, 주소)
