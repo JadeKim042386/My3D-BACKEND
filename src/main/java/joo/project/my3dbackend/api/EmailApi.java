@@ -41,7 +41,7 @@ public class EmailApi {
      * 임의 비밀번호 생성 후 전송
      */
     @PostMapping("/find-pass")
-    public ResponseEntity<ApiResponse> sendRandomPassword(@RequestBody @Valid EmailRequest emailRequest) {
+    public ResponseEntity<ApiResponse<String>> sendRandomPassword(@RequestBody @Valid EmailRequest emailRequest) {
         // TODO: 회원가입 여부 체크
         String subject = "[My3D] 임시 비밀번호";
         String password = generatePassword();
@@ -54,7 +54,7 @@ public class EmailApi {
      * 전송 여부를 확인할지는 사용자가 선택
      */
     @PostMapping("/check-sent")
-    public ResponseEntity<ApiResponse> isCompleteSentEmail(@RequestBody @Valid EmailRequest emailRequest) {
+    public ResponseEntity<ApiResponse<Boolean>> isCompleteSentEmail(@RequestBody @Valid EmailRequest emailRequest) {
 
         return ResponseEntity.ok(ApiResponse.of(emailService.isCompleteSentEmail(emailRequest.email())));
     }

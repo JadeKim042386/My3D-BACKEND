@@ -18,7 +18,7 @@ public class SignInApi {
     private final SignInService signInService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse> signIn(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<ApiResponse<String>> signIn(@RequestBody LoginRequest loginRequest) {
         String accessToken = signInService.signIn(loginRequest.email(), loginRequest.password());
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.of(accessToken));
     }

@@ -29,10 +29,9 @@ public class AdminApi {
      * 사용자 정보 수정 요청 (닉네임, 전화번호, 주소)
      */
     @PutMapping
-    public ResponseEntity<ApiResponse> updateUserData(
+    public ResponseEntity<ApiResponse<String>> updateUserData(
             @RequestBody @Valid AdminRequest adminRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         userAccountService.updateUser(userPrincipal.email(), adminRequest);
-
         return ResponseEntity.ok(ApiResponse.of("You successfully updated user account"));
     }
 
@@ -40,7 +39,7 @@ public class AdminApi {
      * 비밀번호 변경
      */
     @PutMapping("/password")
-    public ResponseEntity<ApiResponse> updatePassword(
+    public ResponseEntity<ApiResponse<String>> updatePassword(
             @Valid PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         userAccountService.updatePassword(userPrincipal.email(), passwordRequest.password());
         return ResponseEntity.ok(ApiResponse.of("You successfully updated password"));

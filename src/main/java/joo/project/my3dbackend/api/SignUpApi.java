@@ -26,7 +26,7 @@ public class SignUpApi {
      * 회원가입 요청
      */
     @PostMapping
-    public ResponseEntity<ApiResponse> signup(@RequestBody @Valid SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse<String>> signup(@RequestBody @Valid SignUpRequest signUpRequest) {
         // TODO: 이메일, 닉네임 중복체크
         userAccountService.registerUser(signUpRequest.toEntity());
 
