@@ -3,14 +3,16 @@ package joo.project.my3dbackend.service.impl;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.exception.AuthException;
 import joo.project.my3dbackend.exception.constants.ErrorCode;
+import joo.project.my3dbackend.security.PasswordGenerator;
 import joo.project.my3dbackend.security.TokenProvider;
+import joo.project.my3dbackend.service.SignInServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SignInService {
+public class SignInService implements SignInServiceInterface {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserAccountService userAccountService;

@@ -31,7 +31,7 @@ public interface UserAccountServiceInterface {
     /**
      * 비밀번호 변경
      */
-    void updatePassword(String email, PasswordRequest passwordRequest);
-
+    void updatePassword(String email, String password);
+    
     CompanyDto updateCompany(CompanyRequest companyRequest, Long userAccountId);
 }

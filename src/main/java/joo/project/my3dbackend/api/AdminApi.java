@@ -41,9 +41,8 @@ public class AdminApi {
      */
     @PutMapping("/password")
     public ResponseEntity<ApiResponse> updatePassword(
-            @RequestBody @Valid PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        userAccountService.updatePassword(userPrincipal.email(), passwordRequest);
-
+            @Valid PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        userAccountService.updatePassword(userPrincipal.email(), passwordRequest.password());
         return ResponseEntity.ok(ApiResponse.of("You successfully updated password"));
     }
 
