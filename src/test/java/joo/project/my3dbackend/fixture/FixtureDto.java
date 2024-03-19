@@ -7,6 +7,7 @@ import joo.project.my3dbackend.domain.constants.DimUnit;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.ArticleDto;
+import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.*;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -131,5 +132,13 @@ public class FixtureDto {
 
     public static PasswordRequest createPasswordRequest() {
         return new PasswordRequest("test2345@@");
+    }
+
+    public static CompanyRequest createCompanyRequest() {
+        return new CompanyRequest("my3d", "my3d.com");
+    }
+
+    public static CompanyDto createCompanyDto(String companyName, String homepage) {
+        return new CompanyDto(1L, companyName, homepage);
     }
 }

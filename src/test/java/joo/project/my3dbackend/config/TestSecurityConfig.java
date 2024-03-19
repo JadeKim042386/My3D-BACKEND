@@ -1,6 +1,7 @@
 package joo.project.my3dbackend.config;
 
 import joo.project.my3dbackend.domain.Address;
+import joo.project.my3dbackend.domain.Company;
 import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.fixture.Fixture;
@@ -26,10 +27,25 @@ public class TestSecurityConfig {
     void securitySetUp() {
         String userEmail = "testUser@gmail.com";
         given(userAccountService.getUserAccountByEmail(eq(userEmail))).willReturn(createUserAccount(userEmail));
+
+        String companyEmail = "testCompany@gmail.com";
+        given(userAccountService.getUserAccountByEmail(eq(companyEmail)))
+                .willReturn(createCompanyUserAccount(userEmail));
     }
 
     private UserAccount createUserAccount(String email) {
         return Fixture.createUserAccount(
                 email, "pw", "test", "01011112222", Address.of("12345", "street", "detail"), UserRole.USER);
+    }
+
+    private UserAccount createCompanyUserAccount(String email) {
+        return Fixture.createCompanyUserAccount(
+                email,
+                "pw",
+                "test",
+                "01011112222",
+                Address.of("12345", "street", "detail"),
+                UserRole.USER,
+                Company.of("test", "test.com"));
     }
 }

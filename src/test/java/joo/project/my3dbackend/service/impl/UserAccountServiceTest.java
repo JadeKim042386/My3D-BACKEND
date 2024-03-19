@@ -1,7 +1,9 @@
 package joo.project.my3dbackend.service.impl;
 
 import joo.project.my3dbackend.domain.UserAccount;
+import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
+import joo.project.my3dbackend.dto.request.CompanyRequest;
 import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
@@ -18,6 +20,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -69,5 +73,19 @@ class UserAccountServiceTest {
         // when
         userAccountService.updatePassword(email, passwordRequest);
         // then
+    }
+
+    @DisplayName("기업 정보 수정")
+    @Test
+    void updateCompany() {
+        // given
+        Long userAccountId = 1L;
+        CompanyRequest companyRequest = FixtureDto.createCompanyRequest();
+        given(userAccountRepository.findById(anyLong())).willReturn(Optional.of(Fixture.createCompanyUserAccount()));
+        // when
+        CompanyDto companyDto = userAccountService.updateCompany(companyRequest, userAccountId);
+        // then
+        assertThat(companyDto.companyName()).isEqualTo("my3d");
+        assertThat(companyDto.homepage()).isEqualTo("my3d.com");
     }
 }
