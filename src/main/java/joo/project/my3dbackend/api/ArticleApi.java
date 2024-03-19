@@ -1,5 +1,7 @@
 package joo.project.my3dbackend.api;
 
+import com.querydsl.core.types.Predicate;
+import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
@@ -13,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,11 +38,15 @@ public class ArticleApi {
 
     /**
      * 게시글 목록 조회 (페이지당 9개)
+     * - 제목, 카테고리 검색: /api/v1/articles?title=title&articleCategory=MUSIC
+     * - 작성일시 기준 정렬: api/v1/articles?sort=createdAt,asc
+     * - 좋아요 기준 정렬: api/v1/articles?sort=likeCount,asc
      */
     @GetMapping
     public ResponseEntity<Page<ArticleDto>> getArticles(
+            @QuerydslPredicate(root = Article.class) Predicate predicate,
             @PageableDefault(size = 9, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(articleService.getArticles(pageable));
+        return ResponseEntity.ok(articleService.getArticles(predicate, pageable));
     }
 
     /**
