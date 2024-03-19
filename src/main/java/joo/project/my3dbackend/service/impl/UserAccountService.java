@@ -68,7 +68,7 @@ public class UserAccountService implements UserAccountServiceInterface {
     @Override
     public void updatePassword(String email, String password) {
         UserAccount userAccount = getUserAccountByEmail(email);
-        userAccount.setPassword(password);
+        userAccount.setPassword(encodePassword(password));
     }
 
     @Override
