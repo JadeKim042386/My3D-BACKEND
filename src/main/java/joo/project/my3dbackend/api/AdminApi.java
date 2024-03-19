@@ -1,6 +1,8 @@
 package joo.project.my3dbackend.api;
 
+import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
+import joo.project.my3dbackend.dto.request.CompanyRequest;
 import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
@@ -27,7 +29,8 @@ public class AdminApi {
      * 사용자 정보 수정 요청 (닉네임, 전화번호, 주소)
      */
     @PutMapping
-    public ResponseEntity<ApiResponse> updateUserData(@RequestBody @Valid AdminRequest adminRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse> updateUserData(
+            @RequestBody @Valid AdminRequest adminRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         userAccountService.updateUser(userPrincipal.email(), adminRequest);
 
         return ResponseEntity.ok(ApiResponse.of("You successfully updated user account"));
@@ -37,9 +40,21 @@ public class AdminApi {
      * 비밀번호 변경
      */
     @PutMapping("/password")
-    public ResponseEntity<ApiResponse> updatePassword(@Valid PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse> updatePassword(
+            @RequestBody @Valid PasswordRequest passwordRequest, @AuthenticationPrincipal UserPrincipal userPrincipal) {
         userAccountService.updatePassword(userPrincipal.email(), passwordRequest);
 
         return ResponseEntity.ok(ApiResponse.of("You successfully updated password"));
+    }
+
+    /**
+     * 기업 정보 수정 요청
+     */
+    @PutMapping("/company")
+    public ResponseEntity<CompanyDto> updateCompany(
+            @RequestBody @Valid CompanyRequest companyAdminRequest,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        // TODO: 기업 유저가 맞는지 확인
+        return ResponseEntity.ok(userAccountService.updateCompany(companyAdminRequest, userPrincipal.id()));
     }
 }

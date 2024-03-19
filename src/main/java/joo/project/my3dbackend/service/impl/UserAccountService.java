@@ -3,7 +3,9 @@ package joo.project.my3dbackend.service.impl;
 import joo.project.my3dbackend.domain.Address;
 import joo.project.my3dbackend.domain.Company;
 import joo.project.my3dbackend.domain.UserAccount;
+import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
+import joo.project.my3dbackend.dto.request.CompanyRequest;
 import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.exception.AuthException;
 import joo.project.my3dbackend.exception.SignUpException;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -31,6 +34,14 @@ public class UserAccountService implements UserAccountServiceInterface {
     @Override
     public UserAccount getUserAccountByEmail(String email) {
         return userAccountRepository.findByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserAccount getUserAccountById(Long userAccountId) {
+        return userAccountRepository
+                .findById(userAccountId)
+                .orElseThrow(() -> new AuthException(ErrorCode.NOT_FOUND_USER));
     }
 
     @Override
@@ -59,6 +70,14 @@ public class UserAccountService implements UserAccountServiceInterface {
     public void updatePassword(String email, PasswordRequest passwordRequest) {
         UserAccount userAccount = getUserAccountByEmail(email);
         userAccount.setPassword(passwordRequest.password());
+    }
+
+    @Override
+    public CompanyDto updateCompany(CompanyRequest companyRequest, Long userAccountId) {
+        UserAccount userAccount = getUserAccountById(userAccountId);
+        Optional.ofNullable(companyRequest.companyName()).ifPresent(userAccount.getCompany()::setCompanyName);
+        Optional.ofNullable(companyRequest.homepage()).ifPresent(userAccount.getCompany()::setHomepage);
+        return CompanyDto.fromEntity(userAccount.getCompany());
     }
 
     private String encodePassword(String password) {
