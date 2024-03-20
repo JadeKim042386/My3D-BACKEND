@@ -20,6 +20,13 @@ public class Fixture {
         return userAccount;
     }
 
+    public static UserAccount createCompanyUserAccount(
+            String email, String password, String nickname, String phone, Address address, UserRole userRole, Company company) {
+        UserAccount userAccount = UserAccount.ofCompanyUser(email, password, nickname, phone, address, userRole, company);
+        ReflectionTestUtils.setField(userAccount, "id", 1L);
+        return userAccount;
+    }
+
     public static UserAccount createUserAccount() {
         return createUserAccount(
                 "testUser@gmail.com",
@@ -28,6 +35,17 @@ public class Fixture {
                 "01012341234",
                 Address.of("12345", "street", "detail"),
                 UserRole.USER);
+    }
+
+    public static UserAccount createCompanyUserAccount() {
+        return createCompanyUserAccount(
+                "testUser@gmail.com",
+                "pw",
+                "testUser",
+                "01012341234",
+                Address.of("12345", "street", "detail"),
+                UserRole.USER,
+                createCompany());
     }
 
     public static Article createArticle(
@@ -76,5 +94,11 @@ public class Fixture {
 
     public static MockMultipartFile createMultipartFile() {
         return createMultipartFile("It's test content.");
+    }
+
+    public static Company createCompany() {
+        Company company = Company.of("test", "test.com");
+        ReflectionTestUtils.setField(company, "id", 1L);
+        return company;
     }
 }
