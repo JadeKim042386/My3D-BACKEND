@@ -60,6 +60,7 @@ public class AdminApi {
      */
     @DeleteMapping
     public ResponseEntity<ApiResponse> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        // TODO: 게시글, 댓글, 알람 등 bulk delete
         userAccountService.deleteUser(userPrincipal.id());
         return ResponseEntity.ok(ApiResponse.of("You successfully delete user"));
     }
