@@ -47,7 +47,7 @@ public class Alarm extends AuditingAt implements Persistable<Long> {
     private UserAccount receiver; // 알람을 받는 유저
 
     @Setter
-    private LocalDateTime read_at; // 알람을 읽은 시간
+    private LocalDateTime readAt; // 알람을 읽은 시간
 
     private Alarm(AlarmType alarmType, Long targetId, Article article, UserAccount sender, UserAccount receiver) {
         this.alarmType = alarmType;
@@ -71,6 +71,6 @@ public class Alarm extends AuditingAt implements Persistable<Long> {
      * 알람을 읽었는지에 대한 여부
      */
     public boolean isRead() {
-        return !Objects.isNull(read_at);
+        return !Objects.isNull(this.readAt);
     }
 }
