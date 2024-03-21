@@ -79,4 +79,22 @@ create table article_like(
     foreign key (article_id) references article (id) on delete cascade
 );
 
+create sequence seq_alarm start 1;
+create table alarm(
+    id bigint default nextval('seq_alarm') NOT NULL ,
+    alarm_type varchar(255) NOT NULL ,
+    target_id bigint NOT NULL ,
+    article_id bigint NOT NULL ,
+    sender_id bigint NOT NULL ,
+    receiver_id bigint NOT NULL ,
+    read_at timestamp ,
+    created_at timestamp NOT NULL ,
+    modified_at timestamp ,
+    primary key (id),
+    foreign key (receiver_id) references user_account (id) on delete cascade ,
+    foreign key (sender_id) references user_account (id) on delete cascade ,
+    foreign key (article_id) references article (id) on delete cascade
+);
+
 create index parent_comment_id_idx on article_comment (parent_comment_id);
+create index receiver_idx on alarm (receiver_id);
