@@ -74,11 +74,4 @@ public class Alarm extends AuditingAt implements Persistable<Long> {
     public boolean isNew() {
         return this.id == null;
     }
-
-    /**
-     * 알람을 읽었는지에 대한 여부
-     */
-    public boolean isRead() {
-        return !Objects.isNull(this.readAt);
-    }
 }
