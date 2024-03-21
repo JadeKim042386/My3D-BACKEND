@@ -13,17 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 @NoArgsConstructor
 public class EmitterRepository {
-
     private final Map<String, SseEmitter> emitterMap = new ConcurrentHashMap<>();
 
     public SseEmitter save(Long userAccountId, SseEmitter sseEmitter) {
-        final String key = getKey(userAccountId);
+        String key = getKey(userAccountId);
         emitterMap.put(key, sseEmitter);
         return sseEmitter;
     }
 
     public Optional<SseEmitter> get(Long userAccountId) {
-        final String key = getKey(userAccountId);
+        String key = getKey(userAccountId);
         return Optional.ofNullable(emitterMap.get(key));
     }
 

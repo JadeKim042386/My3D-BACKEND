@@ -30,7 +30,8 @@ public enum ErrorCode {
     // Sign Up
     INVALID_COMPANY_NAME(HttpStatus.BAD_REQUEST, "기업명이 입력되지않았습니다."),
     // Alarm
-    ALARM_CONNECT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알람을 위한 연결 시도 실패");
+    ALARM_CONNECT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알람을 위한 연결 시도 실패"),
+    NOT_FOUND_ALARM(HttpStatus.NOT_FOUND, "존재하지 않는 알람입니다.");
 
     private final HttpStatus status;
     private final String message;

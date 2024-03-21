@@ -18,13 +18,14 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AlarmService implements AlarmServiceInterface<SseEmitter> {
-    private static final Long SSE_TIMEOUT = 30L * 60 * 1000; // 30분
+    private static final Long SSE_TIMEOUT = TimeUnit.MINUTES.toMillis(30);
     private static final String ALARM_NAME = "alarm";
     private final EmitterRepository emitterRepository;
     private final AlarmRepository alarmRepository;
@@ -35,6 +36,12 @@ public class AlarmService implements AlarmServiceInterface<SseEmitter> {
                 .map(AlarmDto::fromEntity)
                 .sorted(Comparator.comparing(AlarmDto::createdAt).reversed())
                 .toList();
+    }
+
+    @Override
+    public Alarm getAlarm(Long alarmId) {
+        return alarmRepository.findById(alarmId)
+                .orElseThrow(() -> new AlarmException(ErrorCode.NOT_FOUND_ALARM));
     }
 
     @Transactional
@@ -76,8 +83,8 @@ public class AlarmService implements AlarmServiceInterface<SseEmitter> {
 
     @Transactional
     @Override
-    public void checkAlarm(Long alarmId) {
-        Alarm alarm = alarmRepository.getReferenceById(alarmId);
+    public void readAlarm(Long alarmId) {
+        Alarm alarm = getAlarm(alarmId);
         alarm.setReadAt(LocalDateTime.now());
     }
 
