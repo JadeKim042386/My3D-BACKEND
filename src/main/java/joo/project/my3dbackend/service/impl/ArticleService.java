@@ -57,6 +57,17 @@ public class ArticleService implements ArticleServiceInterface {
         articleRepository.deleteById(articleId);
     }
 
+    @Override
+    public Long getUserAccountIdOfArticle(Long articleId) {
+        return articleRepository.findUserAccountIdById(articleId)
+                .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_ARTICLE));
+    }
+
+    @Override
+    public boolean isWriterOfArticle(Long userAccountId, Long articleId) {
+        return articleRepository.existsByIdAndUserAccount_Id(articleId, userAccountId);
+    }
+
     /**
      * 파일이 존재할 경우 업로드(저장)
      */

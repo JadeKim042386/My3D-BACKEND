@@ -27,4 +27,14 @@ public interface ArticleServiceInterface {
      * 게시글 삭제
      */
     void deleteArticle(Long articleId);
+
+    /**
+     * 게시글 작성자 ID 조회
+     */
+    Long getUserAccountIdOfArticle(Long articleId);
+
+    /**
+     * 게시글 작성자인지 확인
+     */
+    boolean isWriterOfArticle(Long userAccountId, Long articleId);
 }

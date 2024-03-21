@@ -33,33 +33,41 @@ public class Alarm extends AuditingAt implements Persistable<Long> {
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "articleId")
+    @JoinColumn(name = "articleId", insertable = false, updatable = false)
     private Article article;
 
-    @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "senderId")
-    private UserAccount sender; // 알람을 받는 유저
+    @Column(nullable = false)
+    private Long articleId;
 
     @ToString.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiverId")
+    @JoinColumn(name = "senderId", insertable = false, updatable = false)
+    private UserAccount sender; // 알람을 받는 유저
+
+    @Column(nullable = false)
+    private Long senderId;
+
+    @ToString.Exclude
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiverId", insertable = false, updatable = false)
     private UserAccount receiver; // 알람을 받는 유저
+
+    @Column(nullable = false)
+    private Long receiverId;
 
     @Setter
     private LocalDateTime readAt; // 알람을 읽은 시간
 
-    private Alarm(AlarmType alarmType, Long targetId, Article article, UserAccount sender, UserAccount receiver) {
+    private Alarm(AlarmType alarmType, Long targetId, Long articleId, Long senderId, Long receiverId) {
         this.alarmType = alarmType;
-        this.sender = sender;
+        this.senderId = senderId;
         this.targetId = targetId;
-        this.article = article;
-        this.receiver = receiver;
+        this.articleId = articleId;
+        this.receiverId = receiverId;
     }
 
-    public static Alarm of(
-            AlarmType alarmType, Long targetId, Article article, UserAccount sender, UserAccount receiver) {
-        return new Alarm(alarmType, targetId, article, sender, receiver);
+    public static Alarm of(AlarmType alarmType, Long targetId, Long articleId, Long senderId, Long receiverId) {
+        return new Alarm(alarmType, targetId, articleId, senderId, receiverId);
     }
 
     @Override
