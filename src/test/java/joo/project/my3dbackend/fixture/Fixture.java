@@ -1,10 +1,7 @@
 package joo.project.my3dbackend.fixture;
 
 import joo.project.my3dbackend.domain.*;
-import joo.project.my3dbackend.domain.constants.ArticleCategory;
-import joo.project.my3dbackend.domain.constants.ArticleType;
-import joo.project.my3dbackend.domain.constants.DimUnit;
-import joo.project.my3dbackend.domain.constants.UserRole;
+import joo.project.my3dbackend.domain.constants.*;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -100,5 +97,12 @@ public class Fixture {
         Company company = Company.of("test", "test.com");
         ReflectionTestUtils.setField(company, "id", 1L);
         return company;
+    }
+
+    public static Alarm createAlarm() {
+        Alarm alarm = Alarm.of(AlarmType.NEW_COMMENT, 1L, 1L, 1L, 2L);
+        ReflectionTestUtils.setField(alarm, "sender", createUserAccount());
+        ReflectionTestUtils.setField(alarm, "article", createArticle());
+        return alarm;
     }
 }
