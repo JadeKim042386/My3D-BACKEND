@@ -34,7 +34,6 @@ public class AlarmService implements AlarmServiceInterface<SseEmitter> {
     public List<AlarmDto> getAlarms(Long receiverId) {
         return alarmRepository.findAllByReceiverId(receiverId).stream()
                 .map(AlarmDto::fromEntity)
-                .sorted(Comparator.comparing(AlarmDto::createdAt).reversed())
                 .toList();
     }
 

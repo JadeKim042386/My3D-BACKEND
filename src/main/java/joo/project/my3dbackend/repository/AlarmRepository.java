@@ -14,6 +14,7 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
             left outer join fetch a.sender
             left outer join fetch a.article
             where a.receiverId=?1 and a.readAt is null
+            order by a.createdAt desc
             """)
     List<Alarm> findAllByReceiverId(Long receiverId);
 }
