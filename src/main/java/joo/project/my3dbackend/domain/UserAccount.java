@@ -72,6 +72,16 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @JoinColumn(name = "companyId")
     private Company company;
 
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private final Set<Alarm> senderAlarms = new LinkedHashSet<>();
+
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private final Set<Alarm> receiverAlarms = new LinkedHashSet<>();
+
     // TODO: userRefreshToken과 연관 관계 설정
 
     public UserAccount(

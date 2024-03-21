@@ -62,7 +62,9 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false, columnDefinition = "int4 default 0")
     private Integer likeCount;
 
-    // TODO: alarm과 연관 관계 설정
+    @ToString.Exclude
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Alarm> alarms = new LinkedHashSet<>();
 
     /**
      * true일 경우 무료 게시글, false일 경우 유료 게시글
