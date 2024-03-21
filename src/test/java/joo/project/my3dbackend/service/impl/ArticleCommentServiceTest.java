@@ -7,6 +7,7 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.repository.ArticleCommentRepository;
+import joo.project.my3dbackend.service.AlarmServiceInterface;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Optional;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -33,6 +34,9 @@ class ArticleCommentServiceTest {
     @Mock
     private ArticleCommentRepository articleCommentRepository;
 
+    @Mock
+    private AlarmServiceInterface<SseEmitter> alarmService;
+
     @DisplayName("댓글 추가")
     @Test
     void writeComment() {
@@ -41,8 +45,11 @@ class ArticleCommentServiceTest {
         Long articleId = 1L;
         ArticleCommentRequest articleCommentRequest = FixtureDto.createArticleCommentRequest();
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
+        ArticleComment articleComment = articleCommentRequest.toEntity(userAccountId, articleId);
+        ReflectionTestUtils.setField(articleComment, "id", 1L);
         given(articleCommentRepository.save(any(ArticleComment.class)))
-                .willReturn(articleCommentRequest.toEntity(userAccountId, articleId));
+                .willReturn(articleComment);
+        willDoNothing().given(alarmService).send(anyLong(), anyLong(), anyLong(), anyLong());
         // when
         ArticleCommentDto articleCommentDto =
                 articleCommentService.writeComment(articleCommentRequest, userPrincipal, articleId);
@@ -58,6 +65,7 @@ class ArticleCommentServiceTest {
         ArticleCommentRequest articleCommentRequest = FixtureDto.createArticleCommentRequest("content", 1L);
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(Fixture.createArticleComment(1L));
+        willDoNothing().given(alarmService).send(anyLong(), anyLong(), anyLong(), anyLong());
         // when
         ArticleCommentDto articleCommentDto =
                 articleCommentService.writeComment(articleCommentRequest, userPrincipal, articleId);

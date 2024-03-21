@@ -19,4 +19,4 @@ insert into article_like (id, user_account_id, article_id, created_at, modified_
 (nextval('seq_article_like'), 1, 1, now(), null);
 
 insert into alarm (id, alarm_type, target_id, article_id, sender_id, receiver_id, read_at, created_at, modified_at) values
-(nextval('seq_alarm'), 1, 1, 1, 1, 2, null, now(), null);
+(nextval('seq_alarm'), 'NEW_COMMENT', 1, 1, 2, 1, null, now(), null);
