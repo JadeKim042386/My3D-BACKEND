@@ -71,7 +71,7 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Override
     public boolean isFreeArticle(Long articleId) {
-        return articleRepository.isFreeArticle(articleId);
+        return articleRepository.getArticleIsFreeStatus(articleId);
     }
 
     /**

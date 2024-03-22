@@ -55,9 +55,6 @@ public class SignInService implements SignInServiceInterface {
     private boolean isExpiredSubscribe(Subscribe subscribe) {
         LocalDateTime expiredAt =
                 subscribe.getStartedAt().plusMonths(subscribe.getPackageType().getMonth());
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            return true;
-        }
-        return false;
+        return expiredAt.isBefore(LocalDateTime.now());
     }
 }

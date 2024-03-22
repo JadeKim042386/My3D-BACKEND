@@ -39,5 +39,8 @@ public interface ArticleServiceInterface {
      */
     boolean isWriterOfArticle(Long userAccountId, Long articleId);
 
+    /**
+     * 무료 게시글인지 확인
+     */
     boolean isFreeArticle(Long articleId);
 }

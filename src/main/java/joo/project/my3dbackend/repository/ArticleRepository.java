@@ -59,5 +59,5 @@ public interface ArticleRepository
     int deleteArticleLikeCount(Long articleId);
 
     @Query("select a.isFree from Article a where a.id=?1")
-    boolean isFreeArticle(Long articleId);
+    boolean getArticleIsFreeStatus(Long articleId);
 }
