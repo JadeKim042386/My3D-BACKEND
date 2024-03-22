@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,8 +40,7 @@ class ArticleLikeApiTest {
         // given
         Long articleId = 1L;
         int updatedLikeCount = 2;
-        given(articleService.doesArticleExistByUserAccountId(anyLong(), anyLong()))
-                .willReturn(false);
+        given(articleService.isWriterOfArticle(anyLong(), anyLong())).willReturn(false);
         given(articleLikeService.addArticleLike(anyLong(), anyLong())).willReturn(updatedLikeCount);
         // when
         mvc.perform(post("/api/v1/articles/" + articleId + "/like").param("likeStatus", "LIKE"))
@@ -58,8 +56,7 @@ class ArticleLikeApiTest {
         // given
         Long articleId = 1L;
         int updatedLikeCount = 1;
-        given(articleService.doesArticleExistByUserAccountId(anyLong(), anyLong()))
-                .willReturn(false);
+        given(articleService.isWriterOfArticle(anyLong(), anyLong())).willReturn(false);
         given(articleLikeService.deleteArticleLike(anyLong(), anyLong())).willReturn(updatedLikeCount);
         // when
         mvc.perform(post("/api/v1/articles/" + articleId + "/like").param("likeStatus", "UNLIKE"))
