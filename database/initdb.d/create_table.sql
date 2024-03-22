@@ -6,6 +6,17 @@ create table company(
     primary key (id)
 );
 
+create sequence seq_verify_email start 1;
+create table verify_email(
+    id int8 default nextval('seq_verify_email') NOT NULL ,
+    email varchar(255) NOT NULL ,
+    secret_code varchar(255) NOT NULL ,
+    created_at timestamp NOT NULL ,
+    expired_at timestamp NOT NULL ,
+    primary key (id)
+);
+create unique index verify_email_idx on verify_email (email);
+
 create sequence seq_user_account start 1;
 create table user_account(
     id int8 default nextval('seq_user_account') NOT NULL ,
