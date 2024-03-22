@@ -1,5 +1,6 @@
 package joo.project.my3dbackend.service;
 
+import com.querydsl.core.types.Predicate;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
@@ -11,7 +12,7 @@ public interface ArticleServiceInterface {
     /**
      * 게시글 목록 조회
      */
-    Page<ArticleDto> getArticles(Pageable pageable);
+    Page<ArticleDto> getArticles(Predicate predicate, Pageable pageable);
 
     /**
      * 게시글 단일 조회

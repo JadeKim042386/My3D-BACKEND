@@ -1,5 +1,6 @@
 package joo.project.my3dbackend.service.impl;
 
+import com.querydsl.core.types.Predicate;
 import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
@@ -29,8 +30,8 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<ArticleDto> getArticles(Pageable pageable) {
-        return articleRepository.findAll(pageable).map(ArticleDto::fromEntity);
+    public Page<ArticleDto> getArticles(Predicate predicate, Pageable pageable) {
+        return articleRepository.findAll(predicate, pageable).map(ArticleDto::fromEntity);
     }
 
     @Transactional(readOnly = true)
