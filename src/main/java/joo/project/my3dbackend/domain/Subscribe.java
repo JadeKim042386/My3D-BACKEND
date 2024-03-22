@@ -22,6 +22,7 @@ public class Subscribe implements Persistable<Long> {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Setter
     @Column(nullable = false)
     private PackageType packageType;
 
@@ -29,6 +30,7 @@ public class Subscribe implements Persistable<Long> {
     @Column(nullable = false)
     private SubscribeStatus subscribeStatus;
 
+    @Setter
     @Column(nullable = false)
     private LocalDateTime startedAt;
 

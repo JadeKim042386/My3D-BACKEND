@@ -36,7 +36,9 @@ public enum ErrorCode {
     ALARM_CONNECT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알람을 위한 연결 시도 실패"),
     NOT_FOUND_ALARM(HttpStatus.NOT_FOUND, "존재하지 않는 알람입니다."),
     CANT_GET_FOLDER(HttpStatus.INTERNAL_SERVER_ERROR, "메일 폴더를 가져올 수 없습니다."),
-    CANT_GET_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "폴더에서 메일을 가져올 수 없습니다.");
+    CANT_GET_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "폴더에서 메일을 가져올 수 없습니다."),
+    // Subscribe
+    NOT_FOUND_SUBSCRIBE(HttpStatus.NOT_FOUND, "구독 정보를 찾을 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;

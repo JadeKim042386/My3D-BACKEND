@@ -26,7 +26,7 @@ public class SubscribeApi {
     public ResponseEntity<ApiResponse> subscribe(
             @RequestBody @Valid SubscribeRequest subscribeRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        subscribeService.saveSubscribe(
+        subscribeService.updateSubscribe(
                 subscribeRequest.packageType(), subscribeRequest.subscribeStatus(), userPrincipal.id());
         return ResponseEntity.ok(ApiResponse.of("you're successfully subscribe"));
     }

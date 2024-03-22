@@ -53,7 +53,7 @@ public class UserAccountService implements UserAccountServiceInterface {
         userAccount.setPassword(encodePassword(userAccount.getPassword()));
         userAccountRepository.save(userAccount);
         // 회원가입시 기본으로 무료 구독으로 등록
-        subscribeService.saveSubscribe(PackageType.FREE, SubscribeStatus.STOP, userAccount.getId());
+        subscribeService.updateSubscribe(PackageType.FREE, SubscribeStatus.STOP, userAccount.getId());
     }
 
     @Override
