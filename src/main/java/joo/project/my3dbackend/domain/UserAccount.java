@@ -82,6 +82,10 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private final Set<Alarm> receiverAlarms = new LinkedHashSet<>();
 
+    @ToString.Exclude
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private Subscribe subscribe;
+
     // TODO: userRefreshToken과 연관 관계 설정
 
     public UserAccount(
