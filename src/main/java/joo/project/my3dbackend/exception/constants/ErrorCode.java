@@ -30,6 +30,7 @@ public enum ErrorCode {
     // Sign Up
     INVALID_COMPANY_NAME(HttpStatus.BAD_REQUEST, "기업명이 입력되지않았습니다."),
     INVALID_CODE(HttpStatus.BAD_REQUEST, "코드를 입력해주세요."),
+    EXPIRED_CODE(HttpStatus.BAD_REQUEST,"코드가 만료되었습니다. 코드 전송을 재요청해주세요."),
     // Alarm
     ALARM_CONNECT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알람을 위한 연결 시도 실패"),
     NOT_FOUND_ALARM(HttpStatus.NOT_FOUND, "존재하지 않는 알람입니다."),

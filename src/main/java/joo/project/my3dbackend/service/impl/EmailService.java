@@ -128,6 +128,8 @@ public class EmailService implements EmailServiceInterface {
     public boolean verifyEmail(String email, String secretCode) {
         // 코드가 입력되지 않았을 경우 예외 발생
         if (!StringUtils.hasText(secretCode)) throw new SignUpException(ErrorCode.INVALID_CODE);
+        // 코드가 만료되었는지 확인
+        if (verifyEmailRepository.existsByEmailAndExpiredAtLessThan(email, LocalDateTime.now())) throw new SignUpException(ErrorCode.EXPIRED_CODE);
         return verifyEmailRepository.verifyCodeByEmail(email, secretCode);
     }
 }
