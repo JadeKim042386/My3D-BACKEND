@@ -11,3 +11,12 @@ spring:
           auth: true # 사용자 인증 시도 여부
           timeout: 5000
           starttls.enable: true # TLS 활성화 여부
+
+pop3.mail:
+  host: pop.gmail.com
+  port: 995
+  protocol: pop3s
+  folder: INBOX
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
+  until-time: 300 # 설정한 시간 전까지 메일까지 확인

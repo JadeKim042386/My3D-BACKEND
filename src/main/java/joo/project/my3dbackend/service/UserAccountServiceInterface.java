@@ -4,7 +4,6 @@ import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.CompanyRequest;
-import joo.project.my3dbackend.dto.request.PasswordRequest;
 
 public interface UserAccountServiceInterface {
 
@@ -31,7 +30,7 @@ public interface UserAccountServiceInterface {
     /**
      * 비밀번호 변경
      */
-    void updatePassword(String email, PasswordRequest passwordRequest);
+    void updatePassword(String email, String password);
 
     CompanyDto updateCompany(CompanyRequest companyRequest, Long userAccountId);
 }

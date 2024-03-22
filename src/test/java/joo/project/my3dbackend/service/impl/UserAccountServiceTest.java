@@ -71,7 +71,7 @@ class UserAccountServiceTest {
         PasswordRequest passwordRequest = FixtureDto.createPasswordRequest();
         given(userAccountRepository.findByEmail(anyString())).willReturn(Optional.of(Fixture.createUserAccount()));
         // when
-        userAccountService.updatePassword(email, passwordRequest);
+        userAccountService.updatePassword(email, passwordRequest.password());
         // then
     }
 
