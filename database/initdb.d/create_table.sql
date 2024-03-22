@@ -23,6 +23,17 @@ create table user_account(
 );
 create unique index email_idx on user_account (email);
 
+create sequence seq_subscribe start 1;
+create table subscribe(
+    id int8 default nextval('seq_subscribe') NOT NULL ,
+    user_account_id int8 NOT NULL ,
+    package_type varchar(255) NOT NULL ,
+    subscribe_status varchar(255) NOT NULL ,
+    started_at timestamp NOT NULL,
+    primary key (id),
+    foreign key (user_account_id) references user_account (id)
+);
+
 create sequence seq_article_file start 1;
 create table article_file(
     id int8 default nextval('seq_article_file') NOT NULL ,
