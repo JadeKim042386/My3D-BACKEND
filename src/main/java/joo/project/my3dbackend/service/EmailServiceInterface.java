@@ -23,4 +23,11 @@ public interface EmailServiceInterface {
      * 반송된 메일이 존재할 경우 false를 반환하고 삭제하며, 없으면 true를 반환합니다.
      */
     boolean isCompleteSentEmail(String email);
+
+    /**
+     * 전송한 이메일 저장
+     */
+    void saveSentEmail(String email, String secretCode);
+
+    boolean verifyEmail(String email, String secretCode);
 }

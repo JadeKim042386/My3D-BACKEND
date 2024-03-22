@@ -1,8 +1,11 @@
 package joo.project.my3dbackend.service.impl;
 
+import joo.project.my3dbackend.domain.VerifyEmail;
 import joo.project.my3dbackend.dto.properties.Pop3Properties;
 import joo.project.my3dbackend.exception.MailException;
+import joo.project.my3dbackend.exception.SignUpException;
 import joo.project.my3dbackend.exception.constants.ErrorCode;
+import joo.project.my3dbackend.repository.VerifyEmailRepository;
 import joo.project.my3dbackend.service.EmailServiceInterface;
 import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +15,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -23,14 +28,16 @@ import java.util.Properties;
 @Service
 @RequiredArgsConstructor
 public class EmailService implements EmailServiceInterface {
-
+    private final VerifyEmailRepository verifyEmailRepository;
     private final JavaMailSender javaMailSender;
     private final UserAccountServiceInterface userAccountService;
     private final Pop3Properties pop3Properties;
 
     private static final String FAILED_RECIPIENTS_HEADER = "X-Failed-Recipients";
+    private static final int EXPIRED_MINUTE = 15;
 
     @Async
+    @Transactional
     @Override
     public void sendAsyncEmail(String toEmail, String subject, String text) {
         sendEmail(toEmail, subject, text);
@@ -85,6 +92,7 @@ public class EmailService implements EmailServiceInterface {
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(text);
             javaMailSender.send(mimeMessage);
+            saveSentEmail(toEmail, text);
         } catch (Exception e) {
             throw new MailException(ErrorCode.MAIL_SEND_FAIL, e);
         }
@@ -107,5 +115,19 @@ public class EmailService implements EmailServiceInterface {
         } catch (Exception e) {
             throw new MailException(ErrorCode.CANT_GET_FOLDER, e);
         }
+    }
+
+    @Override
+    public void saveSentEmail(String email, String secretCode) {
+        verifyEmailRepository.save(
+                VerifyEmail.of(email, secretCode, LocalDateTime.now().plusMinutes(EXPIRED_MINUTE)));
+    }
+
+    @Transactional
+    @Override
+    public boolean verifyEmail(String email, String secretCode) {
+        // 코드가 입력되지 않았을 경우 예외 발생
+        if (!StringUtils.hasText(secretCode)) throw new SignUpException(ErrorCode.INVALID_CODE);
+        return verifyEmailRepository.verifyCodeByEmail(email, secretCode);
     }
 }

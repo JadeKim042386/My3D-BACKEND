@@ -37,6 +37,11 @@ public class EmailApi {
         return ResponseEntity.ok(EmailResponse.sendSuccess(emailRequest.email(), code));
     }
 
+    @PostMapping("/verify")
+    public ResponseEntity<ApiResponse<Boolean>> verifyEmail(@RequestBody @Valid EmailRequest emailRequest) {
+        return ResponseEntity.ok(ApiResponse.of(emailService.verifyEmail(emailRequest.email(), emailRequest.code())));
+    }
+
     /**
      * 임의 비밀번호 생성 후 전송
      */
