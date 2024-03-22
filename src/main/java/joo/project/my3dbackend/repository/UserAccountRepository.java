@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
-    @EntityGraph(attributePaths = "company")
+    @EntityGraph(attributePaths = {"company", "subscribe"})
     Optional<UserAccount> findByEmail(String email);
 
     @EntityGraph(attributePaths = "company")

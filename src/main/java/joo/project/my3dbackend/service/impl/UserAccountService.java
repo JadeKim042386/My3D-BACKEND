@@ -3,6 +3,8 @@ package joo.project.my3dbackend.service.impl;
 import joo.project.my3dbackend.domain.Address;
 import joo.project.my3dbackend.domain.Company;
 import joo.project.my3dbackend.domain.UserAccount;
+import joo.project.my3dbackend.domain.constants.PackageType;
+import joo.project.my3dbackend.domain.constants.SubscribeStatus;
 import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.CompanyRequest;
@@ -10,6 +12,7 @@ import joo.project.my3dbackend.exception.AuthException;
 import joo.project.my3dbackend.exception.SignUpException;
 import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.repository.UserAccountRepository;
+import joo.project.my3dbackend.service.SubscribeServiceInterface;
 import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +29,9 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class UserAccountService implements UserAccountServiceInterface {
-    private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder encoder;
+    private final UserAccountRepository userAccountRepository;
+    private final SubscribeServiceInterface subscribeService;
 
     @Transactional(readOnly = true)
     @Override
@@ -48,6 +52,8 @@ public class UserAccountService implements UserAccountServiceInterface {
         checkIfValidCompany(userAccount.getCompany());
         userAccount.setPassword(encodePassword(userAccount.getPassword()));
         userAccountRepository.save(userAccount);
+        // 회원가입시 기본으로 무료 구독으로 등록
+        subscribeService.updateSubscribe(PackageType.FREE, SubscribeStatus.STOP, userAccount.getId());
     }
 
     @Override

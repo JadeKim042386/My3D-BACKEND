@@ -2,10 +2,13 @@ package joo.project.my3dbackend.api;
 
 import com.querydsl.core.types.Predicate;
 import joo.project.my3dbackend.domain.Article;
+import joo.project.my3dbackend.domain.constants.SubscribeStatus;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.exception.ArticleException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.service.ArticleFileServiceInterface;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
 import joo.project.my3dbackend.service.FileServiceInterface;
@@ -53,7 +56,11 @@ public class ArticleApi {
      * 게시글 단일 조회 요청
      */
     @GetMapping("/{articleId}")
-    public ResponseEntity<ArticleDto> getArticle(@PathVariable Long articleId) {
+    public ResponseEntity<ArticleDto> getArticle(
+            @PathVariable Long articleId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        // 유료 게시글일 경우 구독 상태인지 확인
+        if (!articleService.isFreeArticle(articleId) && userPrincipal.subscribeStatus() != SubscribeStatus.SUBSCRIBE)
+            throw new ArticleException(ErrorCode.UNAUTHORIZED);
         ArticleDto article = articleService.getArticle(articleId);
         return ResponseEntity.ok(article);
     }

@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import joo.project.my3dbackend.domain.constants.SubscribeStatus;
 import joo.project.my3dbackend.dto.properties.JwtProperties;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.exception.AuthException;
@@ -26,16 +27,18 @@ public class TokenProvider {
     private static final String KEY_EMAIL = "email";
     private static final String KEY_NICKNAME = "nickname";
     private static final String KEY_SPEC = "spec";
+    private static final String KEY_SUBSCRIBE_STATUS = "subscribe";
     private final JwtProperties jwtProperties;
 
     /**
      * 토큰 발급
      */
-    public String generateAccessToken(String email, String nickname, String spec) {
+    public String generateAccessToken(String email, String nickname, String spec, SubscribeStatus subscribeStatus) {
         Map<String, String> claims = new HashMap<>();
         claims.put(KEY_EMAIL, email);
         claims.put(KEY_NICKNAME, nickname);
         claims.put(KEY_SPEC, spec); // "id:role"
+        claims.put(KEY_SUBSCRIBE_STATUS, subscribeStatus.name());
 
         return Jwts.builder()
                 .claims(claims)
@@ -65,7 +68,8 @@ public class TokenProvider {
             return TokenInfo.of(
                     claims.get(TokenProvider.KEY_EMAIL, String.class),
                     claims.get(TokenProvider.KEY_NICKNAME, String.class),
-                    claims.get(TokenProvider.KEY_SPEC, String.class));
+                    claims.get(TokenProvider.KEY_SPEC, String.class),
+                    claims.get(TokenProvider.KEY_SUBSCRIBE_STATUS, String.class));
         } catch (RuntimeException e) {
             log.error("failed token parsing");
             return null;
@@ -78,8 +82,7 @@ public class TokenProvider {
     public UserPrincipal getUserDetails(Claims claims) {
         TokenInfo tokenInfo =
                 Optional.ofNullable(claims).map(this::parseSpecification).orElse(TokenInfo.ofAnonymous());
-
-        return UserPrincipal.of(tokenInfo.id(), tokenInfo.email(), tokenInfo.nickname(), tokenInfo.userRole());
+        return tokenInfo.toUserPrincipal();
     }
 
     private SecretKey getKey(String key) {
