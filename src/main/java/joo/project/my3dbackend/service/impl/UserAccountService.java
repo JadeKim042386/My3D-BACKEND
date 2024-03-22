@@ -79,6 +79,10 @@ public class UserAccountService implements UserAccountServiceInterface {
         return CompanyDto.fromEntity(userAccount.getCompany());
     }
 
+    public void deleteUser(Long userAccountId) {
+        userAccountRepository.deleteById(userAccountId);
+    }
+
     private String encodePassword(String password) {
         return encoder.encode(password);
     }

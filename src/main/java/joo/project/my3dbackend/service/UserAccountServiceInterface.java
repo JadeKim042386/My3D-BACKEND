@@ -33,4 +33,8 @@ public interface UserAccountServiceInterface {
     void updatePassword(String email, String password);
 
     CompanyDto updateCompany(CompanyRequest companyRequest, Long userAccountId);
+    /**
+     * 유저 삭제
+     */
+    void deleteUser(Long userAccountId);
 }

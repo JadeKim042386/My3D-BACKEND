@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -55,5 +52,15 @@ public class AdminApi {
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         // TODO: 기업 유저가 맞는지 확인
         return ResponseEntity.ok(userAccountService.updateCompany(companyAdminRequest, userPrincipal.id()));
+    }
+
+    /**
+     * 유저 삭제 (회원 탈퇴)
+     */
+    @DeleteMapping
+    public ResponseEntity<ApiResponse> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        // TODO: 게시글, 댓글, 알람 등 bulk delete
+        userAccountService.deleteUser(userPrincipal.id());
+        return ResponseEntity.ok(ApiResponse.of("You successfully delete user"));
     }
 }
