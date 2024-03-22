@@ -1,10 +1,7 @@
 package joo.project.my3dbackend.fixture;
 
 import joo.project.my3dbackend.domain.ArticleComment;
-import joo.project.my3dbackend.domain.constants.ArticleCategory;
-import joo.project.my3dbackend.domain.constants.ArticleType;
-import joo.project.my3dbackend.domain.constants.DimUnit;
-import joo.project.my3dbackend.domain.constants.UserRole;
+import joo.project.my3dbackend.domain.constants.*;
 import joo.project.my3dbackend.dto.ArticleCommentDto;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.CompanyDto;
@@ -51,7 +48,7 @@ public class FixtureDto {
 
     public static UserPrincipal createUserPrincipal(
             Long id, String email, String password, UserRole userRole, String nickname) {
-        return new UserPrincipal(id, email, password, Set.of(new SimpleGrantedAuthority(userRole.getName())), nickname);
+        return new UserPrincipal(id, email, password, Set.of(new SimpleGrantedAuthority(userRole.getName())), nickname, SubscribeStatus.SUBSCRIBE);
     }
 
     public static UserPrincipal createUserPrincipal() {

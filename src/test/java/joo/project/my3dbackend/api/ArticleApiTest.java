@@ -10,6 +10,8 @@ import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.fixture.Fixture;
 import joo.project.my3dbackend.fixture.FixtureDto;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
+import joo.project.my3dbackend.service.impl.ArticleFileService;
+import joo.project.my3dbackend.service.impl.LocalFileService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -42,6 +44,10 @@ class ArticleApiTest {
 
     @MockBean
     private ArticleServiceInterface articleService;
+    @MockBean
+    private ArticleFileService articleFileService;
+    @MockBean
+    private LocalFileService fileService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -123,6 +129,7 @@ class ArticleApiTest {
     void getArticle() throws Exception {
         // given
         Long articleId = 1L;
+        given(articleService.isFreeArticle(anyLong())).willReturn(true);
         given(articleService.getArticle(anyLong())).willReturn(FixtureDto.createArticleDto());
         // when
         mvc.perform(get("/api/v1/articles/" + articleId))

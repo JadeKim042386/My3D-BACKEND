@@ -14,6 +14,7 @@ public class Fixture {
             String email, String password, String nickname, String phone, Address address, UserRole userRole) {
         UserAccount userAccount = UserAccount.ofGeneralUser(email, password, nickname, phone, address, userRole);
         ReflectionTestUtils.setField(userAccount, "id", 1L);
+        ReflectionTestUtils.setField(userAccount, "subscribe", createSubscribe());
         return userAccount;
     }
 
@@ -28,6 +29,7 @@ public class Fixture {
         UserAccount userAccount =
                 UserAccount.ofCompanyUser(email, password, nickname, phone, address, userRole, company);
         ReflectionTestUtils.setField(userAccount, "id", 1L);
+        ReflectionTestUtils.setField(userAccount, "subscribe", createSubscribe());
         return userAccount;
     }
 
@@ -50,6 +52,10 @@ public class Fixture {
                 Address.of("12345", "street", "detail"),
                 UserRole.USER,
                 createCompany());
+    }
+
+    public static Subscribe createSubscribe() {
+        return Subscribe.of(PackageType.ONE_YEAR, SubscribeStatus.SUBSCRIBE, LocalDateTime.now(), 1L);
     }
 
     public static Article createArticle(
