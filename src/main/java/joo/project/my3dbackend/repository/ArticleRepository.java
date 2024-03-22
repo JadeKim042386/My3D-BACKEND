@@ -57,4 +57,7 @@ public interface ArticleRepository
             nativeQuery = true,
             value = "update article set like_count = like_count - 1 where id = ? returning like_count")
     int deleteArticleLikeCount(Long articleId);
+
+    @Query("select a.isFree from Article a where a.id=?1")
+    boolean isFreeArticle(Long articleId);
 }

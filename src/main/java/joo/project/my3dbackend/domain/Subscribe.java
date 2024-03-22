@@ -25,6 +25,7 @@ public class Subscribe implements Persistable<Long> {
     @Column(nullable = false)
     private PackageType packageType;
 
+    @Setter
     @Column(nullable = false)
     private SubscribeStatus subscribeStatus;
 

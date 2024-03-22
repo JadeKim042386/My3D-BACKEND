@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_FIlE_NAME(HttpStatus.BAD_REQUEST, "파일 형식이 잘못되었습니다."),
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "articleCateogy가 null이거나 값이 잘못되었습니다."),
     INVALID_DIMENSION(HttpStatus.BAD_REQUEST, "dimensionOption이 null이거나 값이 잘못되었습니다."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "게시글을 볼 수 있는 권한이 없습니다."),
     // Auth
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     EXPIRED_TOKEN(HttpStatus.FORBIDDEN, "Token이 만료되었습니다."),

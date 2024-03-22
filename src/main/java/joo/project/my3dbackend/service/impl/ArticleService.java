@@ -69,6 +69,11 @@ public class ArticleService implements ArticleServiceInterface {
         return articleRepository.existsByIdAndUserAccount_Id(articleId, userAccountId);
     }
 
+    @Override
+    public boolean isFreeArticle(Long articleId) {
+        return articleRepository.isFreeArticle(articleId);
+    }
+
     /**
      * 파일이 존재할 경우 업로드(저장)
      */
