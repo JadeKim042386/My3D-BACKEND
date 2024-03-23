@@ -24,10 +24,12 @@ public class Subscribe implements Persistable<Long> {
 
     @Setter
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private PackageType packageType;
 
     @Setter
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private SubscribeStatus subscribeStatus;
 
     @Setter
