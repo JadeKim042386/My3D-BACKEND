@@ -21,6 +21,7 @@ jwt:
   token:
     secret-key: ${TOKEN_SECRET_KEY}
     access-expired-ms: ${TOKEN_ACCESS_EXPIRED_MS}
+    refresh-expired-ms: ${TOKEN_REFRESH_EXPIRED_MS}
 local-file:
   relative-path: ${LOCAL_FILE_REL_PATH}
   absolute-path: ${LOCAL_FILE_ABS_PATH}
