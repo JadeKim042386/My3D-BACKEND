@@ -48,7 +48,13 @@ public class FixtureDto {
 
     public static UserPrincipal createUserPrincipal(
             Long id, String email, String password, UserRole userRole, String nickname) {
-        return new UserPrincipal(id, email, password, Set.of(new SimpleGrantedAuthority(userRole.getName())), nickname, SubscribeStatus.SUBSCRIBE);
+        return new UserPrincipal(
+                id,
+                email,
+                password,
+                Set.of(new SimpleGrantedAuthority(userRole.getName())),
+                nickname,
+                SubscribeStatus.SUBSCRIBE);
     }
 
     public static UserPrincipal createUserPrincipal() {

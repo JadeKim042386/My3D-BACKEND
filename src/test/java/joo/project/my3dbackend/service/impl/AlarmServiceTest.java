@@ -22,21 +22,28 @@ import static org.mockito.BDDMockito.given;
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class AlarmServiceTest {
-    @InjectMocks private AlarmService alarmService;
-    @Mock private EmitterRepository emitterRepository;
-    @Mock private AlarmRepository alarmRepository;
-    @Mock private ArticleService articleService;
+    @InjectMocks
+    private AlarmService alarmService;
+
+    @Mock
+    private EmitterRepository emitterRepository;
+
+    @Mock
+    private AlarmRepository alarmRepository;
+
+    @Mock
+    private ArticleService articleService;
 
     @DisplayName("알람 전송")
     @Test
     void alarmSend() {
-        //given
+        // given
         Long targetId = 1L, articleId = 1L, receiverId = 2L, senderId = 1L;
         given(articleService.getUserAccountIdOfArticle(anyLong())).willReturn(receiverId);
         given(alarmRepository.save(any(Alarm.class))).willReturn(Fixture.createAlarm());
         given(emitterRepository.get(anyLong())).willReturn(Optional.of(new SseEmitter()));
-        //when
+        // when
         alarmService.send(articleId, targetId, senderId, receiverId);
-        //then
+        // then
     }
 }

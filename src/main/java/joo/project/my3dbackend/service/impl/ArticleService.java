@@ -60,7 +60,8 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Override
     public Long getUserAccountIdOfArticle(Long articleId) {
-        return articleRepository.findUserAccountIdById(articleId)
+        return articleRepository
+                .findUserAccountIdById(articleId)
                 .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_ARTICLE));
     }
 

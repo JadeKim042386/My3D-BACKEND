@@ -96,8 +96,8 @@ class SignUpApiTest {
             String companyName)
             throws Exception {
         // given
-        SignUpRequest signUpRequest =
-                FixtureDto.createSignUpRequest(email, userRole, nickname, password, phone, zipcode, street, detail, companyName);
+        SignUpRequest signUpRequest = FixtureDto.createSignUpRequest(
+                email, userRole, nickname, password, phone, zipcode, street, detail, companyName);
         // when
         mvc.perform(post("/api/v1/signup")
                         .contentType(MediaType.APPLICATION_JSON)

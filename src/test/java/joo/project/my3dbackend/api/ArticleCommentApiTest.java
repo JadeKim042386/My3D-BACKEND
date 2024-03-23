@@ -68,8 +68,8 @@ class ArticleCommentApiTest {
         // given
         Long articleId = 1L;
         ArticleCommentRequest articleCommentRequest = FixtureDto.createArticleCommentRequest("content", 1L);
-        ArticleCommentDto articleCommentDto =
-                FixtureDto.createArticleChildCommentDto(articleCommentRequest.parentCommentId().get());
+        ArticleCommentDto articleCommentDto = FixtureDto.createArticleChildCommentDto(
+                articleCommentRequest.parentCommentId().get());
         given(articleCommentService.writeComment(any(ArticleCommentRequest.class), any(UserPrincipal.class), anyLong()))
                 .willReturn(articleCommentDto);
         // when

@@ -44,8 +44,10 @@ class ArticleApiTest {
 
     @MockBean
     private ArticleServiceInterface articleService;
+
     @MockBean
     private ArticleFileService articleFileService;
+
     @MockBean
     private LocalFileService fileService;
 
@@ -87,15 +89,13 @@ class ArticleApiTest {
     @DisplayName("게시글 작성 Validation Error (title, content, isFree)")
     @ParameterizedTest
     @CsvSource(
-            value = {
-                "title, content, MODEL, MUSIC, ",
-                "title, , MODEL, MUSIC, true",
-                ", content, MODEL, MUSIC, true"
-            })
-    void writeArticle_invalid(String title, String content, ArticleType articleType, ArticleCategory articleCategory, Boolean isFree)
+            value = {"title, content, MODEL, MUSIC, ", "title, , MODEL, MUSIC, true", ", content, MODEL, MUSIC, true"})
+    void writeArticle_invalid(
+            String title, String content, ArticleType articleType, ArticleCategory articleCategory, Boolean isFree)
             throws Exception {
         // given
-        ArticleRequest articleRequest = FixtureDto.createArticleRequest(title, content, articleType, articleCategory, isFree);
+        ArticleRequest articleRequest =
+                FixtureDto.createArticleRequest(title, content, articleType, articleCategory, isFree);
         MockMultipartFile modelFile = Fixture.createMultipartFile();
         // when
         mvc.perform(multipart("/api/v1/articles")

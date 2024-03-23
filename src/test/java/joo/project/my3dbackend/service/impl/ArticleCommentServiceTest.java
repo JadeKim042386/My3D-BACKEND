@@ -47,8 +47,7 @@ class ArticleCommentServiceTest {
         UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
         ArticleComment articleComment = articleCommentRequest.toEntity(userAccountId, articleId);
         ReflectionTestUtils.setField(articleComment, "id", 1L);
-        given(articleCommentRepository.save(any(ArticleComment.class)))
-                .willReturn(articleComment);
+        given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(articleComment);
         willDoNothing().given(alarmService).send(anyLong(), anyLong(), anyLong(), anyLong());
         // when
         ArticleCommentDto articleCommentDto =

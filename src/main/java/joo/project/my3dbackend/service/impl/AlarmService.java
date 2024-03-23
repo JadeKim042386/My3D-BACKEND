@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,8 +38,7 @@ public class AlarmService implements AlarmServiceInterface<SseEmitter> {
 
     @Override
     public Alarm getAlarm(Long alarmId) {
-        return alarmRepository.findById(alarmId)
-                .orElseThrow(() -> new AlarmException(ErrorCode.NOT_FOUND_ALARM));
+        return alarmRepository.findById(alarmId).orElseThrow(() -> new AlarmException(ErrorCode.NOT_FOUND_ALARM));
     }
 
     @Transactional

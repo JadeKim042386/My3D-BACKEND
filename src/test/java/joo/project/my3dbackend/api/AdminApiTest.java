@@ -1,6 +1,5 @@
 package joo.project.my3dbackend.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import joo.project.my3dbackend.config.TestSecurityConfig;
 import joo.project.my3dbackend.dto.request.AdminRequest;
@@ -62,7 +61,9 @@ class AdminApiTest {
         PasswordRequest passwordRequest = FixtureDto.createPasswordRequest();
         willDoNothing().given(userAccountService).updateUser(anyString(), any(AdminRequest.class));
         // when
-        mvc.perform(put("/api/v1/admin/password").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(passwordRequest)))
+        mvc.perform(put("/api/v1/admin/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(passwordRequest)))
                 .andExpect(status().isOk());
         // then
     }
@@ -76,7 +77,9 @@ class AdminApiTest {
         given(userAccountService.updateCompany(any(CompanyRequest.class), anyLong()))
                 .willReturn(FixtureDto.createCompanyDto(companyRequest.companyName(), companyRequest.homepage()));
         // when
-        mvc.perform(put("/api/v1/admin/company").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(companyRequest)))
+        mvc.perform(put("/api/v1/admin/company")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(companyRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value(companyRequest.companyName()))
                 .andExpect(jsonPath("$.homepage").value(companyRequest.homepage()));

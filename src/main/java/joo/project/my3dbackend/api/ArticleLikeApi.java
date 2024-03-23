@@ -39,7 +39,6 @@ public class ArticleLikeApi {
     /**
      * 작성자는 좋아요를 추가하거나 취소할 수 없음
      */
-
     private void checkIfWriter(Long articleId, Long userAccountId) {
         if (articleService.isWriterOfArticle(articleId, userAccountId)) {
             throw new ArticleException(ErrorCode.INVALID_REQUEST);
