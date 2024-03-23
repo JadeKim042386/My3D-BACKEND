@@ -48,8 +48,10 @@ class ArticleServiceTest {
         given(articleRepository.save(any(Article.class))).willReturn(articleRequest.toEntity(userAccountId, modelFile));
         willDoNothing().given(fileService).uploadFile(any(MultipartFile.class), anyString());
         // when
-        assertThatNoException().isThrownBy(() -> articleService.writeArticle(modelFile, articleRequest, userPrincipal));
+        ArticleDto article = articleService.writeArticle(modelFile, articleRequest, userPrincipal);
         // then
+        assertThat(article.title()).isEqualTo("title");
+
     }
 
     @Order(1)
@@ -71,8 +73,24 @@ class ArticleServiceTest {
         Long articleId = 1L;
         given(articleRepository.findFetchAllById(anyLong())).willReturn(Optional.of(Fixture.createArticle()));
         // when
-        ArticleDto article = articleService.getArticle(articleId);
+        ArticleDto article = articleService.getArticleDtoWithFile(articleId);
         // then
+        assertThat(article.title()).isEqualTo("title");
+    }
+
+    @Order(3)
+    @DisplayName("게시글 수정")
+    @Test
+    void updateArticle() {
+        //given
+        Long userAccountId = 1L, articleId = 1L;
+        ArticleRequest articleRequest = FixtureDto.createArticleRequest();
+        UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
+        MultipartFile modelFile = Fixture.createMultipartFile();
+        given(articleRepository.findFetchAllById(anyLong())).willReturn(Optional.of(Fixture.createArticle()));
+        //when
+        ArticleDto article = articleService.updateArticle(modelFile, articleRequest, articleId, userPrincipal);
+        //then
         assertThat(article.title()).isEqualTo("title");
     }
 }

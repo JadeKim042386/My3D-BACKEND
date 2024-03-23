@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.TestExecutionEvent;
@@ -130,11 +131,40 @@ class ArticleApiTest {
         // given
         Long articleId = 1L;
         given(articleService.isFreeArticle(anyLong())).willReturn(true);
-        given(articleService.getArticle(anyLong())).willReturn(FixtureDto.createArticleDto());
+        given(articleService.getArticleDtoWithFile(anyLong())).willReturn(FixtureDto.createArticleDto());
         // when
         mvc.perform(get("/api/v1/articles/" + articleId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("title"));
+        // then
+    }
+
+    @WithUserDetails(value = "testUser@gmail.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Order(4)
+    @DisplayName("게시글 수정")
+    @Test
+    void updateArticle() throws Exception {
+        ArticleRequest articleRequest = FixtureDto.createArticleRequest();
+        Long userAccountId = 1L, articleId = 1L;
+        UserPrincipal userPrincipal = FixtureDto.createUserPrincipal();
+        MockMultipartFile modelFile = Fixture.createMultipartFile();
+        given(articleService.updateArticle(
+                        any(MultipartFile.class), any(ArticleRequest.class), anyLong(), any(UserPrincipal.class)))
+                .willReturn(ArticleDto.fromEntity(articleRequest.toEntity(userAccountId, modelFile), userPrincipal));
+        // when
+        mvc.perform(multipart(HttpMethod.PUT, "/api/v1/articles/" + articleId)
+                        .file(modelFile)
+                        .file(new MockMultipartFile(
+                                "articleRequest",
+                                "",
+                                "application/json",
+                                objectMapper.writeValueAsBytes(articleRequest)))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("title"))
+                .andExpect(jsonPath("$.content").value("content"))
+                .andExpect(jsonPath("$.articleCategory").value("MUSIC"))
+                .andExpect(jsonPath("$.isFree").value("true"));
         // then
     }
 }
