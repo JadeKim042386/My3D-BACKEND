@@ -1,7 +1,7 @@
 package joo.project.my3dbackend.api;
 
 import joo.project.my3dbackend.dto.request.LoginRequest;
-import joo.project.my3dbackend.dto.response.ApiResponse;
+import joo.project.my3dbackend.dto.response.LoginResponse;
 import joo.project.my3dbackend.service.impl.SignInService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class SignInApi {
     private final SignInService signInService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> signIn(@RequestBody LoginRequest loginRequest) {
-        String accessToken = signInService.signIn(loginRequest.email(), loginRequest.password());
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.of(accessToken));
+    public ResponseEntity<LoginResponse> signIn(@RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = signInService.signIn(loginRequest.email(), loginRequest.password());
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
 }

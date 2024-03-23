@@ -1,5 +1,7 @@
 package joo.project.my3dbackend.service;
 
+import joo.project.my3dbackend.dto.response.LoginResponse;
+
 public interface SignInServiceInterface {
-    String signIn(String email, String password);
+    LoginResponse signIn(String email, String password);
 }

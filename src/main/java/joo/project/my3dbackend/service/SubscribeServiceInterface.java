@@ -9,7 +9,12 @@ public interface SubscribeServiceInterface {
     Subscribe getSubscribe(Long userAccountId);
 
     /**
-     * 구독 저장
+     * 구독 수정
      */
     void updateSubscribe(PackageType packageType, SubscribeStatus subscribeStatus, Long userAccountId);
+
+    /**
+     * 구독 저장
+     */
+    void saveSubscribe(PackageType packageType, SubscribeStatus subscribeStatus, Long userAccountId);
 }
