@@ -24,9 +24,11 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Setter
     @Column(nullable = false)
     private String title;
 
+    @Setter
     @Column(nullable = false)
     private String content;
 
@@ -34,6 +36,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private ArticleType articleType;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private ArticleCategory articleCategory;
 
@@ -50,6 +53,7 @@ public class Article extends AuditingAt implements Persistable<Long> {
     @Column(nullable = false)
     private Long userAccountId;
 
+    @Setter
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "articleFileId")
