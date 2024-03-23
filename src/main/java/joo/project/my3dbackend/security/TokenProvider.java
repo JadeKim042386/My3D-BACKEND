@@ -38,7 +38,6 @@ public class TokenProvider {
     /**
      * 토큰 발급
      */
-    // TODO: spec 대신 id, userRole을 parameter로 지정
     public String generateAccessToken(String email, String nickname, String spec, SubscribeStatus subscribeStatus) {
         Map<String, String> claims = new HashMap<>();
         claims.put(KEY_EMAIL, email);
@@ -86,7 +85,6 @@ public class TokenProvider {
         userRefreshTokenRepository
                 .findByUserAccountIdAndReissueCountLessThan(userAccountId, getReissueLimit())
                 .filter(token -> token.equalRefreshToken(refreshToken))
-                .orElseThrow(() -> new AuthException(ErrorCode.NOT_EQUAL_TOKEN));
     }
 
     /**

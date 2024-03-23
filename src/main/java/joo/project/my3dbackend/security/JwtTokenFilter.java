@@ -59,14 +59,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
      * reqeust header의 토큰 파싱
      */
     private String parseBearerToken(HttpServletRequest request, String headerName) {
-        if (headerName.equals(ACCESS_TOKEN_HEADER)) {
-            return Optional.ofNullable(request.getHeader(headerName))
-                    .filter(token -> !ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX))
-                    .map(token -> token.substring(TOKEN_PREFIX.length()).trim())
-                    .orElse(null);
-        } else {
-            return request.getHeader(headerName);
+        String token = request.getHeader(headerName);
+        if (token != null && headerName.equals(ACCESS_TOKEN_HEADER) && token.startsWith(TOKEN_PREFIX)) {
+            return token.substring(TOKEN_PREFIX.length()).trim();
         }
+        return token;
     }
 
     /**
