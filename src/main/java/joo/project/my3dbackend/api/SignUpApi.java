@@ -2,6 +2,7 @@ package joo.project.my3dbackend.api;
 
 import joo.project.my3dbackend.dto.request.SignUpRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
+import joo.project.my3dbackend.security.TokenProvider;
 import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 public class SignUpApi {
 
     private final UserAccountServiceInterface userAccountService;
+    private final TokenProvider tokenProvider;
 
     /**
      * 회원가입 요청
@@ -28,7 +30,7 @@ public class SignUpApi {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> signup(@RequestBody @Valid SignUpRequest signUpRequest) {
         // TODO: 이메일, 닉네임 중복체크
-        userAccountService.registerUser(signUpRequest.toEntity());
+        userAccountService.registerUser(signUpRequest.toEntity(tokenProvider.generateRefreshToken()));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.of("you're successfully sign up. you can be login."));

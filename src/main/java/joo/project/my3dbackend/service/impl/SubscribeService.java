@@ -37,4 +37,9 @@ public class SubscribeService implements SubscribeServiceInterface {
         }
         subscribe.setSubscribeStatus(subscribeStatus);
     }
+
+    @Override
+    public void saveSubscribe(PackageType packageType, SubscribeStatus subscribeStatus, Long userAccountId) {
+        subscribeRepository.save(Subscribe.of(packageType, subscribeStatus, LocalDateTime.now(), userAccountId));
+    }
 }

@@ -6,6 +6,15 @@ create table company(
     primary key (id)
 );
 
+create sequence seq_user_refresh_token start 1;
+create table user_refresh_token(
+    id int8 default nextval('seq_user_refresh_token') NOT NULL ,
+    refresh_token varchar(255)	NOT NULL,
+    reissue_count bigint default 0 NOT NULL,
+    primary key (id)
+);
+create index reissue_count_idx on user_refresh_token (reissue_count);
+
 create sequence seq_verify_email start 1;
 create table verify_email(
     id int8 default nextval('seq_verify_email') NOT NULL ,
@@ -21,6 +30,7 @@ create sequence seq_user_account start 1;
 create table user_account(
     id int8 default nextval('seq_user_account') NOT NULL ,
     company_id int8 ,
+    user_refresh_token_id int8 NOT NULL ,
     email varchar(255) NOT NULL ,
     password varchar(255) NOT NULL ,
     nickname varchar(255) NOT NULL ,
@@ -30,7 +40,8 @@ create table user_account(
     created_at timestamp NOT NULL ,
     modified_at timestamp ,
     primary key (id),
-    foreign key (company_id) references company (id) on delete cascade
+    foreign key (company_id) references company (id) on delete cascade,
+    foreign key (user_refresh_token_id) references user_refresh_token (id) on delete cascade
 );
 create unique index email_idx on user_account (email);
 

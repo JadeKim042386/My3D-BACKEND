@@ -3,6 +3,7 @@ package joo.project.my3dbackend.dto.request;
 import joo.project.my3dbackend.domain.Address;
 import joo.project.my3dbackend.domain.Company;
 import joo.project.my3dbackend.domain.UserAccount;
+import joo.project.my3dbackend.domain.UserRefreshToken;
 import joo.project.my3dbackend.domain.constants.UserRole;
 import org.hibernate.validator.constraints.Length;
 
@@ -25,7 +26,8 @@ public record SignUpRequest(
         @NotBlank(message = "상세 주소를 입력해주세요") String detail,
         String companyName) {
 
-    public UserAccount toEntity() {
+    public UserAccount toEntity(String refreshToken) {
+        UserRefreshToken userRefreshToken = UserRefreshToken.of(refreshToken);
         if (userRole.equals(UserRole.COMPANY)) {
             return UserAccount.ofCompanyUser(
                     email,
@@ -34,10 +36,11 @@ public record SignUpRequest(
                     phone,
                     Address.of(zipcode, street, detail),
                     userRole,
-                    Company.of(companyName, null));
+                    Company.of(companyName, null),
+                    userRefreshToken);
         } else {
             return UserAccount.ofGeneralUser(
-                    email, password, nickname, phone, Address.of(zipcode, street, detail), userRole);
+                    email, password, nickname, phone, Address.of(zipcode, street, detail), userRole, userRefreshToken);
         }
     }
 }

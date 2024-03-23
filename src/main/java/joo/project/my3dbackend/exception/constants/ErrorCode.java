@@ -21,6 +21,11 @@ public enum ErrorCode {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     EXPIRED_TOKEN(HttpStatus.FORBIDDEN, "Token이 만료되었습니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+    EXCEED_REISSUE(HttpStatus.UNAUTHORIZED, "Refresh Token의 잔여 reissue count가 없습니다."),
+    NOT_EQUAL_TOKEN(HttpStatus.UNAUTHORIZED, "Refresh Token이 일치하지 않습니다."),
+    NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "Refresh Token을 헤더에서 찾을 수 없습니다."),
+    FAILED_AUTHENTICATE(HttpStatus.UNAUTHORIZED, "인증 실패"),
+    FAILED_REISSUE_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "Access Token 재발급 실패"),
     // File
     FILE_CANT_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "파일 삭제에 실패했습니다."),
     FILE_CANT_SAVE(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 저장 할 수 없습니다. 파일 경로를 다시 확인해주세요."),

@@ -22,4 +22,8 @@ public record TokenInfo(Long id, String email, String nickname, UserRole userRol
     public UserPrincipal toUserPrincipal() {
         return UserPrincipal.of(id, email, nickname, userRole, subscribeStatus);
     }
+
+    public String getSpec() {
+        return String.format("%s:%s", id, userRole.getName());
+    }
 }

@@ -12,4 +12,5 @@ import javax.validation.constraints.Positive;
  */
 @Validated
 @ConfigurationProperties(prefix = "jwt.token")
-public record JwtProperties(@NotBlank String secretKey, @Positive long accessExpiredMs) {}
+public record JwtProperties(
+        @NotBlank String secretKey, @Positive long accessExpiredMs, @Positive long refreshExpiredMs) {}

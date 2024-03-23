@@ -86,7 +86,10 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
     @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private Subscribe subscribe;
 
-    // TODO: userRefreshToken과 연관 관계 설정
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userRefreshTokenId")
+    private UserRefreshToken userRefreshToken;
 
     public UserAccount(
             String email,
@@ -95,7 +98,8 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
             String phone,
             Address address,
             UserRole userRole,
-            Company company) {
+            Company company,
+            UserRefreshToken userRefreshToken) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -103,14 +107,21 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
         this.address = address;
         this.userRole = userRole;
         this.company = company;
+        this.userRefreshToken = userRefreshToken;
     }
 
     /**
      * 일반 유저 생성
      */
     public static UserAccount ofGeneralUser(
-            String email, String password, String nickname, String phone, Address address, UserRole userRole) {
-        return new UserAccount(email, password, nickname, phone, address, userRole, null);
+            String email,
+            String password,
+            String nickname,
+            String phone,
+            Address address,
+            UserRole userRole,
+            UserRefreshToken userRefreshToken) {
+        return new UserAccount(email, password, nickname, phone, address, userRole, null, userRefreshToken);
     }
 
     /**
@@ -123,8 +134,9 @@ public class UserAccount extends AuditingAt implements Persistable<Long> {
             String phone,
             Address address,
             UserRole userRole,
-            Company company) {
-        return new UserAccount(email, password, nickname, phone, address, userRole, company);
+            Company company,
+            UserRefreshToken userRefreshToken) {
+        return new UserAccount(email, password, nickname, phone, address, userRole, company, userRefreshToken);
     }
 
     @Override
