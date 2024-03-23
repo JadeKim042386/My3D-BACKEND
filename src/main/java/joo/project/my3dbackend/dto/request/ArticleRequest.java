@@ -72,11 +72,7 @@ public class ArticleRequest {
     /**
      * MultipartFile -> ArticleFile
      */
-    private ArticleFile toArticleFileEntity(MultipartFile modelFile) {
-        // 파일이 비어있거나 호환되지 않는 경우
-        if (!FileUtils.isValid(modelFile)) {
-            throw new ArticleException(ErrorCode.INVALID_FIlE);
-        }
+    public ArticleFile toArticleFileEntity(MultipartFile modelFile) {
         String originalFileName = modelFile.getOriginalFilename();
         String extension = FileUtils.getExtension(originalFileName);
         return ArticleFile.of(
@@ -87,11 +83,11 @@ public class ArticleRequest {
                 getDimensionOptionEntity());
     }
 
-    private ArticleCategory getArticleCategory() {
+    public ArticleCategory getArticleCategory() {
         return Optional.ofNullable(articleCategory).orElseThrow(() -> new ArticleException(ErrorCode.INVALID_CATEGORY));
     }
 
-    private DimensionOption getDimensionOptionEntity() {
+    public DimensionOption getDimensionOptionEntity() {
         return Optional.ofNullable(dimensionOption)
                 .map(DimensionOptionRequest::toEntity)
                 .orElseThrow(() -> new ArticleException(ErrorCode.INVALID_DIMENSION));

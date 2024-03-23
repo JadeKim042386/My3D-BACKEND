@@ -35,6 +35,7 @@ public class ArticleFile implements Persistable<Long> {
     @Column(nullable = false)
     private String fileExtension; // 파일 확장자 (e.g. stp)
 
+    @Setter
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private DimensionOption dimensionOption; // 치수 정보

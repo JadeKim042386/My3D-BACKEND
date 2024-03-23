@@ -61,7 +61,7 @@ public class ArticleApi {
         // 유료 게시글일 경우 구독 상태인지 확인
         if (!articleService.isFreeArticle(articleId) && userPrincipal.subscribeStatus() != SubscribeStatus.SUBSCRIBE)
             throw new ArticleException(ErrorCode.UNAUTHORIZED);
-        ArticleDto article = articleService.getArticle(articleId);
+        ArticleDto article = articleService.getArticleDtoWithFile(articleId);
         return ResponseEntity.ok(article);
     }
 
@@ -79,6 +79,20 @@ public class ArticleApi {
 
         ArticleDto articleDto = articleService.writeArticle(modelFile, articleRequest, userPrincipal);
         return ResponseEntity.status(HttpStatus.CREATED).body(articleDto);
+    }
+
+    /**
+     * 특정 게시글 수정 요청
+     */
+    @PutMapping("/{articleId}")
+    public ResponseEntity<ArticleDto> postUpdateArticle(
+            @PathVariable Long articleId,
+            @RequestPart(required = false) MultipartFile modelFile,
+            @RequestPart @Valid ArticleRequest articleRequest,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        // TODO: 작성자 또는 관리자만 게시글을 수정할 수 있다.
+        ArticleDto articleDto = articleService.updateArticle(modelFile, articleRequest, articleId, userPrincipal);
+        return ResponseEntity.ok(articleDto);
     }
 
     /**
