@@ -42,8 +42,8 @@ public class ArticleApi {
     /**
      * 게시글 목록 조회 (페이지당 9개)
      * - 제목, 카테고리 검색: /api/v1/articles?title=title&articleCategory=MUSIC
-     * - 작성일시 기준 정렬: api/v1/articles?sort=createdAt,asc
-     * - 좋아요 기준 정렬: api/v1/articles?sort=likeCount,asc
+     * - 작성일시 기준 정렬: /api/v1/articles?sort=createdAt,asc
+     * - 좋아요 기준 정렬: /api/v1/articles?sort=likeCount,asc
      */
     @GetMapping
     public ResponseEntity<Page<ArticleDto>> getArticles(
