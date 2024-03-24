@@ -1,0 +1,84 @@
+name: CI-CD
+
+on:
+  push:
+    branches:
+      - main
+
+# 워크플로의 모든 작업 단계에서 사용할 수 있는 변수
+env:
+  S3_BUCKET_NAME: my3d-backend-s3
+  YAML_PATH: ./src/main/resources/application-common.yml, ./src/main/resources/application-mail.yml, ./src/main/resources/application-security.yml
+  CODE_DEPLOY_APPLICATION_NAME: CODE-DEPLOY-MY3D-BACKEND
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: CODE-DEPLOY-GROUP-MY3D-BACKEND
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    # https://docs.github.com/ko/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iduses
+    # uses: 작업으로 실행할 재사용 가능한 워크플로 파일의 위치 및 버전
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Set yaml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.YAML_PATH }}
+        env:
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          spring.mail.username: ${{ secrets.MAIL_USERNAME }}
+          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
+          jwt.token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
+          jwt.token.access-expired-ms: ${{ secrets.TOKEN_ACCESS_EXPIRED_MS }}
+          jwt.token.refresh-expired-ms: ${{ secrets.TOKEN_REFRESH_EXPIRED_MS }}
+          aws.s3.bucketName: ${{ secrets.S3_BUCKET_NAME }}
+          aws.s3.url: ${{ secrets.S3_URL }}
+          async.executor.core-pool-size: ${{ secrets.CORE_POOL_SIZE }}
+          async.executor.max-pool-size: ${{ secrets.MAX_POOL_SIZE }}
+          async.executor.queue-capacity: ${{ secrets.QUEUE_CAPACITY }}
+          async.executor.thread-name-prefix: ${{ secrets.THREAD_NAME_PREFIX }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+        shell: bash
+
+      # https://docs.github.com/ko/actions/learn-github-actions/variables#default-environment-variables
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA .
+        shell: bash
+      
+      # https://github.com/aws-actions/configure-aws-credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      # https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-services-s3-commands.html
+      # https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+      
+      # https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/tutorials-github-deploy-application.html
+      # https://docs.aws.amazon.com/cli/latest/reference/deploy/create-deployment.html
+      - name: Code Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name ${{env.CODE_DEPLOY_APPLICATION_NAME}} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME}} \
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip

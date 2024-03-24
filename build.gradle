@@ -55,6 +55,12 @@ dependencies {
     //queryDSL
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    //aws
+    implementation platform('software.amazon.awssdk:bom:2.20.56')
+    implementation 'software.amazon.awssdk:s3:'
+    implementation 'software.amazon.awssdk:sso'
+    implementation 'software.amazon.awssdk:ssooidc'
 }
 
 tasks.named('test') {
@@ -66,6 +72,10 @@ def querydslDir = 'src/main/generated'
 querydsl {
     jpa = true
     querydslSourcesDir = querydslDir
+}
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
 }
 // java source set 에 querydsl Qclass 위치 추가
 sourceSets {
@@ -80,4 +90,12 @@ compileQuerydsl {
 // gradle clean 시에 QClass 디렉토리 삭제
 clean {
     delete file(querydslDir)
+}
+
+/**
+ * 빌드시 *_plain.jar (dependency를 제외한 [classes/resources]만을 포함) 가 생기지 않게함
+ * *_plain.jar 는 실행시킬 수 없기 때문
+ */
+jar {
+    enabled = false
 }
