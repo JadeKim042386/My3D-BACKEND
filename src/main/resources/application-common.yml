@@ -5,12 +5,10 @@ spring:
     properties:
       hibernate.format_sql: true
     open-in-view: false
-local-file:
-  relative-path: ${LOCAL_FILE_REL_PATH}
-  absolute-path: ${LOCAL_FILE_ABS_PATH}
-aws.s3:
-  bucket-name: ${S3_BUCKET_NAME}
-  url: ${S3_URL}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 async.executor:
   core-pool-size: ${CORE_POOL_SIZE}
   max-pool-size: ${MAX_POOL_SIZE}

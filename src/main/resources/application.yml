@@ -11,7 +11,6 @@ spring:
         - security
         - mail
       test:
-        - common
         - security
         - mail
 
@@ -22,10 +21,6 @@ spring:
     hibernate:
       ddl-auto: validate
     defer-datasource-initialization: true
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
   devtools.livereload:
     enabled: true
     port: 35730
@@ -54,7 +49,3 @@ spring:
     show-sql: false
     properties:
       hibernate.format_sql: false
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
