@@ -1,5 +1,5 @@
 # https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/reference-appspec-file-structure.html#server-appspec-structure
-version: 0.1
+version: 0.0
 os: linux
 files:
   - source: /
