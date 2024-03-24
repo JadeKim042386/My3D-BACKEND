@@ -1,35 +1,19 @@
 spring:
   profiles:
-    active: local
+    active: local # default
     group:
       local:
         - common
+        - security
+        - mail
+      prod:
+        - common
+        - security
         - mail
       test:
         - common
+        - security
         - mail
-
----
-spring:
-  config.activate.on-profile: common
-  jpa:
-    show-sql: true
-    properties:
-      hibernate.format_sql: true
-    open-in-view: false
-jwt:
-  token:
-    secret-key: ${TOKEN_SECRET_KEY}
-    access-expired-ms: ${TOKEN_ACCESS_EXPIRED_MS}
-    refresh-expired-ms: ${TOKEN_REFRESH_EXPIRED_MS}
-local-file:
-  relative-path: ${LOCAL_FILE_REL_PATH}
-  absolute-path: ${LOCAL_FILE_ABS_PATH}
-async.executor:
-  core-pool-size: ${CORE_POOL_SIZE}
-  max-pool-size: ${MAX_POOL_SIZE}
-  queue-capacity: ${QUEUE_CAPACITY}
-  thread-name-prefix: ${THREAD_NAME_PREFIX}
 
 ---
 spring:
@@ -60,3 +44,10 @@ spring:
   sql.init.mode: always
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:init.sql'
+
+---
+spring:
+  config.activate.on-profile: prod
+  jpa:
+    hibernate:
+      ddl-auto: none
