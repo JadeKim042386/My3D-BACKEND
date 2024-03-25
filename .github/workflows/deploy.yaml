@@ -39,7 +39,7 @@ jobs:
           async.executor.max-pool-size: ${{ secrets.MAX_POOL_SIZE }}
           async.executor.queue-capacity: ${{ secrets.QUEUE_CAPACITY }}
           async.executor.thread-name-prefix: ${{ secrets.THREAD_NAME_PREFIX }}
-          aws.s3.bucketName: ${{ secrets.S3_BUCKET_NAME }}
+          aws.s3.bucket-name: ${{ secrets.S3_BUCKET_NAME }}
           aws.s3.url: ${{ secrets.S3_URL }}
           spring.mail.username: ${{ secrets.MAIL_USERNAME }}
           spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
