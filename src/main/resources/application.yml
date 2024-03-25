@@ -4,10 +4,12 @@ spring:
     group:
       local:
         - common
+        - file
         - security
         - mail
       prod:
         - common
+        - file
         - security
         - mail
       test:

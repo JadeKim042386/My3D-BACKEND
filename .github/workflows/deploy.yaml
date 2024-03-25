@@ -35,17 +35,19 @@ jobs:
           spring.datasource.url: ${{ secrets.DB_URL }}
           spring.datasource.username: ${{ secrets.DB_USERNAME }}
           spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-          spring.mail.username: ${{ secrets.MAIL_USERNAME }}
-          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
-          jwt.token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
-          jwt.token.access-expired-ms: ${{ secrets.TOKEN_ACCESS_EXPIRED_MS }}
-          jwt.token.refresh-expired-ms: ${{ secrets.TOKEN_REFRESH_EXPIRED_MS }}
-          aws.s3.bucketName: ${{ secrets.S3_BUCKET_NAME }}
-          aws.s3.url: ${{ secrets.S3_URL }}
           async.executor.core-pool-size: ${{ secrets.CORE_POOL_SIZE }}
           async.executor.max-pool-size: ${{ secrets.MAX_POOL_SIZE }}
           async.executor.queue-capacity: ${{ secrets.QUEUE_CAPACITY }}
           async.executor.thread-name-prefix: ${{ secrets.THREAD_NAME_PREFIX }}
+          aws.s3.bucketName: ${{ secrets.S3_BUCKET_NAME }}
+          aws.s3.url: ${{ secrets.S3_URL }}
+          spring.mail.username: ${{ secrets.MAIL_USERNAME }}
+          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
+          pop3.mail.username: ${{ secrets.MAIL_USERNAME }}
+          pop3.mail.password: ${{ secrets.MAIL_PASSWORD }}
+          jwt.token.secret-key: ${{ secrets.TOKEN_SECRET_KEY }}
+          jwt.token.access-expired-ms: ${{ secrets.TOKEN_ACCESS_EXPIRED_MS }}
+          jwt.token.refresh-expired-ms: ${{ secrets.TOKEN_REFRESH_EXPIRED_MS }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

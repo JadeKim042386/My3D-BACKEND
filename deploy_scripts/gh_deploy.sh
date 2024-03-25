@@ -22,9 +22,6 @@ IDLE_APPLICATION_PATH=$DEPLOY_PATH$JAR_NAME
 echo "> $IDLE_PROFILE 배포" >> $DEPLOY_LOG_PATH
 nohup java -jar -DSpring.profiles.active=$IDLE_PROFILE $IDLE_APPLICATION_PATH >> $APPLICATION_LOG_PATH 2> $DEPLOY_ERR_LOG_PATH &
 
-echo "> static 경로 저장" >> $DEPLOY_LOG_PATH
-echo "set \$static_path ${STATIC_PATH};" |sudo tee /etc/nginx/conf.d/static-path.inc
-
 sleep 3
 
 echo "> 배포 종료 : $(date +%c)" >> $DEPLOY_LOG_PATH
