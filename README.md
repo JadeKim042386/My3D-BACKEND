@@ -11,6 +11,13 @@
 - Gradle 8.5
 - Spring Boot 2.7.18
 
+## Project Structure
+
+![](./imgs/my3d_backend_project_structure.svg)
+
+## AWS Structure
+![](./imgs/my3d_backend_aws_structure.svg)
+
 ## Tech Stack
 
 | BackEnd                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
@@ -23,31 +30,22 @@
 |--------------------------------------------------------------------------------------------------------------|
 | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4479A1?style=for-the-badge&logo=postgresql&logoColor=white) |
 | ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![EC2](https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white) ![S3](https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white) ![RDS](https://img.shields.io/badge/Amazon%20RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white) |
-| ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## Features
 
-- [ ] 회원가입
-  - [ ] 이메일 인증
-  - [ ] 사업자 인증
-- [ ] 로그인
-  - [ ] 비밀번호 찾기
-  - [ ] OAuth 로그인
-- [ ] 게시글
-  - [ ] 게시글 작성
-  - [ ] 게시글 수정
-  - [ ] 게시글 삭제
-  - [ ] 파일 다운로드
+- [X] 로그인/회원가입
+  - [X] 비밀번호 찾기
+  - [X] 이메일 인증
+- [X] 게시글 작성/수정/삭제
+- [X] 게시글에 첨부된 파일 다운로드
 - [X] 댓글 & 대댓글 추가/삭제
-- [ ] 좋아요 추가/삭제
-- [ ] 좋아요, 작성일자 정렬
-- [ ] 제목 검색
-- [ ] 댓글 추가시 알람 전송
-- [ ] 유저 정보 수정
-  - [ ] 개인 사용자 정보 수정
-  - [ ] 비밀번호 변경
-  - [ ] 기업/기관 사용자 정보 수정
-- [ ] 구독 기능
+- [X] 좋아요 추가/삭제
+- [X] 좋아요, 작성일자 정렬
+- [X] 제목 검색
+- [X] 댓글 추가시 알람 전송
+- [X] 유저 정보 수정
+- [X] 회원 탈퇴
+- [X] 구독 기능
 
 📝 [요구사항](./docs/requirements.md)
 
