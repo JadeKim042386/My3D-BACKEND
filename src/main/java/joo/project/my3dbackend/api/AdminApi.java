@@ -21,7 +21,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AdminApi {
     private final UserAccountServiceInterface userAccountService;
-    // TODO: 유저 존재 여부 확인
 
     /**
      * 사용자 정보 수정 요청 (닉네임, 전화번호, 주소)
@@ -58,7 +57,7 @@ public class AdminApi {
      * 유저 삭제 (회원 탈퇴)
      */
     @DeleteMapping
-    public ResponseEntity<ApiResponse> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse<String>> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         // TODO: 게시글, 댓글, 알람 등 bulk delete
         userAccountService.deleteUser(userPrincipal.id());
         return ResponseEntity.ok(ApiResponse.of("You successfully delete user"));
