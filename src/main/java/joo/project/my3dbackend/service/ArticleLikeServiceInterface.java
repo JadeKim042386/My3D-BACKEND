@@ -18,4 +18,9 @@ public interface ArticleLikeServiceInterface {
      * 좋아요 삭제
      */
     int deleteArticleLike(Long articleId, Long userAccountId);
+
+    /**
+     * 좋아요 추가 여부 조회
+     */
+    boolean isAddedLike(Long articleId, Long userAccountId);
 }

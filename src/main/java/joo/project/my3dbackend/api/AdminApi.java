@@ -1,11 +1,14 @@
 package joo.project.my3dbackend.api;
 
+import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.CompanyRequest;
 import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.exception.AuthException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +24,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AdminApi {
     private final UserAccountServiceInterface userAccountService;
-    // TODO: 유저 존재 여부 확인
 
     /**
      * 사용자 정보 수정 요청 (닉네임, 전화번호, 주소)
@@ -50,7 +52,8 @@ public class AdminApi {
     public ResponseEntity<CompanyDto> updateCompany(
             @RequestBody @Valid CompanyRequest companyAdminRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        // TODO: 기업 유저가 맞는지 확인
+        // 기업 유저가 맞는지 확인
+        checkIfCompanyUser(userPrincipal);
         return ResponseEntity.ok(userAccountService.updateCompany(companyAdminRequest, userPrincipal.id()));
     }
 
@@ -58,9 +61,13 @@ public class AdminApi {
      * 유저 삭제 (회원 탈퇴)
      */
     @DeleteMapping
-    public ResponseEntity<ApiResponse> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+    public ResponseEntity<ApiResponse<String>> deleteUser(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         // TODO: 게시글, 댓글, 알람 등 bulk delete
         userAccountService.deleteUser(userPrincipal.id());
         return ResponseEntity.ok(ApiResponse.of("You successfully delete user"));
+    }
+
+    private void checkIfCompanyUser(UserPrincipal userPrincipal) {
+        if (userPrincipal.getUserRole() != UserRole.COMPANY) throw new AuthException(ErrorCode.NOT_COMPANY);
     }
 }

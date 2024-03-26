@@ -4,6 +4,7 @@ import joo.project.my3dbackend.domain.UserAccount;
 import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.CompanyRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserAccountServiceInterface {
 
@@ -33,6 +34,11 @@ public interface UserAccountServiceInterface {
     void updatePassword(String email, String password);
 
     CompanyDto updateCompany(CompanyRequest companyRequest, Long userAccountId);
+
+    boolean existsEmail(String email);
+
+    boolean existsNickname(String nickname);
+
     /**
      * 유저 삭제
      */

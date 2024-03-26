@@ -85,14 +85,32 @@ public class UserAccountService implements UserAccountServiceInterface {
         return CompanyDto.fromEntity(userAccount.getCompany());
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsEmail(String email) {
+        return userAccountRepository.existsByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsNickname(String nickname) {
+        return userAccountRepository.existsByNickname(nickname);
+    }
+
     public void deleteUser(Long userAccountId) {
         userAccountRepository.deleteById(userAccountId);
     }
 
+    /**
+     * 비밀번호 인코딩
+     */
     private String encodePassword(String password) {
         return encoder.encode(password);
     }
 
+    /**
+     * 유저 정보 업데이트 여부 확인
+     */
     private <T> boolean isUpdatedUserData(T savedData, T updatedData) {
         return !savedData.equals(updatedData);
     }

@@ -17,7 +17,10 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Table(
         name = "user_account",
-        indexes = {@Index(name = "email_idx", columnList = "email", unique = true)})
+        indexes = {
+            @Index(name = "email_idx", columnList = "email", unique = true),
+            @Index(name = "nickname_idx", columnList = "nickname", unique = true)
+        })
 @Entity
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

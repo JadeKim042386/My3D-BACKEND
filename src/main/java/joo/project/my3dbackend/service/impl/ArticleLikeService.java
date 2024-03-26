@@ -36,4 +36,10 @@ public class ArticleLikeService implements ArticleLikeServiceInterface {
         articleLikeRepository.deleteByArticleIdAndUserAccountId(articleId, userAccountId);
         return articleRepository.deleteArticleLikeCount(articleId);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean isAddedLike(Long articleId, Long userAccountId) {
+        return articleLikeRepository.existsByArticleIdAndUserAccountId(articleId, userAccountId);
+    }
 }

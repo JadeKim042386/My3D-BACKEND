@@ -12,4 +12,8 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
 
     @EntityGraph(attributePaths = "company")
     Optional<UserAccount> findById(Long userAccountId);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByNickname(String nickname);
 }

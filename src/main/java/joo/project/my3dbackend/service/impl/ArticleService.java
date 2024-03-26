@@ -89,10 +89,11 @@ public class ArticleService implements ArticleServiceInterface {
 
     @Override
     public void deleteArticle(Long articleId) {
-        // TODO: 게시글이 존재할 경우에 삭제할 수 있다.
+        // TODO: 게시글 삭제 쿼리 확인
         articleRepository.deleteById(articleId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Long getUserAccountIdOfArticle(Long articleId) {
         return articleRepository
@@ -100,14 +101,22 @@ public class ArticleService implements ArticleServiceInterface {
                 .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_ARTICLE));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isWriterOfArticle(Long userAccountId, Long articleId) {
         return articleRepository.existsByIdAndUserAccount_Id(articleId, userAccountId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isFreeArticle(Long articleId) {
         return articleRepository.getArticleIsFreeStatus(articleId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsArticle(Long articleId) {
+        return articleRepository.existsById(articleId);
     }
 
     /**

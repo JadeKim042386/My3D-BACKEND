@@ -3,8 +3,11 @@ package joo.project.my3dbackend.api;
 import joo.project.my3dbackend.dto.request.EmailRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.response.EmailResponse;
+import joo.project.my3dbackend.exception.AuthException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.security.PasswordGenerator;
 import joo.project.my3dbackend.service.EmailServiceInterface;
+import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +26,14 @@ import java.util.UUID;
 public class EmailApi {
     private final PasswordGenerator passwordGenerator;
     private final EmailServiceInterface emailService;
+    private final UserAccountServiceInterface userAccountService;
 
     /**
      * 회원가입시 이메일 존재 여부 확인을 위해 인증 코드 전송
      */
     @PostMapping("/send-code")
     public ResponseEntity<EmailResponse> sendEmailCertification(@RequestBody @Valid EmailRequest emailRequest) {
-        // TODO: 이메일 중복 체크
+        checkIfDuplicatedEmail(emailRequest.email());
         String subject = "[My3D] 이메일 인증";
         String code = generateEmailCode(); // 인증 코드
         emailService.sendAsyncEmail(emailRequest.email(), subject, code);
@@ -47,7 +51,7 @@ public class EmailApi {
      */
     @PostMapping("/find-pass")
     public ResponseEntity<ApiResponse<String>> sendRandomPassword(@RequestBody @Valid EmailRequest emailRequest) {
-        // TODO: 회원가입 여부 체크
+        checkIfExistsUser(emailRequest.email());
         String subject = "[My3D] 임시 비밀번호";
         String password = generatePassword();
         emailService.sendRandomPassword(emailRequest.email(), subject, password);
@@ -76,5 +80,19 @@ public class EmailApi {
      */
     private String generatePassword() {
         return passwordGenerator.generateRandomPassword();
+    }
+
+    /**
+     * 이메일 중복 체크
+     */
+    private void checkIfDuplicatedEmail(String email) {
+        if (userAccountService.existsEmail(email)) throw new AuthException(ErrorCode.ALREADY_EXIST_EMAIL);
+    }
+
+    /**
+     * 회원가입 여부 확인
+     */
+    private void checkIfExistsUser(String email) {
+        if (!userAccountService.existsEmail(email)) throw new AuthException(ErrorCode.NOT_FOUND_USER);
     }
 }

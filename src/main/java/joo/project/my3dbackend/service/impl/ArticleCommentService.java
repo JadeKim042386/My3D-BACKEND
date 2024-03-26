@@ -45,7 +45,19 @@ public class ArticleCommentService implements ArticleCommentServiceInterface {
 
     @Override
     public void deleteComment(Long articleCommentId) {
-        // TODO: 댓글이 존재할 경우에 삭제할 수 있다
+        // TODO: 댓글 삭제 쿼리 확인
         articleCommentRepository.deleteByIdOrParentCommentId(articleCommentId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean isWriterOfComment(Long userAccountId, Long articleCommentId) {
+        return articleCommentRepository.existsByIdAndUserAccount_Id(articleCommentId, userAccountId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsComment(Long articleCommentId) {
+        return articleCommentRepository.existsById(articleCommentId);
     }
 }
