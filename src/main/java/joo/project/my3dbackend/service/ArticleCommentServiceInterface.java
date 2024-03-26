@@ -23,4 +23,14 @@ public interface ArticleCommentServiceInterface {
      * 댓글 삭제
      */
     void deleteComment(Long articleCommentId);
+
+    /**
+     * 댓글 작성자 확인
+     */
+    boolean isWriterOfComment(Long userAccountId, Long articleCommentId);
+
+    /**
+     * 댓글이 존재하는지 확인
+     */
+    boolean existsComment(Long articleCommentId);
 }

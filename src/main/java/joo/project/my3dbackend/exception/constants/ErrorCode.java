@@ -16,7 +16,7 @@ public enum ErrorCode {
     INVALID_FIlE_NAME(HttpStatus.BAD_REQUEST, "파일 형식이 잘못되었습니다."),
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "articleCateogy가 null이거나 값이 잘못되었습니다."),
     INVALID_DIMENSION(HttpStatus.BAD_REQUEST, "dimensionOption이 null이거나 값이 잘못되었습니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "게시글을 볼 수 있는 권한이 없습니다."),
+    FORBIDDEN_ARTICLE(HttpStatus.FORBIDDEN, "게시글에 대한 권한이 없습니다."),
     // Auth
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     EXPIRED_TOKEN(HttpStatus.FORBIDDEN, "Token이 만료되었습니다."),
@@ -26,6 +26,9 @@ public enum ErrorCode {
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "Refresh Token을 헤더에서 찾을 수 없습니다."),
     FAILED_AUTHENTICATE(HttpStatus.UNAUTHORIZED, "인증 실패"),
     FAILED_REISSUE_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "Access Token 재발급 실패"),
+    NOT_COMPANY(HttpStatus.FORBIDDEN, "기업 유저가 아닙니다."),
+    ALREADY_EXIST_EMAIL(HttpStatus.BAD_REQUEST, "이미 존재하는 이메일 입니다."),
+    ALREADY_EXIST_NICKNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다."),
     // File
     FILE_CANT_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, "파일 삭제에 실패했습니다."),
     FILE_CANT_SAVE(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 저장 할 수 없습니다. 파일 경로를 다시 확인해주세요."),
@@ -43,7 +46,10 @@ public enum ErrorCode {
     CANT_GET_FOLDER(HttpStatus.INTERNAL_SERVER_ERROR, "메일 폴더를 가져올 수 없습니다."),
     CANT_GET_MAIL(HttpStatus.INTERNAL_SERVER_ERROR, "폴더에서 메일을 가져올 수 없습니다."),
     // Subscribe
-    NOT_FOUND_SUBSCRIBE(HttpStatus.NOT_FOUND, "구독 정보를 찾을 수 없습니다.");
+    NOT_FOUND_SUBSCRIBE(HttpStatus.NOT_FOUND, "구독 정보를 찾을 수 없습니다."),
+    // Comment
+    FORBIDDEN_COMMENT(HttpStatus.FORBIDDEN, "댓글에 대한 권한이 없습니다."),
+    NOT_FOUND_COMMENT(HttpStatus.NOT_FOUND, "댓글이 존재하지 않습니다.");
 
     private final HttpStatus status;
     private final String message;

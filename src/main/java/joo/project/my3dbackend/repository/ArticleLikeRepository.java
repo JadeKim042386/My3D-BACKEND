@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleLikeRepository extends JpaRepository<ArticleLike, Long> {
     void deleteByArticleIdAndUserAccountId(Long articleId, Long userAccountId);
+
+    boolean existsByArticleIdAndUserAccountId(Long articleId, Long userAccountId);
 }

@@ -1,11 +1,14 @@
 package joo.project.my3dbackend.api;
 
+import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.CompanyDto;
 import joo.project.my3dbackend.dto.request.AdminRequest;
 import joo.project.my3dbackend.dto.request.CompanyRequest;
 import joo.project.my3dbackend.dto.request.PasswordRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
+import joo.project.my3dbackend.exception.AuthException;
+import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.service.UserAccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +52,8 @@ public class AdminApi {
     public ResponseEntity<CompanyDto> updateCompany(
             @RequestBody @Valid CompanyRequest companyAdminRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        // TODO: 기업 유저가 맞는지 확인
+        // 기업 유저가 맞는지 확인
+        checkIfCompanyUser(userPrincipal);
         return ResponseEntity.ok(userAccountService.updateCompany(companyAdminRequest, userPrincipal.id()));
     }
 
@@ -61,5 +65,9 @@ public class AdminApi {
         // TODO: 게시글, 댓글, 알람 등 bulk delete
         userAccountService.deleteUser(userPrincipal.id());
         return ResponseEntity.ok(ApiResponse.of("You successfully delete user"));
+    }
+
+    private void checkIfCompanyUser(UserPrincipal userPrincipal) {
+        if (userPrincipal.getUserRole() != UserRole.COMPANY) throw new AuthException(ErrorCode.NOT_COMPANY);
     }
 }

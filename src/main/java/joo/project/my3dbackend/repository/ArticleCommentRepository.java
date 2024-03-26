@@ -34,4 +34,6 @@ public interface ArticleCommentRepository extends JpaRepository<ArticleComment, 
     @Modifying
     @Query("delete from ArticleComment ac where ac.id=?1 or ac.parentCommentId=?1")
     void deleteByIdOrParentCommentId(Long articleCommentId);
+
+    boolean existsByIdAndUserAccount_Id(Long articleCommentId, Long userAccountId);
 }

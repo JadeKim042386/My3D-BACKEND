@@ -93,6 +93,7 @@ public class ArticleService implements ArticleServiceInterface {
         articleRepository.deleteById(articleId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Long getUserAccountIdOfArticle(Long articleId) {
         return articleRepository
@@ -100,14 +101,22 @@ public class ArticleService implements ArticleServiceInterface {
                 .orElseThrow(() -> new ArticleException(ErrorCode.NOT_FOUND_ARTICLE));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isWriterOfArticle(Long userAccountId, Long articleId) {
         return articleRepository.existsByIdAndUserAccount_Id(articleId, userAccountId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean isFreeArticle(Long articleId) {
         return articleRepository.getArticleIsFreeStatus(articleId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsArticle(Long articleId) {
+        return articleRepository.existsById(articleId);
     }
 
     /**

@@ -53,4 +53,9 @@ public interface ArticleServiceInterface {
      * 무료 게시글인지 확인
      */
     boolean isFreeArticle(Long articleId);
+
+    /**
+     * 게시글이 존재하는지 확인
+     */
+    boolean existsArticle(Long articleId);
 }

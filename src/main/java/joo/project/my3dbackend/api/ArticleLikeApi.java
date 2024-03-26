@@ -4,6 +4,7 @@ import joo.project.my3dbackend.api.constants.LikeStatus;
 import joo.project.my3dbackend.dto.response.ArticleLikeResponse;
 import joo.project.my3dbackend.dto.security.UserPrincipal;
 import joo.project.my3dbackend.exception.ArticleException;
+import joo.project.my3dbackend.exception.LikeException;
 import joo.project.my3dbackend.exception.constants.ErrorCode;
 import joo.project.my3dbackend.service.ArticleLikeServiceInterface;
 import joo.project.my3dbackend.service.ArticleServiceInterface;
@@ -31,7 +32,7 @@ public class ArticleLikeApi {
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
         checkIfWriter(articleId, userPrincipal.id());
-        // TODO: 좋아요를 추가하지 않았을 경우에만 추가할 수 있고 좋아요를 추가했을 경우만 삭제할 수 있음
+        checkPossibleIfAddLikeOrDeleteLike(likeStatus, articleId, userPrincipal.id());
         return ResponseEntity.ok(
                 new ArticleLikeResponse(articleLikeService.updateLikeCount(likeStatus, articleId, userPrincipal.id())));
     }
@@ -43,5 +44,14 @@ public class ArticleLikeApi {
         if (articleService.isWriterOfArticle(articleId, userAccountId)) {
             throw new ArticleException(ErrorCode.INVALID_REQUEST);
         }
+    }
+
+    /**
+     * 좋아요를 추가하지 않았을 경우에만 추가할 수 있고 좋아요를 추가했을 경우만 삭제할 수 있음
+     */
+    private void checkPossibleIfAddLikeOrDeleteLike(LikeStatus likeStatus, Long articleId, Long userAccountId) {
+        boolean addedLike = articleLikeService.isAddedLike(articleId, userAccountId);
+        if ((likeStatus == LikeStatus.LIKE && addedLike) || (likeStatus == LikeStatus.UNLIKE && !addedLike))
+            throw new LikeException(ErrorCode.INVALID_REQUEST);
     }
 }

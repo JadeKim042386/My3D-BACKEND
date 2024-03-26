@@ -3,6 +3,7 @@ package joo.project.my3dbackend.api;
 import com.querydsl.core.types.Predicate;
 import joo.project.my3dbackend.domain.Article;
 import joo.project.my3dbackend.domain.constants.SubscribeStatus;
+import joo.project.my3dbackend.domain.constants.UserRole;
 import joo.project.my3dbackend.dto.ArticleDto;
 import joo.project.my3dbackend.dto.request.ArticleRequest;
 import joo.project.my3dbackend.dto.response.ApiResponse;
@@ -49,6 +50,7 @@ public class ArticleApi {
     public ResponseEntity<Page<ArticleDto>> getArticles(
             @QuerydslPredicate(root = Article.class) Predicate predicate,
             @PageableDefault(size = 9, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
         return ResponseEntity.ok(articleService.getArticles(predicate, pageable));
     }
 
@@ -58,9 +60,8 @@ public class ArticleApi {
     @GetMapping("/{articleId}")
     public ResponseEntity<ArticleDto> getArticle(
             @PathVariable Long articleId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        // 유료 게시글일 경우 구독 상태인지 확인
-        if (!articleService.isFreeArticle(articleId) && userPrincipal.subscribeStatus() != SubscribeStatus.SUBSCRIBE)
-            throw new ArticleException(ErrorCode.UNAUTHORIZED);
+
+        checkSubscribeStatusIfPaidArticle(userPrincipal, articleId);
         ArticleDto article = articleService.getArticleDtoWithFile(articleId);
         return ResponseEntity.ok(article);
     }
@@ -90,7 +91,8 @@ public class ArticleApi {
             @RequestPart(required = false) MultipartFile modelFile,
             @RequestPart @Valid ArticleRequest articleRequest,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        // TODO: 작성자 또는 관리자만 게시글을 수정할 수 있다.
+
+        checkIfWriterOrAdmin(userPrincipal, articleId);
         ArticleDto articleDto = articleService.updateArticle(modelFile, articleRequest, articleId, userPrincipal);
         return ResponseEntity.ok(articleDto);
     }
@@ -99,8 +101,9 @@ public class ArticleApi {
      * 게시글 삭제 요청
      */
     @DeleteMapping("/{articleId}")
-    public ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
-        // TODO: 작성자 또는 관리자만 게시글을 삭제할 수 있다.
+    public ResponseEntity<ApiResponse<String>> deleteArticle(
+            @PathVariable Long articleId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        checkIfWriterOrAdmin(userPrincipal, articleId);
         // TODO: 삭제시 comment, like, file select 발생
         articleService.deleteArticle(articleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.of("you're successfully delete article"));
@@ -118,5 +121,22 @@ public class ArticleApi {
         httpHeaders.setContentLength(file.length);
         httpHeaders.setContentDispositionFormData("attachment", "model." + FileUtils.getExtension(fileName));
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(file);
+    }
+
+    /**
+     * 게시글 작성자 또는 관리자가 맞는지 확인
+     */
+    private void checkIfWriterOrAdmin(UserPrincipal userPrincipal, Long articleId) {
+        if (userPrincipal.getUserRole() != UserRole.ADMIN
+                && articleService.isWriterOfArticle(userPrincipal.id(), articleId))
+            throw new ArticleException(ErrorCode.FORBIDDEN_ARTICLE);
+    }
+
+    /**
+     * 유료 게시글일 경우 구독 상태인지 확인
+     */
+    private void checkSubscribeStatusIfPaidArticle(UserPrincipal userPrincipal, Long articleId) {
+        if (!articleService.isFreeArticle(articleId) && userPrincipal.subscribeStatus() != SubscribeStatus.SUBSCRIBE)
+            throw new ArticleException(ErrorCode.FORBIDDEN_ARTICLE);
     }
 }
